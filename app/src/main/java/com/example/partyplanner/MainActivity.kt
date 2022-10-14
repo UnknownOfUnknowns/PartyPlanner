@@ -62,7 +62,7 @@ fun PartyPlannerApp(){
                 )
             }
             composable(route = NewPartyPage.route) {
-                HelloCreate()
+                StartPartyCreation()
             }
         }
     }
