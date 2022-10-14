@@ -17,26 +17,60 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.partyplanner.ui.theme.FadeBackground
-import com.example.partyplanner.ui.theme.PartyPlannerTheme
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.partyplanner.ui.theme.*
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         setContent {
-            PartyPlannerTheme {
-                StartSide()
+            PartyPlannerApp()
+        }
+    }
+}
 
+@Composable
+fun PartyPlannerApp(){
+    PartyPlannerTheme {
+        fun NavHostController.navigateSingleTopTo(route: String) =
+            this.navigate(route) {
+                popUpTo(this@navigateSingleTopTo.graph.findStartDestination().id){
+                    saveState = true
+                }
+
+                launchSingleTop = true
+
+                restoreState = true
+            }
+        val navigationController = rememberNavController()
+
+        NavHost(
+            navController = navigationController,
+            startDestination = StartPage.route,
+            modifier = Modifier.fillMaxSize()
+        ) {
+            composable(route = StartPage.route){
+                StartSide(onCreateParty =
+                    {
+                        navigationController.navigateSingleTopTo("createParty")
+                    }
+                )
+            }
+            composable(route = NewPartyPage.route) {
+                HelloCreate()
             }
         }
     }
 }
 
-
 @Preview(showBackground = true)
 @Composable
-fun StartSide(){
+fun StartSide(onCreateParty : () -> Unit = {}){
     Box{
         FadeBackground()
         Column(modifier = Modifier
@@ -48,7 +82,7 @@ fun StartSide(){
 
             ) {
             Spacer(modifier = Modifier.height(200.dp))
-            DefaultButton(onClick = { /*TODO*/ }, buttonName = "Opret Fest")
+            DefaultButton(onClick = onCreateParty, buttonName = "Opret Fest")
             Spacer(modifier = Modifier.height(50.dp))
             DefaultButton(onClick = { /*TODO*/ }, buttonName = "Mine begivenheder")
         }
