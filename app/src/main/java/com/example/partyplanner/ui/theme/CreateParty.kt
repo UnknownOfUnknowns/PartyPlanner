@@ -1,6 +1,13 @@
 package com.example.partyplanner.ui.theme
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.*
@@ -13,7 +20,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 
-@Preview(showBackground = true)
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StartPartyCreation() {
     FadeBackground() {
@@ -37,6 +45,8 @@ fun StartPartyCreation() {
     }
 
 }
+
+
 @Composable
 fun NextButton() {
     Button(onClick = { /*TODO*/ },
@@ -79,6 +89,66 @@ fun ChoosePartyDropDown()
                     },
                     contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
                 )
+            }
+        }
+    }
+}
+
+
+@Preview(showBackground = true)
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun SetPartyDataOnCreation() {
+    FadeBackground() {
+
+        Column(
+            modifier =
+            Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+
+            Spacer(modifier = Modifier.height(25.dp))
+            var text by remember { mutableStateOf("") }
+
+            TextField(
+                value = text,
+                onValueChange = { text = it },
+                label = { Text("Vælg titel på begivenheden") },
+                singleLine = true
+            )
+
+            Spacer(modifier = Modifier.height(25.dp))
+
+            TextField(
+                value = text,
+                onValueChange = { text = it },
+                label = { Text("Adresse") },
+                singleLine = true
+            )
+
+            Spacer(modifier = Modifier.height(25.dp))
+
+            TextField(
+                value = text,
+                onValueChange = { text = it },
+                label = { Text("Post nr") },
+                singleLine = true
+            )
+
+            Spacer(modifier = Modifier.height(25.dp))
+
+            TextField(
+                value = text,
+                onValueChange = { text = it },
+                label = { Text("By") },
+                singleLine = true
+            )
+
+            Spacer(modifier = Modifier.height(25.dp))
+
+            Button(onClick = { /*TODO*/ },
+            ) {
+                Text("Opret begivenhed")
             }
         }
     }
