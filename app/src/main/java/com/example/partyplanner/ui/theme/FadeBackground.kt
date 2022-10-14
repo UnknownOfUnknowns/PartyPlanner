@@ -28,7 +28,7 @@ import com.example.partyplanner.R
 
 
 @Composable
-fun FadeBackground() {
+fun FadeBackground(content: @Composable() ( () -> Unit) = {}) {
     val firstFadeColor = Color(0xFF5E1DE8)
     val secondFadeColor = Color(0xFFACA0C6)
     Column(modifier = Modifier.fillMaxSize()) {
@@ -80,17 +80,24 @@ fun FadeBackground() {
                     topLeft = Offset(0f, size.height*0.8f)
                 )
             }
-            ChampagneLogo(Modifier.align(Alignment.BottomCenter).size(72.dp).offset(0.dp, (-3).dp))
+            ChampagneLogo(
+                Modifier
+                    .align(Alignment.BottomCenter)
+                    .size(72.dp)
+                    .offset(0.dp, (-3).dp))
         }
 
-
-        Canvas(modifier = Modifier
+        Box(modifier = Modifier
             .fillMaxSize()
-            .weight(0.7f)){
-            drawRect(
-                color = Background
-            )
+            .weight(0.7f)) {
+            Canvas(modifier = Modifier.fillMaxSize()){
+                drawRect(
+                    color = Background
+                )
+            }
+            content()
         }
+
     }
 }
 
@@ -102,7 +109,8 @@ fun ChampagneLogo(modifier: Modifier = Modifier){
     Surface(
         modifier = modifier
             .background(Background, shape = CircleShape)
-            .border(1.dp, color = Color.Black, shape = CircleShape).shadow(5.dp, shape = CircleShape, clip = true),
+            .border(1.dp, color = Color.Black, shape = CircleShape)
+            .shadow(5.dp, shape = CircleShape, clip = true),
         shape = CircleShape,
     ) {
         Image(painter = painterResource(id = R.drawable.champange_glasses), contentDescription = null,

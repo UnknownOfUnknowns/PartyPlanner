@@ -72,20 +72,21 @@ fun PartyPlannerApp(){
 @Composable
 fun StartSide(onCreateParty : () -> Unit = {}){
     Box{
-        FadeBackground()
-        Column(modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight()
-            .wrapContentSize(Alignment.Center),
-            horizontalAlignment = Alignment.CenterHorizontally,
+        FadeBackground() {
+            Column(modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight()
+                .wrapContentSize(Alignment.Center),
+                horizontalAlignment = Alignment.CenterHorizontally,
 
 
-            ) {
-            Spacer(modifier = Modifier.height(200.dp))
-            DefaultButton(onClick = onCreateParty, buttonName = "Opret Fest")
-            Spacer(modifier = Modifier.height(50.dp))
-            DefaultButton(onClick = { /*TODO*/ }, buttonName = "Mine begivenheder")
+                ) {
+                DefaultButton(onClick = onCreateParty, buttonName = "Opret Fest")
+                Spacer(modifier = Modifier.height(50.dp))
+                DefaultButton(onClick = { /*TODO*/ }, buttonName = "Mine begivenheder")
+            }
         }
+
     }
 
 }
