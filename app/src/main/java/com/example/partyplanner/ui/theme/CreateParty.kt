@@ -1,5 +1,10 @@
 package com.example.partyplanner.ui.theme
 
+import android.app.DatePickerDialog
+import android.content.Context
+import android.os.Bundle
+import android.widget.DatePicker
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
@@ -14,11 +19,15 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.BlendMode.Companion.Screen
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-
+import androidx.navigation.NavController
+import com.example.partyplanner.R
+import java.util.*
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -31,12 +40,16 @@ fun StartPartyCreation() {
             horizontalAlignment = Alignment.CenterHorizontally,
 
         ) {
+
             Spacer(modifier = Modifier.height(30.dp))
+
             Text(text = "Hvilken type fest vil du holde?",
             fontSize = 25.sp,
             fontWeight = FontWeight.Bold
             )
+
             Spacer(modifier = Modifier.height(20.dp))
+
             ChoosePartyDropDown()
 
             NextButton()
@@ -99,6 +112,7 @@ fun ChoosePartyDropDown()
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SetPartyDataOnCreation() {
+
     FadeBackground() {
 
         Column(
@@ -107,7 +121,7 @@ fun SetPartyDataOnCreation() {
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
 
-            Spacer(modifier = Modifier.height(25.dp))
+            Spacer(modifier = Modifier.height(50.dp))
             var text by remember { mutableStateOf("") }
 
             TextField(
@@ -119,10 +133,14 @@ fun SetPartyDataOnCreation() {
 
             Spacer(modifier = Modifier.height(25.dp))
 
+            showDatePicker(this)
+
+            Spacer(modifier = Modifier.height(25.dp))
+
             TextField(
                 value = text,
                 onValueChange = { text = it },
-                label = { Text("Adresse") },
+                label = { Text("Adresse på begivenheden") },
                 singleLine = true
             )
 
@@ -146,10 +164,98 @@ fun SetPartyDataOnCreation() {
 
             Spacer(modifier = Modifier.height(25.dp))
 
-            Button(onClick = { /*TODO*/ },
+            Button(
+                onClick = { },
             ) {
                 Text("Opret begivenhed")
             }
         }
     }
+}
+
+
+@Composable
+fun showDatePicker(context: Context){
+    val year: Int
+    val month: Int
+    val day: Int
+
+    val calendar = Calendar.getInstance()
+    year = calendar.get(Calendar.YEAR)
+    month = calendar.get(Calendar.MONTH)
+    day = calendar.get(Calendar.DAY_OF_MONTH)
+    calendar.time = Date()
+
+    val date = remember {
+        mutableStateOf("")
+    }
+    val datePickerDialog = DatePickerDialog(
+        context,
+        { _: DatePicker, year: Int,  month: Int, dayOfMonth: Int ->
+        date.value = "$dayOfMonth/$month/$year"
+        }, year, month, day
+    )
+
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+
+        Text(
+            text = "Vælg dato: ${date.value}"
+        )
+
+        Spacer(modifier = Modifier.size(16.dp))
+
+        Button(onClick={
+            datePickerDialog.show()
+        }) {
+            Text(text = "Åben datoer")
+        }
+    }
+}
+
+
+@Composable
+fun CreatePartyConfirmation(){
+    FadeBackground() {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        )
+        {
+            CreatedCompletedText("Tillykke!", "Din begivenhed er nu oprettet")
+                Image(
+                painter = painterResource(id = R.drawable.ic_task_completed),
+                contentDescription = null
+            )
+
+        }
+    }
+}
+
+@Composable
+fun CreatedCompletedText(createdcompletedmessage1: String, createdcompletedmessage2: String){
+    Column (){
+
+        Text(
+            text = createdcompletedmessage1,
+            fontSize = 50.sp,
+            modifier = Modifier
+                .wrapContentWidth(Alignment.CenterHorizontally)
+        )
+
+        Spacer(modifier = Modifier.height(25.dp))
+
+    }
+
+    Text(
+        text = createdcompletedmessage2,
+        fontSize = 25.sp,
+        modifier = Modifier
+            .wrapContentWidth(Alignment.CenterHorizontally)
+    )
+    Spacer(modifier = Modifier.height(25.dp))
 }
