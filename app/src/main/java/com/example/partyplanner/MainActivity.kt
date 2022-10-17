@@ -25,9 +25,11 @@ import androidx.navigation.compose.rememberNavController
 import com.example.partyplanner.ui.theme.*
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
+
         setContent {
             PartyPlannerApp()
         }
@@ -62,7 +64,7 @@ fun PartyPlannerApp(){
                 )
             }
             composable(route = NewPartyPage.route) {
-                StartPartyCreation()
+                SetPartyDataOnCreation()
             }
         }
     }

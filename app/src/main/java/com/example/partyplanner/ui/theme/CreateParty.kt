@@ -2,30 +2,21 @@ package com.example.partyplanner.ui.theme
 
 import android.app.DatePickerDialog
 import android.content.Context
-import android.os.Bundle
 import android.widget.DatePicker
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.ui.unit.dp
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.BlendMode.Companion.Screen
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import com.example.partyplanner.R
 import java.util.*
 
@@ -51,7 +42,7 @@ fun StartPartyCreation() {
             Spacer(modifier = Modifier.height(20.dp))
 
             ChoosePartyDropDown()
-
+            HostAdder()
             NextButton()
         }
 
@@ -68,12 +59,36 @@ fun NextButton() {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun HostAdder(){
+    val hosts = mutableListOf("")
+    Box{
+        LazyColumn() {
+            items(items = hosts, itemContent = { item ->
+                TextField(value = item,
+                    onValueChange = {
+                        val index = hosts.indexOf(item)
+                        if(index >= 0) {
+                            hosts[index] = it
+                        }
+                    }
+                )
+            })
+        }
+        OutlinedButton(onClick = {hosts.add("")}, modifier = Modifier.align(Alignment.BottomCenter)) {
+            Text(text = "Tilføj vært")    
+        }
+    }
+
+}
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChoosePartyDropDown()
 {
-    val options = listOf<String>("Fødselsdag", "Bryllup", "Konfirmation", "Dåb", "Anden begivenhed")
+    val options = listOf("Fødselsdag", "Bryllup", "Konfirmation", "Dåb", "Anden begivenhed")
     var expanded by remember { mutableStateOf(false) }
     var selectedOptionText by remember { mutableStateOf(options[0]) }
     ExposedDropdownMenuBox(
@@ -107,7 +122,6 @@ fun ChoosePartyDropDown()
     }
 }
 
-
 @Preview(showBackground = true)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -133,7 +147,7 @@ fun SetPartyDataOnCreation() {
 
             Spacer(modifier = Modifier.height(25.dp))
 
-            showDatePicker(this)
+            showDatePicker(LocalContext.current)
 
             Spacer(modifier = Modifier.height(25.dp))
 
