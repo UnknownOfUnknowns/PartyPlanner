@@ -1,15 +1,19 @@
 package com.example.partyplanner
 
 
+import android.annotation.SuppressLint
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,22 +26,26 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.partyplanner.ui.state.PartyViewModel
 import com.example.partyplanner.ui.theme.*
 
 class MainActivity : ComponentActivity() {
-
+    private val viewModel = PartyViewModel()
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
 
         setContent {
-            PartyPlannerApp()
+            PartyPlannerApp(viewModel)
         }
     }
+
+
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun PartyPlannerApp(){
+fun PartyPlannerApp(viewModel: PartyViewModel){
     PartyPlannerTheme {
         fun NavHostController.navigateSingleTopTo(route: String) =
             this.navigate(route) {
@@ -59,11 +67,25 @@ fun PartyPlannerApp(){
             composable(route = StartPage.route){
                 StartSide(onCreateParty =
                     {
-                        navigationController.navigateSingleTopTo("createParty")
+                        navigationController.navigateSingleTopTo(NewPartyPage.route)
+                    },
+                    onPartyOverview = {
+                        viewModel.fetchParties()
+                        navigationController.navigateSingleTopTo(PartiesOverviewPage.route)
                     }
                 )
             }
+
+            composable(route = PartiesOverviewPage.route) {
+                PartyListAndCreate(partiesUiState = viewModel.uiState.collectAsState().value)
+            }
             composable(route = NewPartyPage.route) {
+                StartPartyCreation(onNextButtonClick =  {
+                    navigationController.navigateSingleTopTo(AdditionalPartyDataPage.route)
+                })
+            }
+
+            composable(route = AdditionalPartyDataPage.route){
                 SetPartyDataOnCreation()
             }
         }
@@ -72,7 +94,7 @@ fun PartyPlannerApp(){
 
 @Preview(showBackground = true)
 @Composable
-fun StartSide(onCreateParty : () -> Unit = {}){
+fun StartSide(onCreateParty : () -> Unit = {}, onPartyOverview: () -> Unit = {}){
     Box{
         FadeBackground() {
             Column(modifier = Modifier
@@ -85,7 +107,7 @@ fun StartSide(onCreateParty : () -> Unit = {}){
                 ) {
                 DefaultButton(onClick = onCreateParty, buttonName = "Opret Fest")
                 Spacer(modifier = Modifier.height(50.dp))
-                DefaultButton(onClick = { /*TODO*/ }, buttonName = "Mine begivenheder")
+                DefaultButton(onClick = onPartyOverview , buttonName = "Mine begivenheder")
             }
         }
 

@@ -12,7 +12,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.BlendMode.Companion.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -23,9 +22,8 @@ import com.example.partyplanner.R
 import java.util.*
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun StartPartyCreation() {
+fun StartPartyCreation(onNextButtonClick: () -> Unit) {
     FadeBackground() {
         Column(
             modifier = Modifier
@@ -45,7 +43,9 @@ fun StartPartyCreation() {
 
             ChoosePartyDropDown()
             HostAdder()
-            NextButton()
+            Button(onClick = onNextButtonClick) {
+                Text("Næste")
+            }
         }
 
     }
