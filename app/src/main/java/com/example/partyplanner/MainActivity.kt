@@ -1,7 +1,6 @@
 package com.example.partyplanner
 
 
-import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -31,6 +30,7 @@ import com.example.partyplanner.ui.theme.*
 
 class MainActivity : ComponentActivity() {
     private val viewModel = PartyViewModel()
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
