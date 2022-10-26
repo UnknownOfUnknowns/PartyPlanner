@@ -1,6 +1,7 @@
 package com.example.partyplanner.ui.theme
 
 import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.content.Context
 import android.widget.DatePicker
 import androidx.compose.foundation.Image
@@ -11,6 +12,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.BlendMode.Companion.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -135,7 +137,7 @@ fun SetPartyDataOnCreation() {
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
 
-            Spacer(modifier = Modifier.height(50.dp))
+            Spacer(modifier = Modifier.height(30.dp))
             var text by remember { mutableStateOf("") }
 
             TextField(
@@ -145,11 +147,15 @@ fun SetPartyDataOnCreation() {
                 singleLine = true
             )
 
-            Spacer(modifier = Modifier.height(25.dp))
+            Spacer(modifier = Modifier.height(10.dp))
 
             showDatePicker(LocalContext.current)
 
-            Spacer(modifier = Modifier.height(25.dp))
+            Spacer(modifier = Modifier.height(10.dp))
+
+            ShowTimePicker(LocalContext.current)
+
+            Spacer(modifier = Modifier.height(10.dp))
 
             TextField(
                 value = text,
@@ -158,23 +164,28 @@ fun SetPartyDataOnCreation() {
                 singleLine = true
             )
 
-            Spacer(modifier = Modifier.height(25.dp))
+            Spacer(modifier = Modifier.height(10.dp))
+Row (Modifier.padding(start = 25.dp, end = 25.dp)
+) {
+    TextField(
+        value = text,
+        onValueChange = { text = it },
+        label = { Text("Post nr") },
+        singleLine = true,
+        maxLines =4,
+        modifier = Modifier.weight(0.3f)
+    )
 
-            TextField(
-                value = text,
-                onValueChange = { text = it },
-                label = { Text("Post nr") },
-                singleLine = true
-            )
+    Spacer(modifier = Modifier.width(10.dp))
 
-            Spacer(modifier = Modifier.height(25.dp))
-
-            TextField(
-                value = text,
-                onValueChange = { text = it },
-                label = { Text("By") },
-                singleLine = true
-            )
+    TextField(
+        value = text,
+        onValueChange = { text = it },
+        label = { Text("By") },
+        singleLine = true,
+        modifier = Modifier.weight(0.7f)
+    )
+}
 
             Spacer(modifier = Modifier.height(25.dp))
 
@@ -211,25 +222,58 @@ fun showDatePicker(context: Context){
     )
 
     Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
+        modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        Text(
-            text = "Vælg dato: ${date.value}"
-        )
-
-        Spacer(modifier = Modifier.size(16.dp))
 
         Button(onClick={
             datePickerDialog.show()
         }) {
-            Text(text = "Åben datoer")
+            Text(text = "Vælg dato")
         }
+        Spacer(modifier = Modifier.size(5.dp))
+
+        Text(
+            text = "Valgt dato: ${date.value}"
+        )
     }
 }
 
+@Composable
+fun ShowTimePicker(context: Context) {
+    val mContext = LocalContext.current
+
+    val mCalendar = Calendar.getInstance()
+    val mHour = mCalendar[Calendar.HOUR_OF_DAY]
+    val mMinute = mCalendar[Calendar.MINUTE]
+
+    val mTime = remember { mutableStateOf("") }
+
+    val mTimePickerDialog = TimePickerDialog(
+        mContext,
+        { _, mHour: Int, mMinute: Int ->
+            mTime.value = "$mHour:$mMinute"
+        }, mHour, mMinute, false
+    )
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+
+
+        Button(
+            onClick = { mTimePickerDialog.show() }
+            )
+         {
+            Text(text = "Vælg starttidspunkt")
+        }
+        Spacer(modifier = Modifier.size(5.dp))
+
+        Text(text = "Valgt tidspunkt: ${mTime.value}", fontSize = 15.sp)
+
+    }
+}
 
 @Composable
 fun CreatePartyConfirmation(){
