@@ -5,6 +5,7 @@ import android.app.TimePickerDialog
 import android.content.Context
 import android.widget.DatePicker
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -123,7 +124,7 @@ fun ChoosePartyDropDown()
     }
 }
 
-@Preview(showBackground = true)
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SetPartyDataOnCreation() {
@@ -274,13 +275,15 @@ fun ShowTimePicker(context: Context) {
     }
 }
 
+@Preview(showBackground = true)
 @Composable
 fun CreatePartyConfirmation(){
-    FadeBackground() {
+
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize().background(Background),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.Center,
+
         )
         {
             CreatedCompletedText("Tillykke!", "Din begivenhed er nu oprettet")
@@ -291,7 +294,7 @@ fun CreatePartyConfirmation(){
 
         }
     }
-}
+
 
 @Composable
 fun CreatedCompletedText(createdcompletedmessage1: String, createdcompletedmessage2: String){
