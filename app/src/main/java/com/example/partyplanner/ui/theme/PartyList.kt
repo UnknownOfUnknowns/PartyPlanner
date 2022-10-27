@@ -7,8 +7,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material3.*
+import androidx.compose.material3.AlertDialogDefaults.containerColor
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,10 +39,11 @@ fun PartyListAndCreate(partiesUiState: PartiesUiState) {
             }
         }
         FloatingActionButton(onClick = { /*TODO*/ },
-            modifier = Modifier.align(Alignment.BottomEnd).padding(end=10.dp, bottom = 10.dp).size(56.dp),
-            shape = FloatingActionButtonDefaults.largeShape
+            modifier = Modifier.align(Alignment.BottomEnd).padding(end=10.dp, bottom = 10.dp).size(60.dp),
+            shape = FloatingActionButtonDefaults.largeShape,
+            containerColor = Color.Green
             ) {
-            Icon(Icons.Default.AddCircle, null, modifier = Modifier.size(56.dp), tint = Color.Green)
+            Icon(Icons.Default.Add, null, modifier = Modifier.fillMaxSize(), tint = Color.White)
         }
     }
 
