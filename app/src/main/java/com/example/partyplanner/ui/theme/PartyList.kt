@@ -38,15 +38,19 @@ fun PartyListAndCreate(partiesUiState: PartiesUiState) {
 
             }
         }
-        FloatingActionButton(onClick = { /*TODO*/ },
-            modifier = Modifier.align(Alignment.BottomEnd).padding(end=10.dp, bottom = 10.dp).size(60.dp),
-            shape = FloatingActionButtonDefaults.largeShape,
-            containerColor = Color.Green
-            ) {
-            Icon(Icons.Default.Add, null, modifier = Modifier.fillMaxSize(), tint = Color.White)
-        }
+        FloatingAddButton(modifier = Modifier.align(Alignment.BottomEnd), onClick = {})
     }
 
+}
+@Composable
+fun FloatingAddButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
+    FloatingActionButton(onClick = onClick,
+        modifier = modifier.padding(end=10.dp, bottom = 10.dp).size(60.dp),
+        shape = FloatingActionButtonDefaults.largeShape,
+        containerColor = Color.Green
+    ) {
+        Icon(Icons.Default.Add, null, modifier = Modifier.fillMaxSize(), tint = Color.White)
+    }
 }
 
 @Composable
