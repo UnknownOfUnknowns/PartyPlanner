@@ -55,8 +55,7 @@ fun StartPartyCreation(onNextButtonClick: () -> Unit) {
 
 @Composable
 fun NextButton() {
-    Button(onClick = { /*TODO*/ },
-        ) {
+    Button(onClick = { /*TODO*/ }) {
         Text("Næste")
     }
 }
