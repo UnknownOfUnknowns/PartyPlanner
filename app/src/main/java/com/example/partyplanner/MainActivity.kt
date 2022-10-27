@@ -85,8 +85,14 @@ fun PartyPlannerApp(viewModel: PartyViewModel){
                 })
             }
 
+
             composable(route = AdditionalPartyDataPage.route){
-                SetPartyDataOnCreation()
+                SetPartyDataOnCreation(onNextButtonClick = {
+                    navigationController.navigateSingleTopTo(ConfirmationPage.route)
+                })
+            }
+            composable(route = ConfirmationPage.route){
+                CreatePartyConfirmation()
             }
         }
     }

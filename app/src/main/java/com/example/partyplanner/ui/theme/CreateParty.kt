@@ -127,7 +127,7 @@ fun ChoosePartyDropDown()
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SetPartyDataOnCreation() {
+fun SetPartyDataOnCreation(onNextButtonClick: () -> Unit) {
 
     FadeBackground() {
 
@@ -190,7 +190,7 @@ Row (Modifier.padding(start = 25.dp, end = 25.dp)
             Spacer(modifier = Modifier.height(25.dp))
 
             Button(
-                onClick = { },
+                onClick = onNextButtonClick,
             ) {
                 Text("Opret begivenhed")
             }
@@ -275,7 +275,7 @@ fun ShowTimePicker(context: Context) {
     }
 }
 
-@Preview(showBackground = true)
+
 @Composable
 fun CreatePartyConfirmation(){
 
