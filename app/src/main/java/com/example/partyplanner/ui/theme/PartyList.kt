@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
@@ -43,6 +44,7 @@ fun PartyCard(partyInfo: PartyCoreInfoUiState, backgroundColor : Color = Color.W
     Card(
         modifier = Modifier
             .size(width = 370.dp, height = 100.dp),
+        shape = RoundedCornerShape(15.dp)
 
     ) {
         Column(Modifier.fillMaxSize().background(backgroundColor)) {
