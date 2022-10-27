@@ -1,11 +1,9 @@
 package com.example.partyplanner
 
 
-import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -25,12 +23,14 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.partyplanner.data.PartiesRepository
+import com.example.partyplanner.ui.elements.*
 import com.example.partyplanner.ui.state.PartyViewModel
-import com.example.partyplanner.ui.theme.*
+import com.example.partyplanner.ui.theme.PartyPlannerTheme
 
 class MainActivity : ComponentActivity() {
-    private val viewModel = PartyViewModel()
-    @RequiresApi(Build.VERSION_CODES.O)
+    private val viewModel = PartyViewModel(PartiesRepository)
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -43,7 +43,6 @@ class MainActivity : ComponentActivity() {
 
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun PartyPlannerApp(viewModel: PartyViewModel){
     PartyPlannerTheme {
@@ -58,38 +57,40 @@ fun PartyPlannerApp(viewModel: PartyViewModel){
                 restoreState = true
             }
         val navigationController = rememberNavController()
-
+        val state = viewModel.uiState.collectAsState().value
         NavHost(
             navController = navigationController,
-            startDestination = StartPage.route,
+            startDestination = PartiesOverviewPage.route,
             modifier = Modifier.fillMaxSize()
         ) {
-            composable(route = StartPage.route){
-                StartSide(onCreateParty =
-                    {
-                        navigationController.navigateSingleTopTo(NewPartyPage.route)
-                    },
-                    onPartyOverview = {
-                        viewModel.fetchParties()
-                        navigationController.navigateSingleTopTo(PartiesOverviewPage.route)
-                    }
+
+            composable(route = PartiesOverviewPage.route) {
+                viewModel.fetchParties()
+                PartyListAndCreate(partiesUiState = viewModel.uiState.collectAsState().value, onAddButton = {
+                    viewModel.newParty()
+                    navigationController.navigateSingleTopTo(NewPartyPage.route)
+                })
+            }
+            composable(route = NewPartyPage.route) {
+
+                StartPartyCreation(onNextButtonClick =  {
+                    navigationController.navigateSingleTopTo(AdditionalPartyDataPage.route)
+                },
+                party = state.currentParty
                 )
             }
 
-            composable(route = PartiesOverviewPage.route) {
-                PartyListAndCreate(partiesUiState = viewModel.uiState.collectAsState().value)
-            }
-            composable(route = NewPartyPage.route) {
-                StartPartyCreation(onNextButtonClick =  {
-                    navigationController.navigateSingleTopTo(AdditionalPartyDataPage.route)
-                })
-            }
-
-
             composable(route = AdditionalPartyDataPage.route){
+
                 SetPartyDataOnCreation(onNextButtonClick = {
                     navigationController.navigateSingleTopTo(ConfirmationPage.route)
-                })
+                    },
+                    party = state.currentParty.coreInfo,
+                    setAddress = {viewModel.updateAddress(it)},
+                    setCity = {viewModel.updateCity(it)},
+                    setName = {viewModel.updateName(it)},
+                    setZip = {viewModel.updateZip(it)}
+                )
             }
             composable(route = ConfirmationPage.route){
                 CreatePartyConfirmation()
@@ -98,6 +99,8 @@ fun PartyPlannerApp(viewModel: PartyViewModel){
     }
 }
 
+
+//Not in use any longer
 @Preview(showBackground = true)
 @Composable
 fun StartSide(onCreateParty : () -> Unit = {}, onPartyOverview: () -> Unit = {}){

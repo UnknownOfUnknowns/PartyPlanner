@@ -1,4 +1,4 @@
-package com.example.partyplanner.ui.theme
+package com.example.partyplanner.ui.elements
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
@@ -15,21 +15,26 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.partyplanner.R
+import com.example.partyplanner.ui.state.PartyCoreInfoUiState
+import com.example.partyplanner.ui.state.PartyUiState
+import com.example.partyplanner.ui.theme.Background
 import java.util.*
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun StartPartyCreation(onNextButtonClick: () -> Unit) {
+fun StartPartyCreation(onNextButtonClick: () -> Unit, party: PartyUiState) {
     FadeBackground() {
         Column(
             modifier = Modifier
                 .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
+
 
         ) {
 
@@ -43,7 +48,15 @@ fun StartPartyCreation(onNextButtonClick: () -> Unit) {
             Spacer(modifier = Modifier.height(20.dp))
 
             ChoosePartyDropDown()
-            HostAdder()
+
+            //For now the app can only handle one host
+            Spacer(modifier = Modifier.height(20.dp))
+
+
+            TextField(value = "", onValueChange = {},
+                label = { Text(text = stringResource(R.string.whoHostsTheParty))}
+                )
+
             Button(onClick = onNextButtonClick) {
                 Text("Næste")
             }
@@ -127,7 +140,14 @@ fun ChoosePartyDropDown()
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SetPartyDataOnCreation(onNextButtonClick: () -> Unit) {
+fun SetPartyDataOnCreation(
+    onNextButtonClick: () -> Unit,
+    party: PartyCoreInfoUiState,
+    setName: (String) -> Unit,
+    setAddress: (String) -> Unit,
+    setZip: (String) -> Unit,
+    setCity: (String) -> Unit,
+) {
 
     FadeBackground() {
 
@@ -138,11 +158,11 @@ fun SetPartyDataOnCreation(onNextButtonClick: () -> Unit) {
         ) {
 
             Spacer(modifier = Modifier.height(30.dp))
-            var text by remember { mutableStateOf("") }
+
 
             TextField(
-                value = text,
-                onValueChange = { text = it },
+                value = party.name,
+                onValueChange = setName,
                 label = { Text("Vælg titel på begivenheden") },
                 singleLine = true
             )
@@ -158,34 +178,33 @@ fun SetPartyDataOnCreation(onNextButtonClick: () -> Unit) {
             Spacer(modifier = Modifier.height(10.dp))
 
             TextField(
-                value = text,
-                onValueChange = { text = it },
+                value = party.address,
+                onValueChange = setAddress,
                 label = { Text("Adresse på begivenheden") },
                 singleLine = true
             )
 
             Spacer(modifier = Modifier.height(10.dp))
-Row (Modifier.padding(start = 25.dp, end = 25.dp)
-) {
-    TextField(
-        value = text,
-        onValueChange = { text = it },
-        label = { Text("Post nr") },
-        singleLine = true,
-        maxLines =4,
-        modifier = Modifier.weight(0.3f)
-    )
+            Row (Modifier.padding(start = 25.dp, end = 25.dp)) {
+                TextField(
+                    value = party.zip,
+                    onValueChange = setZip,
+                    label = { Text("Post nr") },
+                    singleLine = true,
+                    maxLines =4,
+                    modifier = Modifier.weight(0.3f)
+                )
 
-    Spacer(modifier = Modifier.width(10.dp))
+                Spacer(modifier = Modifier.width(10.dp))
 
-    TextField(
-        value = text,
-        onValueChange = { text = it },
-        label = { Text("By") },
-        singleLine = true,
-        modifier = Modifier.weight(0.7f)
-    )
-}
+                TextField(
+                    value = party.city,
+                    onValueChange = setCity,
+                    label = { Text("By") },
+                    singleLine = true,
+                    modifier = Modifier.weight(0.7f)
+                )
+            }
 
             Spacer(modifier = Modifier.height(25.dp))
 
@@ -280,7 +299,9 @@ fun ShowTimePicker(context: Context) {
 fun CreatePartyConfirmation(){
 
         Column(
-            modifier = Modifier.fillMaxSize().background(Background),
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Background),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
 

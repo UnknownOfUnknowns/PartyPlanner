@@ -1,4 +1,4 @@
-package com.example.partyplanner.ui.theme
+package com.example.partyplanner.ui.elements
 
 
 import androidx.compose.foundation.background
@@ -8,9 +8,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material3.*
-import androidx.compose.material3.AlertDialogDefaults.containerColor
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,10 +18,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.partyplanner.ui.state.PartiesUiState
 import com.example.partyplanner.ui.state.PartyCoreInfoUiState
+import com.example.partyplanner.ui.theme.Background
+import com.example.partyplanner.ui.theme.OnPrimary
 
 
 @Composable
-fun PartyListAndCreate(partiesUiState: PartiesUiState) {
+fun PartyListAndCreate(partiesUiState: PartiesUiState, onAddButton: () -> Unit) {
     Box {
         LazyColumn(
             modifier = Modifier
@@ -38,12 +38,13 @@ fun PartyListAndCreate(partiesUiState: PartiesUiState) {
 
             }
         }
-        FloatingAddButton(modifier = Modifier.align(Alignment.BottomEnd), onClick = {})
+
+        DefaultFAB(modifier = Modifier.align(Alignment.BottomEnd), onClick = onAddButton)
     }
 
 }
 @Composable
-fun FloatingAddButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
+fun DefaultFAB(modifier: Modifier = Modifier, onClick: () -> Unit) {
     FloatingActionButton(onClick = onClick,
         modifier = modifier.padding(end=10.dp, bottom = 10.dp).size(60.dp),
         shape = FloatingActionButtonDefaults.largeShape,
@@ -51,6 +52,7 @@ fun FloatingAddButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
     ) {
         Icon(Icons.Default.Add, null, modifier = Modifier.fillMaxSize(), tint = Color.White)
     }
+
 }
 
 @Composable

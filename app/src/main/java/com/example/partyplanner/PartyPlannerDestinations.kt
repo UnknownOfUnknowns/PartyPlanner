@@ -1,4 +1,4 @@
-package com.example.partyplanner.ui.theme
+package com.example.partyplanner
 
 interface PartyPlannerDestination {
     val route: String

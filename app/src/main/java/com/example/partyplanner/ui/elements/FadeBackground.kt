@@ -1,4 +1,4 @@
-package com.example.partyplanner.ui.theme
+package com.example.partyplanner.ui.elements
 
 import android.graphics.Paint
 import android.graphics.Path
@@ -25,6 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.partyplanner.R
+import com.example.partyplanner.ui.theme.Background
 
 
 @Composable
@@ -122,10 +123,3 @@ fun ChampagneLogo(modifier: Modifier = Modifier){
     }
 }
 
-@Preview
-@Composable
-fun FadeBackgroundPreview() {
-    PartyPlannerTheme {
-        FadeBackground()
-    }
-}
