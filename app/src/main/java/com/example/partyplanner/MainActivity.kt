@@ -25,6 +25,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.partyplanner.data.PartiesRepository
 import com.example.partyplanner.ui.elements.*
+import com.example.partyplanner.ui.state.GuestListViewModel
 import com.example.partyplanner.ui.state.PartyViewModel
 import com.example.partyplanner.ui.theme.PartyPlannerTheme
 
@@ -73,11 +74,13 @@ fun PartyPlannerApp(viewModel: PartyViewModel){
             }
             composable(route = NewPartyPage.route) {
 
+                GuestListPage(viewModel = GuestListViewModel())
+            /*
                 StartPartyCreation(onNextButtonClick =  {
                     navigationController.navigateSingleTopTo(AdditionalPartyDataPage.route)
                 },
                 party = state.currentParty
-                )
+                )*/
             }
 
             composable(route = AdditionalPartyDataPage.route){
