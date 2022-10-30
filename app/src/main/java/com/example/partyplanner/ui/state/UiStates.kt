@@ -36,8 +36,9 @@ enum class AttendanceState{
 }
 data class GuestListUiState(
     val guests: List<GuestUiState> = listOf(),
-    val totalInvites : Int = guests.size
 )
+
+val GuestListUiState.totalInvites: Int get() = guests.size
 
 data class GuestUiState(
     val name :String = "",
