@@ -28,3 +28,18 @@ data class PartyCoreInfoUiState(
     val partyType: PartyTypes = PartyTypes.NONE
 )
 
+
+enum class AttendanceState{
+    ATTENDS,
+    AWAITING,
+    NOT_ATTENDING
+}
+data class GuestListUiState(
+    val guests: List<GuestUiState> = listOf(),
+    val totalInvites : Int = guests.size
+)
+
+data class GuestUiState(
+    val name :String = "",
+    val attendanceState: AttendanceState = AttendanceState.AWAITING,
+)
