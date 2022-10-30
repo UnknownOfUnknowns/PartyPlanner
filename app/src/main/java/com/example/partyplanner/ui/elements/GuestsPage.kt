@@ -1,6 +1,8 @@
 package com.example.partyplanner.ui.elements
 
+import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -12,16 +14,14 @@ import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Person
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -65,16 +65,23 @@ fun GuestCard(guestState : GuestUiState, modifier : Modifier = Modifier) {
         //This row is nested such that Arrangement.SpaceBetween maximises space between name and trashcan
         Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(start = 10.dp)) {
             Icon(imageVector = Icons.Outlined.Person, contentDescription = null, modifier = Modifier.size(24.dp))
-            Text(guestState.name,
+            Text(text = guestState.name,
                 color = OnPrimaryContainer,
                 fontSize = 20.sp,
-                modifier = Modifier.padding(start = 5.dp))
+                modifier = Modifier.padding(start = 5.dp),
+                fontFamily = Roboto)
         }
         Icon(imageVector = Icons.Outlined.Delete,
             contentDescription = null,
             modifier = Modifier
                 .size(35.dp)
                 .padding(end = 10.dp)
+                .clickable {
+                    Log.d(
+                        "GuestList",
+                        "Du har nu fratrukket invitationen fra ${guestState.name}"
+                    )
+                }
         )
     }
 }
@@ -88,7 +95,9 @@ fun GuestListPage(viewModel: GuestListViewModel) {
         Column(Modifier
             .padding(start = 12.dp, end = 12.dp)
         ) {
-            QuestOverview(modifier = Modifier.height(height = 92.dp).fillMaxWidth(),
+            QuestOverview(modifier = Modifier
+                .height(height = 92.dp)
+                .fillMaxWidth(),
                 guestListUiState = uiState.value)
             GuestsListEntry(uiState.value)
         }
@@ -115,9 +124,10 @@ fun QuestOverviewWithIcon(icon: ImageVector, questInCategory: Int, color: Color,
 
 @Composable
 fun QuestOverview(modifier: Modifier = Modifier, guestListUiState: GuestListUiState) {
-    Card(modifier = modifier,
+    Card(modifier = modifier
+        .padding(top = 10.dp, bottom = 10.dp),
         shape = RoundedCornerShape(8),
-        colors = CardDefaults.cardColors(PrimaryContainer)
+        colors = CardDefaults.cardColors(AttendingInfoColor),
     ) {
         Row(modifier = Modifier
             .fillMaxWidth()

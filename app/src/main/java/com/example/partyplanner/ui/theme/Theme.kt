@@ -49,6 +49,6 @@ fun PartyPlannerTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Comp
         colorScheme = colors,
         typography = Typography,
         shapes = Shapes,
-        content = content
+        content = content,
     )
 }
