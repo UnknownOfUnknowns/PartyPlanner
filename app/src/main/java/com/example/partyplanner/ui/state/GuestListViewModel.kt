@@ -27,4 +27,46 @@ class GuestListViewModel : ViewModel() {
             )
         }
     }
+
+    fun changeSendingMethod(newMethod: SendingMethod) {
+        _uiState.update { currentState ->
+            val invitationState = currentState.invitationState
+            currentState.copy(
+                invitationState = SendInvitationUiState(
+                    guest = invitationState.guest,
+                    address = invitationState.address,
+                    sendingMethod = newMethod
+                )
+            )
+        }
+    }
+
+    fun changeSendingAddress(newAddress: String) {
+        _uiState.update { currentState ->
+            val invitationState = currentState.invitationState
+            currentState.copy(
+                invitationState = SendInvitationUiState(
+                    guest = invitationState.guest,
+                    address = newAddress,
+                    sendingMethod = invitationState.sendingMethod
+                )
+            )
+        }
+    }
+    fun changeGuestName(newName: String) {
+        _uiState.update { currentState ->
+            val invitationState = currentState.invitationState
+            currentState.copy(
+                invitationState = SendInvitationUiState(
+                    guest = newName,
+                    address = invitationState.address,
+                    sendingMethod = invitationState.sendingMethod
+                )
+            )
+        }
+    }
+
+    fun sendInvitation() {
+
+    }
 }

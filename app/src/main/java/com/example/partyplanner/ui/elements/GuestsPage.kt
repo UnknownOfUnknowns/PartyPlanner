@@ -1,10 +1,13 @@
 package com.example.partyplanner.ui.elements
 
+import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Done
@@ -12,19 +15,22 @@ import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Person
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
+import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import com.example.partyplanner.ui.state.*
 import com.example.partyplanner.ui.theme.*
 
@@ -68,13 +74,21 @@ fun GuestCard(guestState : GuestUiState, modifier : Modifier = Modifier) {
             Text(guestState.name,
                 color = OnPrimaryContainer,
                 fontSize = 20.sp,
-                modifier = Modifier.padding(start = 5.dp))
+                modifier = Modifier.padding(start = 5.dp),
+                fontFamily = Roboto
+            )
         }
         Icon(imageVector = Icons.Outlined.Delete,
             contentDescription = null,
             modifier = Modifier
                 .size(35.dp)
                 .padding(end = 10.dp)
+                .clickable {
+                    Log.d(
+                        "GuestList",
+                        "Du har nu fratrukket invitationen fra " + guestState.name
+                    )
+                }
         )
     }
 }
@@ -84,15 +98,28 @@ fun GuestCard(guestState : GuestUiState, modifier : Modifier = Modifier) {
 @Composable
 fun GuestListPage(viewModel: GuestListViewModel) {
     val uiState = viewModel.uiState.collectAsState()
+    val inviteOn = remember { mutableStateOf(false) }
     Box(Modifier.background(Background)) {
         Column(Modifier
             .padding(start = 12.dp, end = 12.dp)
         ) {
-            QuestOverview(modifier = Modifier.height(height = 92.dp).fillMaxWidth(),
+            QuestOverview(modifier = Modifier
+                .height(height = 92.dp)
+                .fillMaxWidth(),
                 guestListUiState = uiState.value)
             GuestsListEntry(uiState.value)
         }
-        DefaultFAB(modifier = Modifier.align(Alignment.BottomEnd), onClick = {})
+        if(inviteOn.value){
+            SendInviteDialog(
+                onDismiss = { inviteOn.value = false },
+                onSend = { viewModel.sendInvitation() },
+                onAddressChange = {viewModel.changeSendingAddress(it)},
+                onMethodChange = {viewModel.changeSendingMethod(it)},
+                onGuestChange = {viewModel.changeGuestName(it)},
+                sendInvitationUiState = uiState.value.invitationState
+            )
+        }
+        DefaultFAB(modifier = Modifier.align(Alignment.BottomEnd), onClick = {inviteOn.value = true})
 
     }
 }
@@ -120,8 +147,8 @@ fun QuestOverview(modifier: Modifier = Modifier, guestListUiState: GuestListUiSt
         colors = CardDefaults.cardColors(PrimaryContainer)
     ) {
         Row(modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight(),
+            .fillMaxSize()
+            .padding(start = 10.dp, end = 10.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween) {
             QuestOverviewWithIcon(icon = Icons.Default.Done,
@@ -133,12 +160,115 @@ fun QuestOverview(modifier: Modifier = Modifier, guestListUiState: GuestListUiSt
             QuestOverviewWithIcon(icon = Icons.Default.Refresh,
                 questInCategory = guestListUiState.guests.filter { it.attendanceState == AttendanceState.AWAITING }.size
                 , color = Color.Yellow, categoryName = "Afventer")
-            QuestOverviewWithIcon(icon = Icons.Default.Email, questInCategory = guestListUiState.totalInvites, color = Color.White, categoryName = "Invitationer")
+            QuestOverviewWithIcon(icon = Icons.Default.Email,
+                questInCategory = guestListUiState.totalInvites,
+                color = Color.White, categoryName = "Invitationer")
 
         }
     }
 }
 
+fun getStringFromSendingMethod(method: SendingMethod) : String {
+    return when(method) {
+        SendingMethod.SMS -> "SMS"
+        SendingMethod.E_BOKS -> "E-Boks"
+        SendingMethod.EMAIL -> "Email"
+    }
+}
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun SendInviteDialog(
+    onDismiss: () -> Unit,
+    onSend: () -> Unit,
+    onAddressChange: (String) -> Unit,
+    onMethodChange: (SendingMethod) -> Unit,
+    onGuestChange: (String) -> Unit,
+    sendInvitationUiState: SendInvitationUiState,
+) {
+
+
+    Dialog(onDismissRequest = onDismiss) {
+        Card(
+            shape = RoundedCornerShape(12.dp),
+
+        ) {
+            Column(
+                horizontalAlignment = CenterHorizontally,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 10.dp, end = 10.dp)
+            ) {
+                Text(text = "Inviter gæst", fontSize = 30.sp)
+                TextField(value = sendInvitationUiState.guest,
+                    onValueChange = onGuestChange,
+                    label = { Text(text = "Indtast gæstens navn")},
+                    colors = TextFieldDefaults.textFieldColors(
+                        containerColor = Color.White
+                    ),
+                    modifier = Modifier.padding(vertical = 10.dp),
+                    singleLine = true
+                )
+                
+                Divider(modifier = Modifier.fillMaxWidth())
+
+                InviteRadioButtons(
+                    onButtonChange = onMethodChange,
+                    activeItem = sendInvitationUiState.sendingMethod,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                TextField(
+                    value = sendInvitationUiState.address,
+                    onValueChange = onAddressChange,
+                    label = { Text(text = "Indtast "+ getStringFromSendingMethod(sendInvitationUiState.sendingMethod))},
+                    colors = TextFieldDefaults.textFieldColors(
+                        containerColor = Color.White
+                    ),
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = when(sendInvitationUiState.sendingMethod) {
+                            SendingMethod.SMS -> KeyboardType.Phone
+                            else -> KeyboardType.Email
+                        },
+                        autoCorrect = false
+                    ),
+
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+                Button(onClick = onSend, modifier = Modifier. fillMaxWidth()) {
+                    Text(text = "Send Invitation")
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun InviteRadioButtons(
+    onButtonChange: (SendingMethod) -> Unit,
+    activeItem: SendingMethod,
+    modifier : Modifier = Modifier
+){
+    val sendingMethods = SendingMethod.values()
+    Column(modifier = modifier) {
+        Text("Vælg forsendelsesmetode", color = Color.Gray)
+        sendingMethods.forEach { item ->
+            Row(verticalAlignment = CenterVertically) {
+                RadioButton(selected = item == activeItem, onClick = { onButtonChange(item) })
+                Text(text = getStringFromSendingMethod(item))
+            }
+            
+        }
+    }
+}
+
+@Preview
+@Composable
+fun SendInviteDialogPreview() {
+    SendInviteDialog(onDismiss = { /*TODO*/ }, onSend = {}, onAddressChange = {}, onMethodChange = {},
+        sendInvitationUiState = SendInvitationUiState("", SendingMethod.EMAIL, "123"), onGuestChange = {})
+}
 
 @Preview(showBackground = true)
 @Composable
