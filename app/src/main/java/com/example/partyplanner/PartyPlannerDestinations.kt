@@ -24,4 +24,8 @@ object ConfirmationPage : PartyPlannerDestination {
     override val route = "confirmationPage"
 }
 
+object Guestlist : PartyPlannerDestination {
+    override val route = "Guestlist"
+}
+
 val partyPlannerScreens = listOf(StartPage, NewPartyPage)

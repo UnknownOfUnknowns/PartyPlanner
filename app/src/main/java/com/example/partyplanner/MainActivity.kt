@@ -70,17 +70,17 @@ fun PartyPlannerApp(viewModel: PartyViewModel){
                 PartyListAndCreate(partiesUiState = viewModel.uiState.collectAsState().value, onAddButton = {
                     viewModel.newParty()
                     navigationController.navigateSingleTopTo(NewPartyPage.route)
-                })
+                },
+                    onEdit = {navigationController.navigateSingleTopTo(Guestlist.route)}
+                )
             }
             composable(route = NewPartyPage.route) {
 
-                GuestListPage(viewModel = GuestListViewModel())
-            /*
                 StartPartyCreation(onNextButtonClick =  {
                     navigationController.navigateSingleTopTo(AdditionalPartyDataPage.route)
                 },
                 party = state.currentParty
-                )*/
+                )
             }
 
             composable(route = AdditionalPartyDataPage.route){
@@ -97,6 +97,10 @@ fun PartyPlannerApp(viewModel: PartyViewModel){
             }
             composable(route = ConfirmationPage.route){
                 CreatePartyConfirmation()
+            }
+
+            composable(route = Guestlist.route){
+                GuestListPage(viewModel = GuestListViewModel())
             }
         }
     }

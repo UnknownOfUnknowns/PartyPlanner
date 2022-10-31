@@ -23,7 +23,7 @@ import com.example.partyplanner.ui.theme.OnPrimary
 
 
 @Composable
-fun PartyListAndCreate(partiesUiState: PartiesUiState, onAddButton: () -> Unit) {
+fun PartyListAndCreate(partiesUiState: PartiesUiState, onAddButton: () -> Unit, onEdit: () -> Unit) {
     Box {
         LazyColumn(
             modifier = Modifier
@@ -34,9 +34,11 @@ fun PartyListAndCreate(partiesUiState: PartiesUiState, onAddButton: () -> Unit) 
             items(partiesUiState.parties){ party ->
                 val partyIndex = partiesUiState.parties.indexOf(party)
                 val alpha : Double = (partyIndex+6)*(1.0/(partiesUiState.parties.size+5))
-                PartyCard(partyInfo = party.coreInfo, backgroundColor = Color(30/256f, 0f, 93/256f, alpha.toFloat()))
+                PartyCard(partyInfo = party.coreInfo,onClick = onEdit, backgroundColor = Color(30/256f, 0f, 93/256f, alpha.toFloat()))
+
 
             }
+
         }
 
         DefaultFAB(modifier = Modifier.align(Alignment.BottomEnd), onClick = onAddButton)
@@ -56,7 +58,7 @@ fun DefaultFAB(modifier: Modifier = Modifier, onClick: () -> Unit) {
 }
 
 @Composable
-fun PartyCard(partyInfo: PartyCoreInfoUiState, backgroundColor : Color = Color.White) {
+fun PartyCard(partyInfo: PartyCoreInfoUiState, backgroundColor : Color = Color.White, onClick: () -> Unit) {
     Spacer(modifier = Modifier.height(20.dp))
     Card(
         modifier = Modifier
@@ -74,7 +76,7 @@ fun PartyCard(partyInfo: PartyCoreInfoUiState, backgroundColor : Color = Color.W
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(partyInfo.address, color = OnPrimary)
-                Button(onClick = {/*TODO*/}
+                Button(onClick = onClick
                 ) {
                     Text("Rediger i begivenhed")
                 }
