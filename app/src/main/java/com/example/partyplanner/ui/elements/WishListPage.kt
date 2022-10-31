@@ -3,6 +3,7 @@ package com.example.partyplanner.ui.elements
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -61,7 +62,9 @@ fun Wish(modifier: Modifier = Modifier, image: Painter, giftName: String) {
         ) {
             Image(painter = image,
                 contentDescription = null,
-                modifier = Modifier.fillMaxWidth().weight(0.8f),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(0.8f),
                 contentScale = ContentScale.Crop)
             Text(
                 modifier = Modifier.weight(0.2f),
@@ -78,13 +81,18 @@ fun Wish(modifier: Modifier = Modifier, image: Painter, giftName: String) {
 
 
 @Composable
-fun WishList() {
+fun WishList(image: Painter, giftName: String) {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+    ){
+    }
     Wish(image = painterResource(id = R.drawable._nske2), giftName = "Kaffemaskine")
 }
 
 
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun WishListPreview() {
     Column(
@@ -93,6 +101,6 @@ fun WishListPreview() {
     ) {
         //NameCardWishList(modifier = Modifier.size(width = 350.dp, height = 120.dp ), "Hans")
         //Spacer(modifier = Modifier.height(30.dp))
-        WishList()
+        WishList(image = painterResource(id = R.drawable._nske2), giftName = "Rolex")
     }
 }
