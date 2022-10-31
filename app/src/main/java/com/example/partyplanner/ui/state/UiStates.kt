@@ -57,3 +57,18 @@ data class SendInvitationUiState(
     val sendingMethod : SendingMethod = SendingMethod.SMS,
     val address: String = ""
 )
+
+
+data class WishUiState(
+    val image: Int = 0,
+    val wishName: String = "",
+    val price: Int = 0,
+    val description : String = "",
+    val link : String = ""
+)
+
+
+data class WishListUiState(
+    val wishes : List<WishUiState> = listOf(),
+    val wishListName : String = ""
+)
