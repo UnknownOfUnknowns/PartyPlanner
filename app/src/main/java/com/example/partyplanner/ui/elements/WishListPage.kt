@@ -1,15 +1,12 @@
 package com.example.partyplanner.ui.elements
 
-import android.support.v4.os.IResultReceiver.Default
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Share
@@ -28,7 +25,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.partyplanner.ui.state.WishListUiState
 import com.example.partyplanner.ui.state.WishListViewModel
-import com.example.partyplanner.ui.theme.*
+import com.example.partyplanner.ui.theme.AttendingInfoColor
+import com.example.partyplanner.ui.theme.Background
+import com.example.partyplanner.ui.theme.Primary
+import com.example.partyplanner.ui.theme.SecondaryContainer
 
 
 @Composable
@@ -37,7 +37,7 @@ fun NameCardWishList(modifier: Modifier = Modifier, name: String) {
         modifier = modifier
             .padding(top = 10.dp),
         shape = RoundedCornerShape(15),
-        colors = CardDefaults.cardColors(PrimaryContainer),
+        colors = CardDefaults.cardColors(AttendingInfoColor),
 
 
     ) {
@@ -144,7 +144,9 @@ fun ShareFAB(modifier: Modifier = Modifier, onClick: () -> Unit) {
         containerColor = Primary,
         contentColor = Color.White
     ) {
-        Icon(imageVector = Icons.Default.Share, contentDescription = null, modifier = Modifier.fillMaxSize().padding(8.dp, end = 10.dp))
+        Icon(imageVector = Icons.Default.Share, contentDescription = null, modifier = Modifier
+            .fillMaxSize()
+            .padding(8.dp, end = 10.dp))
     }
 }
 

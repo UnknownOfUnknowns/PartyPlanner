@@ -1,5 +1,6 @@
 package com.example.partyplanner.ui.state
 
+import androidx.annotation.DrawableRes
 import java.time.LocalDateTime
 
 data class PartiesUiState(
@@ -60,7 +61,7 @@ data class SendInvitationUiState(
 
 
 data class WishUiState(
-    val image: Int = 0,
+    @DrawableRes val image: Int = 0,
     val wishName: String = "",
     val price: Int = 0,
     val description : String = "",
