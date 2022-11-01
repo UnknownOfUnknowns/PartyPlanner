@@ -109,9 +109,8 @@ fun WishList(wishes : WishListUiState) {
             }
         }
     }
-
-
 }
+
 
 @Composable
 fun WishListPage(viewModel: WishListViewModel){
