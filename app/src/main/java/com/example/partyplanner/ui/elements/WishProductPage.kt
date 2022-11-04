@@ -52,7 +52,7 @@ fun CardWithProduct(modifier: Modifier = Modifier, wishUiState: WishUiState) {
                 textDecoration = TextDecoration.Underline
                 )
             Spacer(modifier = Modifier.height(30.dp))
-            Wish(image = painterResource(wishUiState.image), giftName = wishUiState.wishName)
+            Wish(image = painterResource(wishUiState.image), giftName = wishUiState.wishName, wishUiState = wishUiState)
             Spacer(modifier = Modifier.height(5.dp))
             Text(text = wishUiState.link,
                 fontWeight = FontWeight.Bold,

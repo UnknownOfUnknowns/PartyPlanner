@@ -65,7 +65,8 @@ data class WishUiState(
     val wishName: String = "",
     val price: Int = 0,
     val description : String = "",
-    val link : String = ""
+    val link : String = "",
+    val isReserved : Boolean = false
 )
 
 
