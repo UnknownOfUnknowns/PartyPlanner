@@ -14,18 +14,14 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.Center
-import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.partyplanner.R
 import com.example.partyplanner.ui.state.WishListUiState
 import com.example.partyplanner.ui.state.WishListViewModel
 import com.example.partyplanner.ui.state.WishUiState
@@ -59,11 +55,34 @@ fun NameCardWishList(modifier: Modifier = Modifier, name: String) {
         }
     }
 }
+
 @Composable
-fun Wish(modifier: Modifier = Modifier, image: Painter, giftName: String, wishUiState: WishUiState, showTopBar: Boolean = false) {
+fun WishTopBar(isReserved : Boolean, price : Int){
+    val color = if (isReserved) Color.Red else MaterialTheme.colorScheme.secondary
+    val text = if (isReserved) "Reserveret" else price.toString()
+
     Card(
-        modifier = modifier
-            .size(width = 150.dp, height = 150.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(35.dp),
+        shape = RoundedCornerShape(10),
+        colors = CardDefaults.cardColors(color)
+    ) {
+        Text(
+            text = text,
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally),
+            color = Color.White,
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold
+        )
+    }
+
+}
+@Composable
+fun Wish(modifier: Modifier = Modifier, wishUiState: WishUiState, showTopBar: Boolean = false) {
+    Card(
+        modifier = modifier,
         shape = RoundedCornerShape(10),
         colors = CardDefaults.cardColors(Primary),
         border = BorderStroke(1.dp, Color.Black)
@@ -75,45 +94,11 @@ fun Wish(modifier: Modifier = Modifier, image: Painter, giftName: String, wishUi
                 .background(Primary),
             horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                if (showTopBar == true) {
-                    if (wishUiState.isReserved == true) {
-                        Card(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(35.dp),
-                            shape = RoundedCornerShape(10),
-                            colors = CardDefaults.cardColors(Color.Red)
-                        ) {
-                            Text(
-                                text = "Reserveret",
-                                modifier = Modifier
-                                    .align(CenterHorizontally),
-                                color = Color.White,
-                                fontSize = 20.sp,
-                                fontWeight = FontWeight.Bold
-                            )
-                        }
-                    } else {
-                        Card(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(35.dp),
-                            shape = RoundedCornerShape(10),
-                            colors = CardDefaults.cardColors(MaterialTheme.colorScheme.secondary)
-                        ) {
-                            Text(
-                                text = wishUiState.price.toString(),
-                                modifier = Modifier
-                                    .align(CenterHorizontally),
-                                color = Color.White,
-                                fontSize = 20.sp,
-                                fontWeight = FontWeight.Bold
-                            )
-                        }
-                    }
+                if (showTopBar) {
+                    WishTopBar(isReserved = wishUiState.isReserved, price = wishUiState.price)
                 }
                 Image(
-                painter = image,
+                painter = painterResource(id = wishUiState.image),
                 contentDescription = null,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -122,7 +107,7 @@ fun Wish(modifier: Modifier = Modifier, image: Painter, giftName: String, wishUi
                 )
                 Text(
                 modifier = Modifier.weight(0.2f),
-                text = giftName,
+                text = wishUiState.wishName,
                 color = Color.White,
                 fontSize = 15.sp,
                 fontWeight = FontWeight.Bold
@@ -148,7 +133,11 @@ fun WishList(wishes : WishListUiState, showTopBar: Boolean = false) {
                 .fillMaxSize(),
         ){
             items(wishes.wishes){ wish ->
-                Wish(modifier = Modifier.padding(8.dp), image = painterResource(id = wish.image), giftName = wish.wishName, wishUiState = WishUiState(), showTopBar = showTopBar)
+                Wish(modifier = Modifier
+                    .size(width = 150.dp, height = 150.dp)
+                    .padding(8.dp),
+                    wishUiState = wish,
+                    showTopBar = showTopBar)
 
             }
         }
@@ -204,6 +193,6 @@ fun WishListPreview() {
         //NameCardWishList(modifier = Modifier.size(width = 350.dp, height = 120.dp ), "Hans")
         //Spacer(modifier = Modifier.height(30.dp))
         WishListPage(viewModel = WishListViewModel())
-       // Wish(image = painterResource(R.drawable._nske2), giftName = "HEJ", wishUiState = WishUiState())
+       //Wish(wishUiState = WishUiState(image = R.drawable._nske2, wishName = "Ting"))
     }
 }
