@@ -8,6 +8,7 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.BottomEnd
 import androidx.compose.ui.Alignment.Companion.BottomStart
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
@@ -21,8 +22,42 @@ import androidx.compose.ui.unit.sp
 import com.example.partyplanner.R
 import com.example.partyplanner.ui.state.WishUiState
 import com.example.partyplanner.ui.theme.Primary
-
-
+/*
+@Composable
+fun WishDescription(wishUiState: WishUiState, showButton: Boolean = false) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize(),
+        horizontalAlignment = CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Text(text = wishUiState.wishName + "  " + "(" + wishUiState.price + "kr)",
+            fontWeight = FontWeight.Bold,
+            fontSize = 30.sp,
+            textDecoration = TextDecoration.Underline
+        )
+        Spacer(modifier = Modifier.height(30.dp))
+        Wish(wishUiState = wishUiState)
+        Spacer(modifier = Modifier.height(5.dp))
+        Text(text = wishUiState.link,
+            fontWeight = FontWeight.Bold,
+        )
+        Spacer(modifier = Modifier.height(5.dp))
+        Text(text = "Beskrivelse:",
+            fontWeight = FontWeight.Bold
+        )
+        Text(text = wishUiState.description)
+        if(showButton) {
+            Button(onClick = {}, modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight()
+                .padding(start = 50.dp, end = 50.dp)
+            ) {
+                Text(text = "LINK")
+            }
+        }
+    }
+}*/
 @Composable
 fun CardWithProduct(modifier: Modifier = Modifier, wishUiState: WishUiState) {
     Card(
@@ -33,26 +68,43 @@ fun CardWithProduct(modifier: Modifier = Modifier, wishUiState: WishUiState) {
         Column(
             modifier = Modifier
                 .fillMaxSize(),
-                horizontalAlignment = CenterHorizontally,
-                verticalArrangement = Arrangement.Center
+            horizontalAlignment = CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ) {
             Text(text = wishUiState.wishName + "  " + "(" + wishUiState.price + "kr)",
                 fontWeight = FontWeight.Bold,
                 fontSize = 30.sp,
                 textDecoration = TextDecoration.Underline
-                )
+            )
             Spacer(modifier = Modifier.height(30.dp))
             Wish(wishUiState = wishUiState)
             Spacer(modifier = Modifier.height(5.dp))
             Text(text = wishUiState.link,
                 fontWeight = FontWeight.Bold,
-                )
+            )
             Spacer(modifier = Modifier.height(5.dp))
             Text(text = "Beskrivelse:",
                 fontWeight = FontWeight.Bold
-                )
+            )
             Text(text = wishUiState.description)
+            if(wishUiState.isGuest) {
+                Column() {
+                    GuestButton(buttonName = "Link")
+                    GuestButton(buttonName = "Reservér")
+                }
+            }
         }
+    }
+}
+@Composable
+fun GuestButton(buttonName: String) {
+    Button(onClick = {}, modifier = Modifier
+        .fillMaxWidth()
+        .height(50.dp)
+        .padding(start = 50.dp, end = 50.dp),
+        shape = RoundedCornerShape(10)
+    ) {
+        Text(text = buttonName)
     }
 }
 
@@ -105,22 +157,27 @@ fun WishProductPage(wishUiState: WishUiState) {
                 .padding(start = 11.dp, end = 11.dp, bottom = 17.dp))
             CardWithProduct(wishUiState = wishUiState)
         }
-        DeleteFAB(onClick = {}, modifier = Modifier
-            .align(BottomStart))
-        EditFAB(onClick = {}, modifier = Modifier
-            .align(BottomEnd))
+        if(!wishUiState.isGuest) {
+            DeleteFAB(
+                onClick = {}, modifier = Modifier
+                    .align(BottomStart)
+            )
+            EditFAB(
+                onClick = {}, modifier = Modifier
+                    .align(BottomEnd)
+            )
+        }
     }
-
 }
 
 
 @Composable
 @Preview(showBackground = true)
 fun WishProductPreview() {
+    //WishDescription(wishUiState = WishUiState(image = R.drawable._nske2, wishName = "Ting"), showButton = true)
     WishProductPage(wishUiState = WishUiState(image = R.drawable._nske2,
         wishName = "ROLEX",
         price = 15000,
         description = "FED KAFFEMASKINE!",
         link = "www.elgigantos.dk"))
-
 }

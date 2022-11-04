@@ -2,7 +2,6 @@ package com.example.partyplanner.ui.elements
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
@@ -13,7 +12,7 @@ import com.example.partyplanner.ui.state.WishListViewModel
 import com.example.partyplanner.ui.theme.Background
 
 @Composable
-fun WishListGuest(viewModel: WishListViewModel) {
+fun WishListGuestPage(viewModel: WishListViewModel) {
     val uiState = viewModel.uiState.collectAsState()
     Box(
         modifier = Modifier
@@ -35,5 +34,5 @@ fun WishListGuest(viewModel: WishListViewModel) {
 @Composable
 @Preview(showBackground = true)
 fun WishListGuestPreview() {
-    WishListGuest(viewModel = WishListViewModel())
+    WishListGuestPage(viewModel = WishListViewModel())
 }
