@@ -75,37 +75,41 @@ fun Wish(modifier: Modifier = Modifier, image: Painter, giftName: String, wishUi
                 .background(Primary),
             horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                if (wishUiState.isReserved == true) {
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(35.dp),
-                        shape = RoundedCornerShape(10),
-                        colors = CardDefaults.cardColors(Color.Red)
-                    ) {
-                        Text(text = "Reserveret",
+                if (showTopBar == true) {
+                    if (wishUiState.isReserved == true) {
+                        Card(
                             modifier = Modifier
-                                 .align(CenterHorizontally),
-                            color = Color.White,
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-                } else {
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(35.dp),
-                        shape = RoundedCornerShape(10),
-                        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.secondary)
-                    ) {
-                        Text(text = wishUiState.price.toString(),
-                        modifier = Modifier
-                            .align(CenterHorizontally),
-                        color = Color.White,
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold
-                        )
+                                .fillMaxWidth()
+                                .height(35.dp),
+                            shape = RoundedCornerShape(10),
+                            colors = CardDefaults.cardColors(Color.Red)
+                        ) {
+                            Text(
+                                text = "Reserveret",
+                                modifier = Modifier
+                                    .align(CenterHorizontally),
+                                color = Color.White,
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
+                    } else {
+                        Card(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(35.dp),
+                            shape = RoundedCornerShape(10),
+                            colors = CardDefaults.cardColors(MaterialTheme.colorScheme.secondary)
+                        ) {
+                            Text(
+                                text = wishUiState.price.toString(),
+                                modifier = Modifier
+                                    .align(CenterHorizontally),
+                                color = Color.White,
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
                     }
                 }
                 Image(
@@ -199,7 +203,7 @@ fun WishListPreview() {
     ) {
         //NameCardWishList(modifier = Modifier.size(width = 350.dp, height = 120.dp ), "Hans")
         //Spacer(modifier = Modifier.height(30.dp))
-       // WishListPage(viewModel = WishListViewModel())
-        Wish(image = painterResource(R.drawable._nske2), giftName = "HEJ", wishUiState = WishUiState())
+        WishListPage(viewModel = WishListViewModel())
+       // Wish(image = painterResource(R.drawable._nske2), giftName = "HEJ", wishUiState = WishUiState())
     }
 }
