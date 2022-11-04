@@ -8,7 +8,6 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.BottomEnd
 import androidx.compose.ui.Alignment.Companion.BottomStart
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
@@ -76,20 +75,29 @@ fun CardWithProduct(modifier: Modifier = Modifier, wishUiState: WishUiState) {
                 fontSize = 30.sp,
                 textDecoration = TextDecoration.Underline
             )
+
             Spacer(modifier = Modifier.height(30.dp))
-            Wish(wishUiState = wishUiState)
+
+            Wish(wishUiState = wishUiState, modifier = Modifier.size(height = 200.dp, width = 150.dp))
+
             Spacer(modifier = Modifier.height(5.dp))
+
             Text(text = wishUiState.link,
                 fontWeight = FontWeight.Bold,
             )
+
             Spacer(modifier = Modifier.height(5.dp))
+
             Text(text = "Beskrivelse:",
                 fontWeight = FontWeight.Bold
             )
+
             Text(text = wishUiState.description)
+
             if(wishUiState.isGuest) {
-                Column() {
+                Column {
                     GuestButton(buttonName = "Link")
+                    Spacer(modifier = Modifier.height(10.dp))
                     GuestButton(buttonName = "Reservér")
                 }
             }
@@ -179,5 +187,5 @@ fun WishProductPreview() {
         wishName = "ROLEX",
         price = 15000,
         description = "FED KAFFEMASKINE!",
-        link = "www.elgigantos.dk"))
+        link = "www.elgigantos.dk", isGuest = true))
 }
