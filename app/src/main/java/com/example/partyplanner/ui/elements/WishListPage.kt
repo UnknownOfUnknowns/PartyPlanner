@@ -60,7 +60,7 @@ fun NameCardWishList(modifier: Modifier = Modifier, name: String) {
     }
 }
 @Composable
-fun Wish(modifier: Modifier = Modifier, image: Painter, giftName: String, wishUiState: WishUiState) {
+fun Wish(modifier: Modifier = Modifier, image: Painter, giftName: String, wishUiState: WishUiState, showTopBar: Boolean = false) {
     Card(
         modifier = modifier
             .size(width = 150.dp, height = 150.dp),
@@ -131,7 +131,7 @@ fun Wish(modifier: Modifier = Modifier, image: Painter, giftName: String, wishUi
 
 
 @Composable
-fun WishList(wishes : WishListUiState) {
+fun WishList(wishes : WishListUiState, showTopBar: Boolean = false) {
     Card(
         modifier = Modifier.padding(start = 11.dp, end = 11.dp, bottom = 30.dp),
         shape = RoundedCornerShape(15.dp),
@@ -144,7 +144,7 @@ fun WishList(wishes : WishListUiState) {
                 .fillMaxSize(),
         ){
             items(wishes.wishes){ wish ->
-                Wish(modifier = Modifier.padding(8.dp), image = painterResource(id = wish.image), giftName = wish.wishName, wishUiState = WishUiState())
+                Wish(modifier = Modifier.padding(8.dp), image = painterResource(id = wish.image), giftName = wish.wishName, wishUiState = WishUiState(), showTopBar = showTopBar)
 
             }
         }
