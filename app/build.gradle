@@ -1,6 +1,13 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'com.google.gms.google-services'
+    id 'com.google.firebase.crashlytics'
+    id 'com.google.firebase.firebase-perf'
+    id 'dagger.hilt.android.plugin'
+    id "com.ncorti.ktfmt.gradle" version "0.10.0"
 }
 
 android {
@@ -9,7 +16,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.partyplanner"
-        minSdk 26
+        minSdk 28
         targetSdk 33
         versionCode 1
         versionName "1.0"
@@ -63,12 +70,17 @@ dependencies {
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_ui_version"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_ui_version"
 
+    implementation 'androidx.hilt:hilt-navigation-compose:1.0.0'
+    implementation 'androidx.preference:preference-ktx:1.2.0'
+    implementation 'com.google.dagger:hilt-android:2.43.2'
+
+    kaptAndroidTest 'com.google.dagger:hilt-compiler:2.43.2'
 
     implementation platform('com.google.firebase:firebase-bom:31.0.2')
-
-
+    implementation 'com.google.firebase:firebase-crashlytics-ktx'
     implementation 'com.google.firebase:firebase-analytics-ktx'
-
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation 'com.google.firebase:firebase-firestore-ktx'
+    implementation 'com.google.firebase:firebase-perf-ktx'
+    implementation 'com.google.firebase:firebase-config-ktx'
 }

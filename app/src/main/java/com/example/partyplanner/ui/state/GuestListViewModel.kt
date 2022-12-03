@@ -1,17 +1,24 @@
 package com.example.partyplanner.ui.state
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.partyplanner.data.Guest
+import com.example.partyplanner.data.GuestRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
-class GuestListViewModel : ViewModel() {
+class GuestListViewModel(private val repository: GuestRepository) : ViewModel() {
     private val _uiState = MutableStateFlow(GuestListUiState())
     val uiState : StateFlow<GuestListUiState> = _uiState.asStateFlow()
-
+    val guests = repository.guests
     init {
         fetchGuests()
+        viewModelScope.launch {
+            repository.getGuests()
+        }
     }
 
     fun fetchGuests(){
@@ -67,6 +74,9 @@ class GuestListViewModel : ViewModel() {
     }
 
     fun sendInvitation() {
-
+        viewModelScope.launch {
+            val invitationState = _uiState.value.invitationState
+            repository.addGuest(Guest(id = "1233333", name = invitationState.guest, attendanceState = AttendanceState.ATTENDS))
+        }
     }
 }

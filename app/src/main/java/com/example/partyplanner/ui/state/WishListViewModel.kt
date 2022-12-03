@@ -14,6 +14,8 @@ class WishListViewModel : ViewModel() {
 
     init {
         fetchWishes()
+
+
     }
     // Dummy function should get data from repository
     fun fetchWishes() {
@@ -26,7 +28,7 @@ class WishListViewModel : ViewModel() {
                 WishUiState(image = R.drawable.coffee_machine, wishName = "Ting", price = 1000),
                 WishUiState(image = R.drawable._nske3, wishName = "Ting", isReserved = true),
             ),
-                wishListName = "Christians' Ønskeliste"
+                wishListName = "Hans' Ønskeliste"
             )
         }
     }

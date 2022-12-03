@@ -10,20 +10,23 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.partyplanner.ui.state.PartiesUiState
+import com.example.partyplanner.ui.pages.partiesList.NewPartyViewModel
 import com.example.partyplanner.ui.state.PartyCoreInfoUiState
 import com.example.partyplanner.ui.theme.Background
 import com.example.partyplanner.ui.theme.OnPrimary
 
 
 @Composable
-fun PartyListAndCreate(partiesUiState: PartiesUiState, onAddButton: () -> Unit, onEdit: () -> Unit) {
+fun PartyListAndCreate(viewModel: NewPartyViewModel, onAddButton: () -> Unit, onEdit: () -> Unit) {
+    val parties by viewModel.parties.collectAsState(initial = listOf())
     Box {
         LazyColumn(
             modifier = Modifier
@@ -31,12 +34,12 @@ fun PartyListAndCreate(partiesUiState: PartiesUiState, onAddButton: () -> Unit, 
                 .background(Background),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            items(partiesUiState.parties){ party ->
-                val partyIndex = partiesUiState.parties.indexOf(party)
-                val alpha : Double = (partyIndex+6)*(1.0/(partiesUiState.parties.size+5))
-                PartyCard(partyInfo = party.coreInfo,onClick = onEdit, backgroundColor = Color(30/256f, 0f, 93/256f, alpha.toFloat()))
-
-
+            items(parties){ party ->
+                val partyIndex = parties.indexOf(party)
+                val alpha : Double = (partyIndex+6)*(1.0/(parties.size+5))
+                PartyCard(partyInfo = PartyCoreInfoUiState(name = party.partyName),
+                    onClick = onEdit,
+                    backgroundColor = Color(30/256f, 0f, 93/256f, alpha.toFloat()))
             }
 
         }
@@ -48,7 +51,9 @@ fun PartyListAndCreate(partiesUiState: PartiesUiState, onAddButton: () -> Unit, 
 @Composable
 fun DefaultFAB(modifier: Modifier = Modifier, onClick: () -> Unit) {
     FloatingActionButton(onClick = onClick,
-        modifier = modifier.padding(end=10.dp, bottom = 10.dp).size(60.dp),
+        modifier = modifier
+            .padding(end = 10.dp, bottom = 10.dp)
+            .size(60.dp),
         shape = FloatingActionButtonDefaults.largeShape,
         containerColor = Color.Green
     ) {

@@ -23,13 +23,23 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.partyplanner.data.GuestRepository
 import com.example.partyplanner.data.PartiesRepository
+import com.example.partyplanner.data.account.AccountServiceImpl
+import com.example.partyplanner.data.party.PartyServiceImpl
 import com.example.partyplanner.ui.elements.*
+import com.example.partyplanner.ui.pages.login.LoginViewModel
+import com.example.partyplanner.ui.pages.login.SignInScreen
+import com.example.partyplanner.ui.pages.partiesList.NewPartyViewModel
 import com.example.partyplanner.ui.state.GuestListViewModel
 import com.example.partyplanner.ui.state.PartyViewModel
 import com.example.partyplanner.ui.theme.PartyPlannerTheme
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 class MainActivity : ComponentActivity() {
+
+
     private val viewModel = PartyViewModel(PartiesRepository)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,18 +69,28 @@ fun PartyPlannerApp(viewModel: PartyViewModel){
             }
         val navigationController = rememberNavController()
         val state = viewModel.uiState.collectAsState().value
+        val loginService = AccountServiceImpl()
         NavHost(
             navController = navigationController,
-            startDestination = PartiesOverviewPage.route,
+            startDestination = LoginPage.route,
             modifier = Modifier.fillMaxSize()
         ) {
-
+            composable(route = LoginPage.route) {
+                val loginViewModel = LoginViewModel(loginService) {
+                    navigationController.navigateSingleTopTo(
+                        PartiesOverviewPage.route
+                    )
+                }
+                SignInScreen(loginViewModel)
+            }
             composable(route = PartiesOverviewPage.route) {
                 viewModel.fetchParties()
-                PartyListAndCreate(partiesUiState = viewModel.uiState.collectAsState().value, onAddButton = {
-                    viewModel.newParty()
-                    navigationController.navigateSingleTopTo(NewPartyPage.route)
-                },
+                PartyListAndCreate(
+                    NewPartyViewModel(PartyServiceImpl(loginService)),
+                    onAddButton = {
+                        viewModel.newParty()
+                        navigationController.navigateSingleTopTo(NewPartyPage.route)
+                    },
                     onEdit = {navigationController.navigateSingleTopTo(Guestlist.route)}
                 )
             }
@@ -100,7 +120,8 @@ fun PartyPlannerApp(viewModel: PartyViewModel){
             }
 
             composable(route = Guestlist.route){
-                GuestListPage(viewModel = GuestListViewModel())
+                val db = Firebase.firestore
+                GuestListPage(viewModel = GuestListViewModel(GuestRepository(db)))
             }
         }
     }

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "359226929789",
+    "project_id": "partyplanner-86609",
+    "storage_bucket": "partyplanner-86609.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:359226929789:android:f2406f6cb8485908457714",
+        "android_client_info": {
+          "package_name": "com.example.partyplanner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "359226929789-bmkssi1b478a7bcvq05iivugs6vorc5n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAi4-UelzgDq74MhIPxGmlC8HH9v_B8lk4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "359226929789-bmkssi1b478a7bcvq05iivugs6vorc5n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

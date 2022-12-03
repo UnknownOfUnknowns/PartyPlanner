@@ -1,5 +1,6 @@
 package com.example.partyplanner.ui.elements
 
+import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -26,14 +27,15 @@ import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import com.example.partyplanner.data.GuestRepository
 import com.example.partyplanner.ui.state.*
 import com.example.partyplanner.ui.theme.*
+import com.google.firebase.firestore.FirebaseFirestore
 
 
 @Composable
@@ -99,6 +101,10 @@ fun GuestCard(guestState : GuestUiState, modifier : Modifier = Modifier) {
 fun GuestListPage(viewModel: GuestListViewModel) {
     val uiState = viewModel.uiState.collectAsState()
     val inviteOn = remember { mutableStateOf(false) }
+    val guests = viewModel.guests.collectAsState(initial = emptyList())
+
+    Log.d(TAG, "Our database right now " + guests.value.toString())
+
     Box(Modifier.background(Background)) {
         Column(Modifier
             .padding(start = 12.dp, end = 12.dp)
@@ -274,7 +280,7 @@ fun SendInviteDialogPreview() {
 @Preview(showBackground = true)
 @Composable
 fun QuestOverviewPreview() {
-    val viewModel = GuestListViewModel()
+    val viewModel = GuestListViewModel(GuestRepository(firestore = FirebaseFirestore.getInstance()))
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -287,7 +293,7 @@ fun QuestOverviewPreview() {
 @Preview
 @Composable
 fun GuestListPagePreview() {
-    val viewModel = GuestListViewModel()
+    val viewModel = GuestListViewModel(GuestRepository(firestore = FirebaseFirestore.getInstance()))
 
     GuestListPage(viewModel = viewModel)
 
