@@ -34,7 +34,6 @@ class AccountServiceImpl : AccountService {
 
     override fun linkAccount(email: String, password: String, onResult: (Throwable?) -> Unit) {
         val credential = EmailAuthProvider.getCredential(email, password)
-
         Firebase.auth.currentUser!!.linkWithCredential(credential)
             .addOnCompleteListener { onResult(it.exception) }
     }

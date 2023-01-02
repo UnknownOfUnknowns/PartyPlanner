@@ -32,12 +32,7 @@ class PartyViewModel(private val repository: PartiesRepository) : ViewModel() {
                 parties = currentState.parties,
                 currentParty = PartyUiState(
                     currentState.currentParty.coreInfo.copy(
-                        name = currentState.currentParty.coreInfo.name,
-                        address = address,
-                        zip = currentState.currentParty.coreInfo.zip,
-                        city = currentState.currentParty.coreInfo.city,
-                        date = currentState.currentParty.coreInfo.date,
-                        partyType = currentState.currentParty.coreInfo.partyType
+                        address = address
                     )
                 )
             )
@@ -50,12 +45,7 @@ class PartyViewModel(private val repository: PartiesRepository) : ViewModel() {
                 parties = currentState.parties,
                 currentParty = PartyUiState(
                     currentState.currentParty.coreInfo.copy(
-                        name = currentState.currentParty.coreInfo.name,
-                        address = currentState.currentParty.coreInfo.address,
-                        zip = zip,
-                        city = currentState.currentParty.coreInfo.city,
-                        date = currentState.currentParty.coreInfo.date,
-                        partyType = currentState.currentParty.coreInfo.partyType
+                        zip = zip
                     )
                 )
             )
@@ -68,12 +58,7 @@ class PartyViewModel(private val repository: PartiesRepository) : ViewModel() {
                 parties = currentState.parties,
                 currentParty = PartyUiState(
                     currentState.currentParty.coreInfo.copy(
-                        name = currentState.currentParty.coreInfo.name,
-                        address = currentState.currentParty.coreInfo.address,
-                        zip = currentState.currentParty.coreInfo.zip,
-                        city = city,
-                        date = currentState.currentParty.coreInfo.date,
-                        partyType = currentState.currentParty.coreInfo.partyType
+                        city = city
                     )
                 )
             )
@@ -86,12 +71,7 @@ class PartyViewModel(private val repository: PartiesRepository) : ViewModel() {
                 parties = currentState.parties,
                 currentParty = PartyUiState(
                     currentState.currentParty.coreInfo.copy(
-                        name = name,
-                        address = currentState.currentParty.coreInfo.address,
-                        zip = currentState.currentParty.coreInfo.zip,
-                        city = currentState.currentParty.coreInfo.city,
-                        date = currentState.currentParty.coreInfo.date,
-                        partyType = currentState.currentParty.coreInfo.partyType
+                        name = name
                     )
                 )
             )
