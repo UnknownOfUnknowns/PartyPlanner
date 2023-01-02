@@ -1,9 +1,10 @@
-package com.example.partyplanner.ui.state
+package com.example.partyplanner.ui.pages.guestlist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.partyplanner.data.Guest
 import com.example.partyplanner.data.GuestRepository
+import com.example.partyplanner.ui.state.AttendanceState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

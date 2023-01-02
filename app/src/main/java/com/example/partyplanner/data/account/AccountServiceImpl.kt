@@ -28,6 +28,10 @@ class AccountServiceImpl : AccountService {
     }
 
     override fun authenticate(email: String, password: String, onResult: (Throwable?) -> Unit) {
+        if(email.isEmpty() || password.isEmpty()) {
+            onResult(IllegalArgumentException())
+            return
+        }
         Firebase.auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { onResult(it.exception) }
     }

@@ -33,7 +33,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.example.partyplanner.data.GuestRepository
-import com.example.partyplanner.ui.state.*
+import com.example.partyplanner.ui.pages.guestlist.*
+import com.example.partyplanner.ui.state.AttendanceState
 import com.example.partyplanner.ui.theme.*
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -63,7 +64,7 @@ fun GuestCard(guestState : GuestUiState, modifier : Modifier = Modifier) {
     val backgroundColor = when(guestState.attendanceState) {
         AttendanceState.ATTENDS -> AttendingColor
         AttendanceState.AWAITING -> AwaitingColor
-            AttendanceState.NOT_ATTENDING -> NotAttendingColor
+        AttendanceState.NOT_ATTENDING -> NotAttendingColor
     }
 
     Row(

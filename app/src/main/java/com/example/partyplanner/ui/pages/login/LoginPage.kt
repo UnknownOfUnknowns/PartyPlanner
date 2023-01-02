@@ -40,6 +40,8 @@ fun SignInScreen(viewModel: LoginViewModel){
 
             Spacer(modifier = Modifier.weight(0.03f))
 
+            Text(text = state.error, color = Color.Red, modifier = Modifier.padding(start = 10.dp))
+
             Button(
                 onClick = viewModel::login,
                 modifier = Modifier

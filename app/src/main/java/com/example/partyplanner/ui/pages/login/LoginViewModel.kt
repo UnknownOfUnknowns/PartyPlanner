@@ -3,6 +3,7 @@ package com.example.partyplanner.ui.pages.login
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.example.partyplanner.data.account.AccountService
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 
 /**
  * The login pages has been inspired by this tutorial: https://firebase.blog/posts/2022/05/adding-firebase-auth-to-jetpack-compose-app
@@ -23,12 +24,21 @@ class LoginViewModel(
         uiState.value = uiState.value.copy(password = newValue)
     }
     fun login() {
-
         loginService.authenticate(uiState.value.email, uiState.value.password) {
-            if(it == null) {
-                uiState.value = uiState.value.copy(email = "Juhuuuuuu")
-                onSuccessfulLogin()
+            var errorValue =""
+            when (it) {
+                null -> {
+                    onSuccessfulLogin()
+                }
+                is IllegalArgumentException -> {
+                    errorValue = "Indtast et brugernavn og en adgangskode"
+                }
+                is FirebaseAuthInvalidCredentialsException -> {
+                    errorValue = "Forkert brugernavn eller adgangskode"
+                }
             }
+
+            uiState.value= uiState.value.copy(error = errorValue)
         }
     }
 
