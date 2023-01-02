@@ -14,7 +14,8 @@ class PartyServiceImpl(private val account : AccountService) : PartyService {
     override val parties: Flow<List<Party>>
         get() = currentCollection()
             .whereEqualTo(HOST_VARIABLE, Firebase.auth.uid)
-            .snapshots().map { snapshot -> snapshot.toObjects() }
+            .snapshots()
+            .map { snapshot -> snapshot.toObjects() }
 
     override suspend fun update(party: Party) {
         TODO("Not yet implemented")

@@ -18,8 +18,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.partyplanner.data.party.Party
 import com.example.partyplanner.ui.pages.partiesList.NewPartyViewModel
-import com.example.partyplanner.ui.state.PartyCoreInfoUiState
 import com.example.partyplanner.ui.theme.Background
 import com.example.partyplanner.ui.theme.OnPrimary
 
@@ -37,7 +37,7 @@ fun PartyListAndCreate(viewModel: NewPartyViewModel, onAddButton: () -> Unit, on
             items(parties){ party ->
                 val partyIndex = parties.indexOf(party)
                 val alpha : Double = (partyIndex+6)*(1.0/(parties.size+5))
-                PartyCard(partyInfo = PartyCoreInfoUiState(name = party.partyName),
+                PartyCard(partyInfo = party,
                     onClick = onEdit,
                     backgroundColor = Color(30/256f, 0f, 93/256f, alpha.toFloat()))
             }
@@ -63,7 +63,7 @@ fun DefaultFAB(modifier: Modifier = Modifier, onClick: () -> Unit) {
 }
 
 @Composable
-fun PartyCard(partyInfo: PartyCoreInfoUiState, backgroundColor : Color = Color.White, onClick: () -> Unit) {
+fun PartyCard(partyInfo: Party, backgroundColor : Color = Color.White, onClick: () -> Unit) {
     Spacer(modifier = Modifier.height(20.dp))
     Card(
         modifier = Modifier
