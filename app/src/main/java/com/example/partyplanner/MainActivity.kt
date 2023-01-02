@@ -5,19 +5,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -27,7 +17,11 @@ import com.example.partyplanner.data.GuestRepository
 import com.example.partyplanner.data.PartiesRepository
 import com.example.partyplanner.data.account.AccountServiceImpl
 import com.example.partyplanner.data.party.PartyServiceImpl
-import com.example.partyplanner.ui.elements.*
+import com.example.partyplanner.ui.elements.CreatePartyConfirmation
+import com.example.partyplanner.ui.elements.PartyListAndCreate
+import com.example.partyplanner.ui.elements.SetPartyDataOnCreation
+import com.example.partyplanner.ui.elements.StartPartyCreation
+import com.example.partyplanner.ui.pages.guestlist.GuestListPage
 import com.example.partyplanner.ui.pages.guestlist.GuestListViewModel
 import com.example.partyplanner.ui.pages.login.LoginViewModel
 import com.example.partyplanner.ui.pages.login.SignInScreen
@@ -121,7 +115,7 @@ fun PartyPlannerApp(viewModel: PartyViewModel){
 
             composable(route = Guestlist.route){
                 val db = Firebase.firestore
-                GuestListPage(viewModel = GuestListViewModel(GuestRepository(db)))
+                GuestListPage(viewModel = GuestListViewModel(GuestRepository(db, "7v3WIdoU8FmJFnb3fvA7")))
             }
         }
     }

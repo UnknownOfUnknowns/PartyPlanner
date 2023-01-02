@@ -24,7 +24,7 @@ class LoginViewModel(
         uiState.value = uiState.value.copy(password = newValue)
     }
     fun login() {
-        loginService.authenticate(uiState.value.email, uiState.value.password) {
+        loginService.authenticate("hans@bilstrupandersen.dk", "123123") {
             var errorValue =""
             when (it) {
                 null -> {

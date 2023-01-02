@@ -1,18 +1,13 @@
 package com.example.partyplanner.ui.pages.guestlist
 
-import com.example.partyplanner.ui.state.AttendanceState
+import com.example.partyplanner.data.Guest
 
 data class GuestListUiState(
-    val guests: List<GuestUiState> = listOf(),
+    val guests: List<Guest> = listOf(),
     val invitationState : SendInvitationUiState = SendInvitationUiState()
 )
 
 val GuestListUiState.totalInvites: Int get() = guests.size
-
-data class GuestUiState(
-    val name :String = "",
-    val attendanceState: AttendanceState = AttendanceState.AWAITING,
-)
 
 enum class SendingMethod{
     SMS,

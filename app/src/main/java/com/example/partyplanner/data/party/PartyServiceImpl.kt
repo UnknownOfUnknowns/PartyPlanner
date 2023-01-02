@@ -1,5 +1,7 @@
 package com.example.partyplanner.data.party
 
+import com.example.partyplanner.data.HOST_VARIABLE
+import com.example.partyplanner.data.PARTIES_COLLECTION
 import com.example.partyplanner.data.account.AccountService
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.CollectionReference
@@ -24,8 +26,4 @@ class PartyServiceImpl(private val account : AccountService) : PartyService {
     private fun currentCollection() : CollectionReference =
         Firebase.firestore.collection(PARTIES_COLLECTION)
 
-    companion object {
-        private const val PARTIES_COLLECTION = "parties"
-        private const val HOST_VARIABLE = "host"
-    }
 }

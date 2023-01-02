@@ -1,6 +1,5 @@
-package com.example.partyplanner.ui.elements
+package com.example.partyplanner.ui.pages.guestlist
 
-import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -32,12 +31,43 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import com.example.partyplanner.data.Guest
 import com.example.partyplanner.data.GuestRepository
-import com.example.partyplanner.ui.pages.guestlist.*
+import com.example.partyplanner.ui.elements.DefaultFAB
 import com.example.partyplanner.ui.state.AttendanceState
 import com.example.partyplanner.ui.theme.*
 import com.google.firebase.firestore.FirebaseFirestore
 
+@Composable
+fun GuestListPage(viewModel: GuestListViewModel) {
+    val uiState = viewModel.uiState.collectAsState()
+    val inviteOn = remember { mutableStateOf(false) }
+
+
+    Box(Modifier.background(Background)) {
+        Column(Modifier
+            .padding(start = 12.dp, end = 12.dp)
+        ) {
+            GuestOverview(modifier = Modifier
+                .height(height = 92.dp)
+                .fillMaxWidth(),
+                guestListUiState = uiState.value)
+            GuestsListEntry(uiState.value)
+        }
+        if(inviteOn.value){
+            SendInviteDialog(
+                onDismiss = { inviteOn.value = false },
+                onSend = { viewModel.sendInvitation() },
+                onAddressChange = {viewModel.changeSendingAddress(it)},
+                onMethodChange = {viewModel.changeSendingMethod(it)},
+                onGuestChange = {viewModel.changeGuestName(it)},
+                sendInvitationUiState = uiState.value.invitationState
+            )
+        }
+        DefaultFAB(modifier = Modifier.align(Alignment.BottomEnd), onClick = {inviteOn.value = true})
+
+    }
+}
 
 @Composable
 fun GuestsListEntry(guestListUiState: GuestListUiState) {
@@ -59,7 +89,7 @@ fun GuestsListEntry(guestListUiState: GuestListUiState) {
 }
 
 @Composable
-fun GuestCard(guestState : GuestUiState, modifier : Modifier = Modifier) {
+fun GuestCard(guestState : Guest, modifier : Modifier = Modifier) {
 
     val backgroundColor = when(guestState.attendanceState) {
         AttendanceState.ATTENDS -> AttendingColor
@@ -98,38 +128,7 @@ fun GuestCard(guestState : GuestUiState, modifier : Modifier = Modifier) {
 
 
 
-@Composable
-fun GuestListPage(viewModel: GuestListViewModel) {
-    val uiState = viewModel.uiState.collectAsState()
-    val inviteOn = remember { mutableStateOf(false) }
-    val guests = viewModel.guests.collectAsState(initial = emptyList())
 
-    Log.d(TAG, "Our database right now " + guests.value.toString())
-
-    Box(Modifier.background(Background)) {
-        Column(Modifier
-            .padding(start = 12.dp, end = 12.dp)
-        ) {
-            QuestOverview(modifier = Modifier
-                .height(height = 92.dp)
-                .fillMaxWidth(),
-                guestListUiState = uiState.value)
-            GuestsListEntry(uiState.value)
-        }
-        if(inviteOn.value){
-            SendInviteDialog(
-                onDismiss = { inviteOn.value = false },
-                onSend = { viewModel.sendInvitation() },
-                onAddressChange = {viewModel.changeSendingAddress(it)},
-                onMethodChange = {viewModel.changeSendingMethod(it)},
-                onGuestChange = {viewModel.changeGuestName(it)},
-                sendInvitationUiState = uiState.value.invitationState
-            )
-        }
-        DefaultFAB(modifier = Modifier.align(Alignment.BottomEnd), onClick = {inviteOn.value = true})
-
-    }
-}
 
 
 
@@ -148,7 +147,7 @@ fun QuestOverviewWithIcon(icon: ImageVector, questInCategory: Int, color: Color,
 
 
 @Composable
-fun QuestOverview(modifier: Modifier = Modifier, guestListUiState: GuestListUiState) {
+fun GuestOverview(modifier: Modifier = Modifier, guestListUiState: GuestListUiState) {
     Card(modifier = modifier
         .padding(top = 10.dp, bottom = 10.dp),
         shape = RoundedCornerShape(8),
@@ -281,12 +280,12 @@ fun SendInviteDialogPreview() {
 @Preview(showBackground = true)
 @Composable
 fun QuestOverviewPreview() {
-    val viewModel = GuestListViewModel(GuestRepository(firestore = FirebaseFirestore.getInstance()))
+    val viewModel = GuestListViewModel(GuestRepository(firestore = FirebaseFirestore.getInstance(), "7v3WIdoU8FmJFnb3fvA7"))
     Column(
         modifier = Modifier
             .fillMaxSize()
     ) {
-        QuestOverview(modifier = Modifier.size(width = 342.dp, height = 92.dp),
+        GuestOverview(modifier = Modifier.size(width = 342.dp, height = 92.dp),
             viewModel.uiState.collectAsState().value)
     }
 }
@@ -294,7 +293,7 @@ fun QuestOverviewPreview() {
 @Preview
 @Composable
 fun GuestListPagePreview() {
-    val viewModel = GuestListViewModel(GuestRepository(firestore = FirebaseFirestore.getInstance()))
+    val viewModel = GuestListViewModel(GuestRepository(firestore = FirebaseFirestore.getInstance(),"7v3WIdoU8FmJFnb3fvA7"))
 
     GuestListPage(viewModel = viewModel)
 

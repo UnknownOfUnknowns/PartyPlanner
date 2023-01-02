@@ -25,7 +25,7 @@ interface GuestService{
 
 
 
-class GuestRepository(private val firestore: FirebaseFirestore) : GuestService {
+class GuestRepository(private val firestore: FirebaseFirestore, @DocumentId private val partyId: String) : GuestService {
 
     override val guests: Flow<List<Guest>>
         get() = currentCollection().snapshots().map { snapshot -> snapshot.toObjects() }
@@ -45,9 +45,9 @@ class GuestRepository(private val firestore: FirebaseFirestore) : GuestService {
     }
 
     private fun currentCollection(): CollectionReference =
-        firestore.collection(GUESTS_COLLECTION)
+        firestore.collection(PARTIES_COLLECTION)
+            .document(partyId)
+            .collection(GUESTS_COLLECTION)
 
-    companion object {
-        private const val GUESTS_COLLECTION = "guests"
-    }
+
 }
