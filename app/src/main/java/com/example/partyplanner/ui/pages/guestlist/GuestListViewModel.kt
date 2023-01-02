@@ -2,6 +2,7 @@ package com.example.partyplanner.ui.pages.guestlist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.partyplanner.data.Guest
 import com.example.partyplanner.data.GuestRepository
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -55,7 +56,12 @@ class GuestListViewModel(private val repository: GuestRepository) : ViewModel() 
 
     fun sendInvitation() {
         viewModelScope.launch {
-
+        }
+    }
+    fun addGuest() {
+        viewModelScope.launch {
+            var guest = Guest(name = _invitationUiState.value.guest)
+            repository.addGuest(guest)
         }
     }
 }

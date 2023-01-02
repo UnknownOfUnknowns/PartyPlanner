@@ -57,7 +57,7 @@ fun GuestListPage(viewModel: GuestListViewModel) {
         if(inviteOn.value){
             SendInviteDialog(
                 onDismiss = { inviteOn.value = false },
-                onSend = { viewModel.sendInvitation() },
+                onSend = { viewModel.addGuest()},
                 onAddressChange = {viewModel.changeSendingAddress(it)},
                 onMethodChange = {viewModel.changeSendingMethod(it)},
                 onGuestChange = {viewModel.changeGuestName(it)},

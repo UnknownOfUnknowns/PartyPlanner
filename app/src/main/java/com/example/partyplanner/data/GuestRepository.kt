@@ -12,7 +12,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 data class Guest(
-    @DocumentId val id: String = "",
     val name: String = "",
     val attendanceState: AttendanceState = AttendanceState.AWAITING
 )
@@ -28,7 +27,10 @@ interface GuestService{
 class GuestRepository(private val firestore: FirebaseFirestore, @DocumentId private val partyId: String) : GuestService {
 
     override val guests: Flow<List<Guest>>
-        get() = currentCollection().snapshots().map { snapshot -> snapshot.toObjects() }
+        get() = currentCollection().snapshots().map { snapshot ->
+            println(snapshot)
+            snapshot.toObjects()
+        }
 
 
 
