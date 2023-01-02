@@ -2,6 +2,8 @@ package com.example.partyplanner.ui.state
 
 import androidx.lifecycle.ViewModel
 import com.example.partyplanner.R
+import com.example.partyplanner.ui.pages.wishlist.WishListUiState
+import com.example.partyplanner.ui.pages.wishlist.WishUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
