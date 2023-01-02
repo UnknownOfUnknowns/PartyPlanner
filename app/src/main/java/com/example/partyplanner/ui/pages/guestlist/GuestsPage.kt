@@ -99,7 +99,7 @@ fun GuestCard(guestState : Guest, modifier : Modifier = Modifier) {
 
     Row(
         modifier = modifier.background(backgroundColor,shape = RoundedCornerShape(25.dp)),
-        verticalAlignment = Alignment.CenterVertically,
+        verticalAlignment = CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         //This row is nested such that Arrangement.SpaceBetween maximises space between name and trashcan
@@ -117,10 +117,7 @@ fun GuestCard(guestState : Guest, modifier : Modifier = Modifier) {
                 .size(35.dp)
                 .padding(end = 10.dp)
                 .clickable {
-                    Log.d(
-                        "GuestList",
-                        "Du har nu fratrukket invitationen fra ${guestState.name}"
-                    )
+                    {/* TODO */}
                 }
         )
     }
@@ -135,7 +132,7 @@ fun GuestCard(guestState : Guest, modifier : Modifier = Modifier) {
 @Composable
 fun QuestOverviewWithIcon(icon: ImageVector, questInCategory: Int, color: Color, categoryName: String) {
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = CenterHorizontally
     ) {
         Text(text = categoryName)
         Row() {

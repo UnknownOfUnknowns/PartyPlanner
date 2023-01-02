@@ -58,6 +58,8 @@ class GuestListViewModel(private val repository: GuestRepository) : ViewModel() 
         viewModelScope.launch {
         }
     }
+
+
     fun addGuest() {
         viewModelScope.launch {
             var guest = Guest(name = _invitationUiState.value.guest)
