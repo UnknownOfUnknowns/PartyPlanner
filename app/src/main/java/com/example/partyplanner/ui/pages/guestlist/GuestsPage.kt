@@ -1,6 +1,5 @@
 package com.example.partyplanner.ui.pages.guestlist
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -42,7 +41,9 @@ import com.google.firebase.firestore.FirebaseFirestore
 fun GuestListPage(viewModel: GuestListViewModel) {
     val uiState = viewModel.uiState.collectAsState()
     val inviteOn = remember { mutableStateOf(false) }
-
+    val deleteUserDialogOn = remember {
+        mutableStateOf(false)
+    }
 
     Box(Modifier.background(Background)) {
         Column(Modifier
@@ -52,7 +53,10 @@ fun GuestListPage(viewModel: GuestListViewModel) {
                 .height(height = 92.dp)
                 .fillMaxWidth(),
                 guestListUiState = uiState.value)
-            GuestsListEntry(uiState.value)
+            GuestsListEntry(onDeleteGuest = {
+                viewModel.setGuestToBeDeleted(it)
+                deleteUserDialogOn.value = true
+            },uiState.value)
         }
         if(inviteOn.value){
             SendInviteDialog(
@@ -66,11 +70,19 @@ fun GuestListPage(viewModel: GuestListViewModel) {
         }
         DefaultFAB(modifier = Modifier.align(Alignment.BottomEnd), onClick = {inviteOn.value = true})
 
+        if(deleteUserDialogOn.value) {
+            DeleteGuestAlert(
+                onConfirm = {
+                    viewModel.deleteGuest()
+                    deleteUserDialogOn.value = false
+                },
+                onDismiss = {deleteUserDialogOn.value = false})
+        }
     }
 }
 
 @Composable
-fun GuestsListEntry(guestListUiState: GuestListUiState) {
+fun GuestsListEntry(onDeleteGuest : (Guest) -> Unit, guestListUiState: GuestListUiState) {
 
     LazyColumn(
         modifier = Modifier
@@ -78,6 +90,7 @@ fun GuestsListEntry(guestListUiState: GuestListUiState) {
     ) {
         items(guestListUiState.guests) { item ->
             GuestCard(guestState = item,
+                onDelete= {onDeleteGuest(it)},
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(70.dp)
@@ -89,7 +102,7 @@ fun GuestsListEntry(guestListUiState: GuestListUiState) {
 }
 
 @Composable
-fun GuestCard(guestState : Guest, modifier : Modifier = Modifier) {
+fun GuestCard(onDelete : (Guest) -> Unit, guestState : Guest, modifier : Modifier = Modifier) {
 
     val backgroundColor = when(guestState.attendanceState) {
         AttendanceState.ATTENDS -> AttendingColor
@@ -117,7 +130,7 @@ fun GuestCard(guestState : Guest, modifier : Modifier = Modifier) {
                 .size(35.dp)
                 .padding(end = 10.dp)
                 .clickable {
-                    {/* TODO */}
+                    onDelete(guestState)
                 }
         )
     }
@@ -266,6 +279,32 @@ fun InviteRadioButtons(
         }
     }
 }
+
+@Composable
+fun DeleteGuestAlert(
+    onConfirm : () -> Unit,
+    onDismiss: () -> Unit
+) {
+    AlertDialog(onDismissRequest = onDismiss,
+        confirmButton = {
+            TextButton(onClick = onConfirm) {
+                Text(text = "Slet gæst")
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(text = "Fortryd")
+            }
+        },
+        title = {
+            Text(text = "Du er ved at slette", fontSize = 16.sp)
+        },
+        text = {
+            Text(text = "Vil du slette denne gæst?")
+        }
+    ) 
+}
+
 
 @Preview
 @Composable

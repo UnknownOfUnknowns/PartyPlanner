@@ -3,32 +3,42 @@ package com.example.partyplanner.ui.pages.guestlist
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.partyplanner.data.Guest
-import com.example.partyplanner.data.GuestRepository
+import com.example.partyplanner.data.GuestService
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
-class GuestListViewModel(private val repository: GuestRepository) : ViewModel() {
+class GuestListViewModel(private val repository: GuestService) : ViewModel() {
     private val _invitationUiState = MutableStateFlow(SendInvitationUiState())
+    private val _guestToBeDeleted = MutableStateFlow(Guest())
     val uiState = combine(
         repository.guests,
-        _invitationUiState
+        _invitationUiState,
+        _guestToBeDeleted
     ) {
-        guests, invitations ->
+        guests, invitations, toBeDeleted ->
         GuestListUiState(
             guests = guests,
-            invitationState = invitations
+            invitationState = invitations,
+            guestToBeDeleted = toBeDeleted
         )
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = GuestListUiState()
     )
+
     init {
         viewModelScope.launch {
             repository.getGuests()
         }
     }
 
+
+    fun setGuestToBeDeleted(guest : Guest) {
+        _guestToBeDeleted.update {
+            guest
+        }
+    }
 
 
     fun changeSendingMethod(newMethod: SendingMethod) {
@@ -56,6 +66,14 @@ class GuestListViewModel(private val repository: GuestRepository) : ViewModel() 
 
     fun sendInvitation() {
         viewModelScope.launch {
+        }
+    }
+
+    fun deleteGuest() {
+        viewModelScope.launch {
+            repository.deleteGuest(_guestToBeDeleted.value){
+                _guestToBeDeleted.value = Guest()
+            }
         }
     }
 

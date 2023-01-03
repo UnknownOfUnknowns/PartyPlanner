@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 data class Guest(
+    @DocumentId val id : String = "",
     val name: String = "",
     val attendanceState: AttendanceState = AttendanceState.AWAITING
 )
@@ -20,6 +21,7 @@ interface GuestService{
     val guests: Flow<List<Guest>>
     suspend fun getGuests() : List<Guest>
     suspend fun addGuest(guest: Guest)
+    suspend fun deleteGuest(guest: Guest, onResult: (Throwable?) ->Unit)
 }
 
 
@@ -27,10 +29,7 @@ interface GuestService{
 class GuestRepository(private val firestore: FirebaseFirestore, @DocumentId private val partyId: String) : GuestService {
 
     override val guests: Flow<List<Guest>>
-        get() = currentCollection().snapshots().map { snapshot ->
-            println(snapshot)
-            snapshot.toObjects()
-        }
+        get() = currentCollection().snapshots().map { snapshot -> snapshot.toObjects() }
 
 
 
@@ -38,12 +37,20 @@ class GuestRepository(private val firestore: FirebaseFirestore, @DocumentId priv
         return listOf(Guest())
     }
 
+
+
     override suspend fun addGuest(guest: Guest) {
         currentCollection().add(guest).addOnSuccessListener { documentReference ->
             Log.d(TAG, "Id of added object: " + documentReference.id)
         }.addOnFailureListener { e ->
             Log.d(TAG, "ERROR ", e)
         }
+    }
+
+    override suspend fun deleteGuest(guest: Guest, onResult: (Throwable?) ->Unit) {
+        currentCollection().document(guest.id).delete()
+            .addOnSuccessListener { onResult(null) }
+            .addOnFailureListener { onResult(Exception()) }
     }
 
     private fun currentCollection(): CollectionReference =

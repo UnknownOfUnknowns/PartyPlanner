@@ -4,6 +4,7 @@ import com.example.partyplanner.data.Guest
 
 data class GuestListUiState(
     val guests: List<Guest> = listOf(),
+    val guestToBeDeleted : Guest? = null,
     val invitationState : SendInvitationUiState = SendInvitationUiState()
 )
 
