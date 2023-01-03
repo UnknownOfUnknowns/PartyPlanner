@@ -89,8 +89,12 @@ class GuestListViewModel(private val repository: GuestService) : ViewModel() {
 
     fun addGuest() {
         viewModelScope.launch {
-            var guest = Guest(name = _invitationUiState.value.guest)
-            repository.addGuest(guest) {
+            val state = _invitationUiState.value
+            repository.addGuest(Guest(
+                name = state.guest,
+                contactAddress = state.address,
+                sendingMethod = state.sendingMethod
+            )) {
                 if(it == null) {
                     changeGuestName("")
                     changeInviteOn(false)

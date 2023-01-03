@@ -51,7 +51,7 @@ fun StartPartyCreation(onNextButtonClick: () -> Unit, viewModel: NewPartyViewMod
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            ChoosePartyDropDown(uiState.value.partyType, onChangePartyType = {})
+            ChoosePartyDropDown(uiState.value.partyType, onChangePartyType = {viewModel.updatePartyType(it)})
 
             //For now the app can only handle one host
             Spacer(modifier = Modifier.height(20.dp))
@@ -110,7 +110,7 @@ fun ChoosePartyDropDown(selectedOption : PartyType, onChangePartyType: (String) 
 
     val options = listOf("Fødselsdag", "Bryllup", "Konfirmation", "Dåb", "Anden begivenhed")
     var expanded by remember { mutableStateOf(false) }
-    var selectedOptionText = when (selectedOption){
+    val selectedOptionText = when (selectedOption){
         PartyType.BIRTHDAY -> "Fødselsdag"
         PartyType.WEDDING -> "Bryllup"
         PartyType.CONFIRMATION -> "Konfirmation"

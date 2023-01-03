@@ -27,6 +27,7 @@ import com.example.partyplanner.ui.theme.OnPrimary
 @Composable
 fun PartyListAndCreate(viewModel: NewPartyViewModel, onAddButton: () -> Unit, onEdit: () -> Unit) {
     val parties by viewModel.parties.collectAsState(initial = listOf())
+
     Box {
         LazyColumn(
             modifier = Modifier

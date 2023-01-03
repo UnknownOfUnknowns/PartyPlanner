@@ -1,7 +1,6 @@
 package com.example.partyplanner.data
 
-import android.content.ContentValues.TAG
-import android.util.Log
+import com.example.partyplanner.ui.pages.guestlist.SendingMethod
 import com.example.partyplanner.ui.state.AttendanceState
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentId
@@ -14,7 +13,9 @@ import kotlinx.coroutines.flow.map
 data class Guest(
     @DocumentId val id : String = "",
     val name: String = "",
-    val attendanceState: AttendanceState = AttendanceState.AWAITING
+    val attendanceState: AttendanceState = AttendanceState.AWAITING,
+    val contactAddress : String = "",
+    val sendingMethod: SendingMethod = SendingMethod.EMAIL
 )
 
 interface GuestService{
