@@ -1,5 +1,6 @@
 package com.example.partyplanner.data.party
 
+import com.example.partyplanner.data.Guest
 import com.example.partyplanner.data.HOST_VARIABLE
 import com.example.partyplanner.data.PARTIES_COLLECTION
 import com.example.partyplanner.data.account.AccountService
@@ -21,6 +22,11 @@ class PartyServiceImpl(private val account : AccountService) : PartyService {
 
     override suspend fun update(party: Party) {
         TODO("Not yet implemented")
+    }
+
+    override suspend fun addParty(party: Party, onResult: (Throwable?) -> Unit) {
+        currentCollection().add(party).addOnSuccessListener { onResult(null) }
+            .addOnFailureListener { onResult(Exception()) }
     }
 
     private fun currentCollection() : CollectionReference =

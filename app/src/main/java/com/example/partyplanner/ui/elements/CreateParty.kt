@@ -20,15 +20,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.partyplanner.R
+import com.example.partyplanner.ui.pages.partiesList.NewPartyViewModel
 import com.example.partyplanner.ui.state.PartyCoreInfoUiState
-import com.example.partyplanner.ui.state.PartyUiState
+import com.example.partyplanner.ui.state.PartyType
 import com.example.partyplanner.ui.theme.Background
 import java.util.*
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun StartPartyCreation(onNextButtonClick: () -> Unit, party: PartyUiState) {
+fun StartPartyCreation(onNextButtonClick: () -> Unit, viewModel: NewPartyViewModel) {
+
+    val uiState = viewModel.uiState.collectAsState()
+
     FadeBackground() {
         Column(
             modifier = Modifier
@@ -47,7 +51,7 @@ fun StartPartyCreation(onNextButtonClick: () -> Unit, party: PartyUiState) {
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            ChoosePartyDropDown()
+            ChoosePartyDropDown(uiState.value.partyType, onChangePartyType = {})
 
             //For now the app can only handle one host
             Spacer(modifier = Modifier.height(20.dp))
@@ -101,11 +105,18 @@ fun HostAdder(){
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ChoosePartyDropDown()
+fun ChoosePartyDropDown(selectedOption : PartyType, onChangePartyType: (String) -> Unit)
 {
+
     val options = listOf("Fødselsdag", "Bryllup", "Konfirmation", "Dåb", "Anden begivenhed")
     var expanded by remember { mutableStateOf(false) }
-    var selectedOptionText by remember { mutableStateOf(options[0]) }
+    var selectedOptionText = when (selectedOption){
+        PartyType.BIRTHDAY -> "Fødselsdag"
+        PartyType.WEDDING -> "Bryllup"
+        PartyType.CONFIRMATION -> "Konfirmation"
+        PartyType.BAPTISM -> "Dåb"
+        else -> "Anden begivenhed"
+    }
     ExposedDropdownMenuBox(
         expanded = expanded,
         onExpandedChange = {expanded = !expanded},
@@ -127,7 +138,7 @@ fun ChoosePartyDropDown()
                 DropdownMenuItem(
                     text = {Text(selectionOption)},
                     onClick = {
-                        selectedOptionText = selectionOption
+                        onChangePartyType(selectionOption)
                         expanded = false
                     },
                     contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,

@@ -1,6 +1,5 @@
 package com.example.partyplanner.ui.state
 
-import androidx.annotation.DrawableRes
 import java.time.LocalDateTime
 
 data class PartiesUiState(
@@ -11,7 +10,7 @@ data class PartiesUiState(
 data class PartyUiState(
     val coreInfo: PartyCoreInfoUiState = PartyCoreInfoUiState()
 )
-enum class PartyTypes {
+enum class PartyType {
     NONE,
     WEDDING,
     BIRTHDAY,
@@ -26,7 +25,7 @@ data class PartyCoreInfoUiState(
     val zip: String = "",
     val city: String = "",
     val date: LocalDateTime = LocalDateTime.MAX,
-    val partyType: PartyTypes = PartyTypes.NONE
+    val partyType: PartyType = PartyType.NONE
 )
 
 

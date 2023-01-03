@@ -26,6 +26,7 @@ import com.example.partyplanner.ui.pages.guestlist.GuestListViewModel
 import com.example.partyplanner.ui.pages.login.LoginViewModel
 import com.example.partyplanner.ui.pages.login.SignInScreen
 import com.example.partyplanner.ui.pages.partiesList.NewPartyViewModel
+import com.example.partyplanner.ui.state.PartyType
 import com.example.partyplanner.ui.state.PartyViewModel
 import com.example.partyplanner.ui.theme.PartyPlannerTheme
 import com.google.firebase.firestore.ktx.firestore
@@ -93,7 +94,7 @@ fun PartyPlannerApp(viewModel: PartyViewModel){
                 StartPartyCreation(onNextButtonClick =  {
                     navigationController.navigateSingleTopTo(AdditionalPartyDataPage.route)
                 },
-                party = state.currentParty
+                    viewModel = NewPartyViewModel(PartyServiceImpl(loginService))
                 )
             }
 
