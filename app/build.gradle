@@ -48,7 +48,7 @@ android {
     }
     packagingOptions {
         resources {
-            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+            excludes += '/META-INF/*'
         }
     }
 }
@@ -85,4 +85,5 @@ dependencies {
     implementation 'com.google.firebase:firebase-config-ktx'
 
     implementation 'com.sendgrid:sendgrid-java:4.9.3'
+
 }
