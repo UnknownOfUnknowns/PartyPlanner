@@ -64,6 +64,15 @@ class GuestListViewModel(private val repository: GuestService) : ViewModel() {
         }
     }
 
+    fun changeInviteOn(newStatus: Boolean) {
+        _invitationUiState.update { currentState ->
+            currentState.copy(
+                inviteOn = newStatus
+            )
+
+        }
+    }
+
     fun sendInvitation() {
         viewModelScope.launch {
         }
@@ -81,7 +90,12 @@ class GuestListViewModel(private val repository: GuestService) : ViewModel() {
     fun addGuest() {
         viewModelScope.launch {
             var guest = Guest(name = _invitationUiState.value.guest)
-            repository.addGuest(guest)
+            repository.addGuest(guest) {
+                if(it == null) {
+                    changeGuestName("")
+                    changeInviteOn(false)
+                }
+            }
         }
     }
 }

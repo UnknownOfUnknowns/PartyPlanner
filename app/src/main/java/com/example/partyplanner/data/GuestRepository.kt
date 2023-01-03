@@ -20,7 +20,7 @@ data class Guest(
 interface GuestService{
     val guests: Flow<List<Guest>>
     suspend fun getGuests() : List<Guest>
-    suspend fun addGuest(guest: Guest)
+    suspend fun addGuest(guest: Guest, onResult: (Throwable?) -> Unit)
     suspend fun deleteGuest(guest: Guest, onResult: (Throwable?) ->Unit)
 }
 
@@ -39,12 +39,9 @@ class GuestRepository(private val firestore: FirebaseFirestore, @DocumentId priv
 
 
 
-    override suspend fun addGuest(guest: Guest) {
-        currentCollection().add(guest).addOnSuccessListener { documentReference ->
-            Log.d(TAG, "Id of added object: " + documentReference.id)
-        }.addOnFailureListener { e ->
-            Log.d(TAG, "ERROR ", e)
-        }
+    override suspend fun addGuest(guest: Guest, onResult: (Throwable?) -> Unit) {
+        currentCollection().add(guest).addOnSuccessListener { onResult(null) }
+            .addOnFailureListener { onResult(Exception()) }
     }
 
     override suspend fun deleteGuest(guest: Guest, onResult: (Throwable?) ->Unit) {

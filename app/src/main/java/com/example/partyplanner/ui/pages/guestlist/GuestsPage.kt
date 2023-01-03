@@ -1,5 +1,7 @@
 package com.example.partyplanner.ui.pages.guestlist
 
+import android.app.AlertDialog
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -40,7 +42,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 @Composable
 fun GuestListPage(viewModel: GuestListViewModel) {
     val uiState = viewModel.uiState.collectAsState()
-    val inviteOn = remember { mutableStateOf(false) }
     val deleteUserDialogOn = remember {
         mutableStateOf(false)
     }
@@ -58,9 +59,9 @@ fun GuestListPage(viewModel: GuestListViewModel) {
                 deleteUserDialogOn.value = true
             },uiState.value)
         }
-        if(inviteOn.value){
+        if(uiState.value.invitationState.inviteOn){
             SendInviteDialog(
-                onDismiss = { inviteOn.value = false },
+                onDismiss = { viewModel.changeInviteOn(false) },
                 onSend = { viewModel.addGuest()},
                 onAddressChange = {viewModel.changeSendingAddress(it)},
                 onMethodChange = {viewModel.changeSendingMethod(it)},
@@ -68,7 +69,7 @@ fun GuestListPage(viewModel: GuestListViewModel) {
                 sendInvitationUiState = uiState.value.invitationState
             )
         }
-        DefaultFAB(modifier = Modifier.align(Alignment.BottomEnd), onClick = {inviteOn.value = true})
+        DefaultFAB(modifier = Modifier.align(Alignment.BottomEnd), onClick = { viewModel.changeInviteOn(true) })
 
         if(deleteUserDialogOn.value) {
             DeleteGuestAlert(
@@ -255,6 +256,7 @@ fun SendInviteDialog(
                 Spacer(modifier = Modifier.height(10.dp))
                 Button(onClick = onSend, modifier = Modifier. fillMaxWidth()) {
                     Text(text = "Send Invitation")
+
                 }
             }
         }
@@ -302,7 +304,7 @@ fun DeleteGuestAlert(
         text = {
             Text(text = "Vil du slette denne gæst?")
         }
-    ) 
+    )
 }
 
 
