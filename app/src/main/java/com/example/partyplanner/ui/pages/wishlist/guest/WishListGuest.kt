@@ -24,7 +24,7 @@ fun WishListGuestPage(viewModel: WishListViewModel) {
         Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
             NameCardWishList(name = uiState.value.wishListName, modifier = Modifier.size(width = 350.dp, height = 120.dp ))
             Spacer(modifier = Modifier.height(17.dp))
-            WishList(uiState.value, showTopBar = true)
+            WishList(uiState.value.wishes, showTopBar = true)
         }
         ShareFAB(modifier = Modifier
             .align(Alignment.BottomEnd), onClick = {})

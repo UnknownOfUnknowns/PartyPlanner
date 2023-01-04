@@ -25,11 +25,15 @@ class PartyServiceImpl(private val account : AccountService) : PartyService {
     }
 
     override suspend fun addParty(party: Party, onResult: (Throwable?) -> Unit) {
-        currentCollection().add(party).addOnSuccessListener {
-            currentCollection().document(it.id).update(WISH_LIST_NAME_VARIABLE, party.partyName + " Ønskeliste")
+        Firebase.firestore.runTransaction {
+            currentCollection().add(party).addOnSuccessListener {
+                currentCollection().document(it.id).update(WISH_LIST_NAME_VARIABLE, party.partyName + " Ønskeliste")
+            }
+        }.addOnSuccessListener {
             onResult(null)
+        }.addOnFailureListener {
+            onResult(Exception())
         }
-            .addOnFailureListener { onResult(Exception()) }
     }
 
     private fun currentCollection() : CollectionReference =

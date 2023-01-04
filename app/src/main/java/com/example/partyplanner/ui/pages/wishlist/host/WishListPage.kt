@@ -29,8 +29,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.core.text.isDigitsOnly
+import com.example.partyplanner.R
 import com.example.partyplanner.data.wish.WishServiceImpl
-import com.example.partyplanner.ui.pages.wishlist.WishListUiState
 import com.example.partyplanner.ui.pages.wishlist.WishListViewModel
 import com.example.partyplanner.ui.pages.wishlist.WishUiState
 import com.example.partyplanner.ui.theme.AttendingInfoColor
@@ -50,7 +50,7 @@ fun WishListPage(viewModel: WishListViewModel){
         Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = CenterHorizontally) {
             NameCardWishList(name = uiState.value.wishListName, modifier = Modifier.size(width = 350.dp, height = 120.dp ))
             Spacer(modifier = Modifier.height(17.dp))
-            WishList(uiState.value)
+            WishList(uiState.value.wishes)
         }
         if(uiState.value.addWish){
             AddWishDialog(
@@ -263,8 +263,9 @@ fun Wish(modifier: Modifier = Modifier, wishUiState: WishUiState, showTopBar: Bo
                 if (showTopBar) {
                     WishTopBar(isReserved = wishUiState.isReserved, price = wishUiState.price)
                 }
+                TODO("Insert fetched Image and check if it is loadable")
                 Image(
-                painter = painterResource(id = wishUiState.image),
+                painter = painterResource(id = R.drawable.coffee_machine),
                 contentDescription = null,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -286,7 +287,7 @@ fun Wish(modifier: Modifier = Modifier, wishUiState: WishUiState, showTopBar: Bo
 
 
 @Composable
-fun WishList(wishes : WishListUiState, showTopBar: Boolean = false) {
+fun WishList(wishes : List<WishUiState>, showTopBar: Boolean = false) {
     Card(
         modifier = Modifier.padding(start = 11.dp, end = 11.dp, bottom = 30.dp),
         shape = RoundedCornerShape(15.dp),
@@ -298,7 +299,7 @@ fun WishList(wishes : WishListUiState, showTopBar: Boolean = false) {
                 .padding(vertical = 32.dp, horizontal = 28.dp)
                 .fillMaxSize(),
         ){
-            items(wishes.wishes){ wish ->
+            items(wishes){ wish ->
                 Wish(modifier = Modifier
                     .size(width = 150.dp, height = 150.dp)
                     .padding(8.dp),

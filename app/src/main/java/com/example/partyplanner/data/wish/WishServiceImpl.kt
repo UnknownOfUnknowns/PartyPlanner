@@ -39,7 +39,7 @@ class WishServiceImpl(private val firestore: FirebaseFirestore, @DocumentId priv
 
     override suspend fun getWishListName() : String{
         val snapshot = partiesCollection().document(partyId).get().await()
-        return snapshot.data?.get(WISH_LIST_NAME_VARIABLE).toString() ?: ""
+        return snapshot.data?.get(WISH_LIST_NAME_VARIABLE)?.toString() ?: ""
     }
 
     private fun wishCollection() : CollectionReference =
