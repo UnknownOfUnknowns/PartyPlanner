@@ -10,15 +10,12 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddAPhoto
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.BottomEnd
-import androidx.compose.ui.Alignment.Companion.BottomStart
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,7 +23,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -89,63 +85,62 @@ fun AddWishDialog(
             // Der skal justeres på højden af kortet.
     Dialog(onDismissRequest = onDismiss) {
         Card(modifier = Modifier
-            .fillMaxSize()
             .padding(all = 15.dp)
         ) {
             Column(
                 horizontalAlignment = CenterHorizontally,
                 modifier = Modifier
-                    .fillMaxSize()
                     .padding(horizontal = 10.dp)
             ) {
                 Text(
                     text = "Tilføj Ønske",
-                    modifier = Modifier.align(CenterHorizontally),
+                    modifier = Modifier
+                        .align(CenterHorizontally)
+                        .padding(vertical = 10.dp),
                     fontSize = 30.sp
                 )
-                TextField(
+                OutlinedTextField(
                     value = wishUiState.wishName, onValueChange = onWishNameChange,
-                    modifier = Modifier.align(CenterHorizontally),
+                    modifier = Modifier
+                        .align(CenterHorizontally)
+                        .padding(vertical = 10.dp),
                     label = { Text(text = "Indtast navn på ønske") },
                     colors = TextFieldDefaults.outlinedTextFieldColors(
                         containerColor = Color.White
                     ),
                 )
-                TextField(
+                OutlinedTextField(
                     value = wishUiState.link, onValueChange = onLinkChange,
-                    modifier = Modifier.align(CenterHorizontally),
+                    modifier = Modifier
+                        .align(CenterHorizontally)
+                        .padding(vertical = 10.dp),
                     label = { Text(text = "Evt. Link til ønsket") },
                     colors = TextFieldDefaults.outlinedTextFieldColors(
                         containerColor = Color.White
                     ),
                 )
-                TextField(
+                OutlinedTextField(
                     value = wishUiState.link, onValueChange = { onPriceChange(it.toInt()) },
-                    modifier = Modifier.align(CenterHorizontally),
+                    modifier = Modifier
+                        .align(CenterHorizontally)
+                        .padding(vertical = 10.dp),
                     label = { Text(text = "Pris på ønsket") },
                     colors = TextFieldDefaults.outlinedTextFieldColors(
                         containerColor = Color.White
                     ),
                 )
-                TextField(
-                    value = wishUiState.description, onValueChange = onDescriptionChange,
+                OutlinedTextField(
                     modifier = Modifier
-                        .height(48.dp)
+                        .padding(vertical = 10.dp)
                         .align(CenterHorizontally),
-                    label = {
-                        Text(
-                            text = "Tilføj en beskrivelse " +
-                                    " eller skriv en kommentar " +
-                                    "                          " +
-                                    "                          "
-                        )
-                    },
-                    colors = TextFieldDefaults.outlinedTextFieldColors(
-                        containerColor = Color.White
-                    ),
+                    value = wishUiState.description,
+                    onValueChange = onDescriptionChange,
+                    label = { Text(text = "Tilføj en beskrivelse") },
+                    colors = TextFieldDefaults.outlinedTextFieldColors(containerColor = Color.White),
+                    minLines = 3
+
                 )
 
-                Divider(Modifier.height(10.dp))
 
                 Row(modifier = Modifier
                     .fillMaxWidth()
@@ -156,23 +151,15 @@ fun AddWishDialog(
                     Divider(Modifier.width(4.dp))
                     Icon(imageVector = Icons.Default.AddAPhoto,
                         contentDescription = "add photo",
-                        tint = Color.White
                     )
                 }
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                ) {
-                    DeleteFAB(
-                        onClick = {}, modifier = Modifier
-                            .align(alignment = BottomStart)
-                            .padding(start = 4.dp, top = 6.dp)
-                )
-                    ApproveFAB(
-                        onClick = {}, modifier = Modifier
-                            .align(alignment = BottomEnd)
-                            .padding(end = 4.dp, top = 6.dp)
-                    )
+                Row() {
+                    TextButton(onClick = { /*TODO*/ }) {
+                        Text(text = "Afbryd")
+                    }
+                    TextButton(onClick = { /*TODO*/ }) {
+                        Text(text = "Opret", fontWeight = FontWeight.ExtraBold)
+                    }
                 }
             }
         }
