@@ -17,7 +17,6 @@ import com.example.partyplanner.data.GuestServiceImpl
 import com.example.partyplanner.data.PartiesRepository
 import com.example.partyplanner.data.account.AccountServiceImpl
 import com.example.partyplanner.data.party.PartyServiceImpl
-import com.example.partyplanner.data.wish.WishService
 import com.example.partyplanner.data.wish.WishServiceImpl
 import com.example.partyplanner.ui.elements.*
 import com.example.partyplanner.ui.pages.guestlist.GuestListPage
@@ -26,7 +25,7 @@ import com.example.partyplanner.ui.pages.login.LoginViewModel
 import com.example.partyplanner.ui.pages.login.SignInScreen
 import com.example.partyplanner.ui.pages.partiesList.NewPartyViewModel
 import com.example.partyplanner.ui.state.PartyViewModel
-import com.example.partyplanner.ui.state.WishListViewModel
+import com.example.partyplanner.ui.pages.wishlist.WishListViewModel
 import com.example.partyplanner.ui.theme.PartyPlannerTheme
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore

@@ -9,7 +9,6 @@ data class WishUiState(
     val description : String = "",
     val link : String = "",
     val isReserved : Boolean = false,
-    val isGuest : Boolean = false
 )
 
 
@@ -17,5 +16,6 @@ data class WishListUiState(
     val wishes : List<WishUiState> = listOf(),
     val wishListName : String = "",
     val newWish : WishUiState = WishUiState(),
-    val addWish : Boolean = false
+    val addWish : Boolean = false,
+    val isGuest : Boolean = false
 )

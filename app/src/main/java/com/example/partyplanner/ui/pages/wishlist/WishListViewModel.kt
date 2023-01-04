@@ -1,10 +1,10 @@
-package com.example.partyplanner.ui.state
+package com.example.partyplanner.ui.pages.wishlist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.partyplanner.data.wish.Wish
 import com.example.partyplanner.data.wish.WishService
-import com.example.partyplanner.ui.pages.wishlist.WishListUiState
+import com.example.partyplanner.data.wish.getFromUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -19,7 +19,10 @@ class WishListViewModel (private val repository : WishService) : ViewModel() {
 
     init {
         viewModelScope.launch {
-            repository.getWishes()
+            val name = repository.getWishListName()
+            _uiState.update {
+                it.copy(wishListName = name)
+            }
         }
     }
 
@@ -61,14 +64,16 @@ class WishListViewModel (private val repository : WishService) : ViewModel() {
         }
     }
 
-    fun addWishes() {
+    fun addWish() {
         viewModelScope.launch {
             val state = _uiState.value
-            repository.addWish(Wish(
-                wishName = state.newWish.wishName
-            ), onResult = {
-
-            })
+            repository.addWish(Wish().getFromUiState(state.newWish)){
+                if(it==null) {
+                    _uiState.update { currentState ->
+                        currentState.copy(newWish = WishUiState(), addWish = false)
+                    }
+                }
+            }
         }
     }
 }

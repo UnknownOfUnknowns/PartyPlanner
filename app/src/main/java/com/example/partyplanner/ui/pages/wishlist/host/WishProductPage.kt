@@ -58,7 +58,7 @@ fun WishDescription(wishUiState: WishUiState, showButton: Boolean = false) {
     }
 }*/
 @Composable
-fun CardWithProduct(modifier: Modifier = Modifier, wishUiState: WishUiState) {
+fun CardWithProduct(modifier: Modifier = Modifier, wishUiState: WishUiState, isGuest : Boolean) {
     Card(
         modifier = modifier.padding(start = 11.dp, end = 11.dp, bottom = 30.dp),
         shape = RoundedCornerShape(15.dp),
@@ -93,8 +93,7 @@ fun CardWithProduct(modifier: Modifier = Modifier, wishUiState: WishUiState) {
             )
 
             Text(text = wishUiState.description)
-
-            if(wishUiState.isGuest) {
+            if(isGuest) {
                 Column {
                     GuestButton(buttonName = "Link")
                     Spacer(modifier = Modifier.height(10.dp))
@@ -149,7 +148,7 @@ fun DeleteFAB(onClick: () -> Unit, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun WishProductPage(wishUiState: WishUiState) {
+fun WishProductPage(wishUiState: WishUiState, isGuest: Boolean) {
     Box(modifier = Modifier
         .fillMaxSize()
         .background(MaterialTheme.colorScheme.background)
@@ -163,9 +162,10 @@ fun WishProductPage(wishUiState: WishUiState) {
                 .fillMaxWidth()
                 .height(120.dp)
                 .padding(start = 11.dp, end = 11.dp, bottom = 17.dp))
-            CardWithProduct(wishUiState = wishUiState)
+            CardWithProduct(wishUiState = wishUiState, isGuest = isGuest)
         }
-        if(!wishUiState.isGuest) {
+
+        if(!isGuest) {
             DeleteFAB(
                 onClick = {}, modifier = Modifier
                     .align(BottomStart)
@@ -187,5 +187,5 @@ fun WishProductPreview() {
         wishName = "ROLEX",
         price = 15000,
         description = "FED KAFFEMASKINE!",
-        link = "www.elgigantos.dk", isGuest = true))
+        link = "www.elgigantos.dk"), isGuest = false)
 }

@@ -31,8 +31,8 @@ import androidx.compose.ui.window.Dialog
 import androidx.core.text.isDigitsOnly
 import com.example.partyplanner.data.wish.WishServiceImpl
 import com.example.partyplanner.ui.pages.wishlist.WishListUiState
+import com.example.partyplanner.ui.pages.wishlist.WishListViewModel
 import com.example.partyplanner.ui.pages.wishlist.WishUiState
-import com.example.partyplanner.ui.state.WishListViewModel
 import com.example.partyplanner.ui.theme.AttendingInfoColor
 import com.example.partyplanner.ui.theme.Background
 import com.example.partyplanner.ui.theme.Primary
@@ -55,7 +55,7 @@ fun WishListPage(viewModel: WishListViewModel){
         if(uiState.value.addWish){
             AddWishDialog(
                 onDismiss = { viewModel.changeWishOn(false) },
-                onAddWish = {viewModel.addWishes()},
+                onAddWish = {viewModel.addWish()},
                 wishUiState = uiState.value.newWish,
                 onWishNameChange = { viewModel.changeWishName(it)},
                 onLinkChange = { viewModel.changeLinkName(it)},

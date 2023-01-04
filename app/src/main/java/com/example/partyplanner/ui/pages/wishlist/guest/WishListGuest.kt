@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.partyplanner.data.wish.WishServiceImpl
-import com.example.partyplanner.ui.state.WishListViewModel
+import com.example.partyplanner.ui.pages.wishlist.WishListViewModel
 import com.example.partyplanner.ui.theme.Background
 import com.google.firebase.firestore.FirebaseFirestore
 

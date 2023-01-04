@@ -1,6 +1,5 @@
 package com.example.partyplanner.data.wish
 
-import com.example.partyplanner.data.party.Party
 import kotlinx.coroutines.flow.Flow
 
 
@@ -12,4 +11,6 @@ interface WishService {
     suspend fun addWish(wish: Wish, onResult: (Throwable?) -> Unit)
 
     suspend fun deleteWish(wish: Wish, onResult: (Throwable?) -> Unit)
+
+    suspend fun getWishListName() : String
 }
