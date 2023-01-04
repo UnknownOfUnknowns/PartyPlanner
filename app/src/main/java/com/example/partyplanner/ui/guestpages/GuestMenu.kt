@@ -1,6 +1,5 @@
 package com.example.partyplanner.ui.guestpages
 
-import android.graphics.Color
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
@@ -20,8 +19,30 @@ import com.example.partyplanner.ui.theme.*
 
 
 @Composable
-fun GuestMenuPage(attendanceState: AttendanceState = AttendanceState.NOT_ATTENDING) {
+fun GuestMenuPage(attendanceState: AttendanceState = AttendanceState.AWAITING) {
 
+    FadeBackground() {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Spacer (modifier = Modifier.height(20.dp))
+
+            Text(text = "EVENTNAVN")
+
+            Spacer (modifier = Modifier.height(20.dp))
+
+            InviteArea(attendanceState = attendanceState)
+
+            Spacer (modifier = Modifier.height(15.dp))
+
+            WishListButtonInvitationMenu()
+        }
+    }
+}
+
+@Composable
+fun InviteArea(attendanceState: AttendanceState) {
     var invitationColorState = BudgetBoxColor
 
     if (attendanceState == AttendanceState.AWAITING){
@@ -35,57 +56,37 @@ fun GuestMenuPage(attendanceState: AttendanceState = AttendanceState.NOT_ATTENDI
         invitationColorState = NotAttendingColor
     }
 
+    Column(
+        modifier = Modifier
+            .background(invitationColorState)
+            .fillMaxWidth()
+            .padding(30.dp)
+    ){
+        Text(text = "EVENT")
 
-    FadeBackground() {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        )
-        {
-            Spacer (modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(10.dp))
 
-            Text(text = "EVENTNAVN")
+        Text(text = "BESKRIVELSE")
 
-            Spacer (modifier = Modifier.height(20.dp))
-
-            Column(
-                modifier = Modifier
-                    .background(invitationColorState)
-                    .fillMaxWidth()
-                    .padding(30.dp)
-            ){
-                Text(text = "EVENT")
-
-                Spacer(modifier = Modifier.height(10.dp))
-
-                Text(text = "BESKRIVELSE")
-
-                Spacer (modifier = Modifier.height(10.dp))
+        Spacer (modifier = Modifier.height(10.dp))
 
 
-                if (attendanceState == AttendanceState.AWAITING){
-                    Text(text = "")
-                    BottomBarWhenAwaiting()
-                }
-                if (attendanceState == AttendanceState.ATTENDS){
-                    Text(text = "Du deltager til denne begivenhed", color = AlreadyAttendingTextColor)
-                    Spacer (modifier = Modifier.height(10.dp))
-                    BottomBarWhenAttends()
-                }
-                if (attendanceState == AttendanceState.NOT_ATTENDING){
-                    Text(text = "Du deltager ikke til denne begivenhed", color = androidx.compose.ui.graphics.Color.Red)
-                    Spacer (modifier = Modifier.height(10.dp))
-                    BottomBarWhenNotAttending()
-                }
-            }
-
-            Spacer (modifier = Modifier.height(15.dp))
-
-            WishListButtonInvitationMenu()
+        if (attendanceState == AttendanceState.AWAITING){
+            Text(text = "")
+            BottomBarWhenAwaiting()
+        }
+        if (attendanceState == AttendanceState.ATTENDS){
+            Text(text = "Du deltager til denne begivenhed", color = AlreadyAttendingTextColor)
+            Spacer (modifier = Modifier.height(10.dp))
+            BottomBarWhenAttends(modifier = Modifier.align(Alignment.CenterHorizontally))
+        }
+        if (attendanceState == AttendanceState.NOT_ATTENDING){
+            Text(text = "Du deltager ikke til denne begivenhed", color = androidx.compose.ui.graphics.Color.Red)
+            Spacer (modifier = Modifier.height(10.dp))
+            BottomBarWhenNotAttending(modifier = Modifier.align(Alignment.CenterHorizontally))
         }
     }
 }
-
 
 @Composable
 fun BottomBarWhenAwaiting(){
@@ -112,22 +113,26 @@ fun BottomBarWhenAwaiting(){
 }
 
 @Composable
-fun BottomBarWhenAttends(){
+fun BottomBarWhenAttends(modifier : Modifier = Modifier){
     Button(
         onClick = {},
         colors = ButtonDefaults.buttonColors(
-            NotAttendingColor)) {
+            NotAttendingColor),
+        modifier = modifier
+    ) {
         Text("Meld afbud", color = OnPrimaryContainer)
 
     }
 }
 
 @Composable
-fun BottomBarWhenNotAttending(){
+fun BottomBarWhenNotAttending(modifier : Modifier = Modifier){
     Button(
         onClick = {},
-        colors = ButtonDefaults.buttonColors(
-            AttendingColor)) {
+
+        colors = ButtonDefaults.buttonColors(AttendingColor),
+        modifier = modifier
+    ) {
         Text("Deltag", color = OnPrimaryContainer)
 
     }
