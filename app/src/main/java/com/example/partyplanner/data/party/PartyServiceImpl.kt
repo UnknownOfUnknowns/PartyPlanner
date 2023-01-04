@@ -1,8 +1,8 @@
 package com.example.partyplanner.data.party
 
-import com.example.partyplanner.data.Guest
 import com.example.partyplanner.data.HOST_VARIABLE
 import com.example.partyplanner.data.PARTIES_COLLECTION
+import com.example.partyplanner.data.WISH_LIST_NAME_VARIABLE
 import com.example.partyplanner.data.account.AccountService
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.CollectionReference
@@ -25,7 +25,10 @@ class PartyServiceImpl(private val account : AccountService) : PartyService {
     }
 
     override suspend fun addParty(party: Party, onResult: (Throwable?) -> Unit) {
-        currentCollection().add(party).addOnSuccessListener { onResult(null) }
+        currentCollection().add(party).addOnSuccessListener {
+            currentCollection().document(it.id).update(WISH_LIST_NAME_VARIABLE, party.partyName + " Ønskeliste")
+            onResult(null)
+        }
             .addOnFailureListener { onResult(Exception()) }
     }
 

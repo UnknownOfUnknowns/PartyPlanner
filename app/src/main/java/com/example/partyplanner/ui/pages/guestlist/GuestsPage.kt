@@ -1,7 +1,5 @@
 package com.example.partyplanner.ui.pages.guestlist
 
-import android.app.AlertDialog
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -33,7 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.example.partyplanner.data.Guest
-import com.example.partyplanner.data.GuestRepository
+import com.example.partyplanner.data.GuestServiceImpl
 import com.example.partyplanner.ui.elements.DefaultFAB
 import com.example.partyplanner.ui.state.AttendanceState
 import com.example.partyplanner.ui.theme.*
@@ -318,7 +316,7 @@ fun SendInviteDialogPreview() {
 @Preview(showBackground = true)
 @Composable
 fun QuestOverviewPreview() {
-    val viewModel = GuestListViewModel(GuestRepository(firestore = FirebaseFirestore.getInstance(), "7v3WIdoU8FmJFnb3fvA7"))
+    val viewModel = GuestListViewModel(GuestServiceImpl(firestore = FirebaseFirestore.getInstance(), "7v3WIdoU8FmJFnb3fvA7"))
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -331,7 +329,7 @@ fun QuestOverviewPreview() {
 @Preview
 @Composable
 fun GuestListPagePreview() {
-    val viewModel = GuestListViewModel(GuestRepository(firestore = FirebaseFirestore.getInstance(),"7v3WIdoU8FmJFnb3fvA7"))
+    val viewModel = GuestListViewModel(GuestServiceImpl(firestore = FirebaseFirestore.getInstance(),"7v3WIdoU8FmJFnb3fvA7"))
 
     GuestListPage(viewModel = viewModel)
 
