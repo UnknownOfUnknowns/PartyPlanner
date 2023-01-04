@@ -27,7 +27,7 @@ interface GuestService{
 
 
 
-class GuestRepository(private val firestore: FirebaseFirestore, @DocumentId private val partyId: String) : GuestService {
+class GuestServiceImpl(private val firestore: FirebaseFirestore, @DocumentId private val partyId: String) : GuestService {
 
     override val guests: Flow<List<Guest>>
         get() = currentCollection().snapshots().map { snapshot -> snapshot.toObjects() }

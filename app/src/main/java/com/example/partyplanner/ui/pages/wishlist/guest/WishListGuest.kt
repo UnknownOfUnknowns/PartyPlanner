@@ -8,8 +8,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.partyplanner.data.wish.WishServiceImpl
 import com.example.partyplanner.ui.state.WishListViewModel
 import com.example.partyplanner.ui.theme.Background
+import com.google.firebase.firestore.FirebaseFirestore
 
 @Composable
 fun WishListGuestPage(viewModel: WishListViewModel) {
@@ -34,5 +36,5 @@ fun WishListGuestPage(viewModel: WishListViewModel) {
 @Composable
 @Preview(showBackground = true)
 fun WishListGuestPreview() {
-    WishListGuestPage(viewModel = WishListViewModel())
+    WishListGuestPage(viewModel = WishListViewModel(WishServiceImpl(firestore = FirebaseFirestore.getInstance(),"7v3WIdoU8FmJFnb3fvA7")))
 }

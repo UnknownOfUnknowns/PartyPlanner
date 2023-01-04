@@ -1,37 +1,74 @@
 package com.example.partyplanner.ui.state
 
 import androidx.lifecycle.ViewModel
-import com.example.partyplanner.R
+import androidx.lifecycle.viewModelScope
+import com.example.partyplanner.data.wish.Wish
+import com.example.partyplanner.data.wish.WishService
 import com.example.partyplanner.ui.pages.wishlist.WishListUiState
-import com.example.partyplanner.ui.pages.wishlist.WishUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
-class WishListViewModel : ViewModel() {
+class WishListViewModel (private val repository : WishService) : ViewModel() {
+    val wishes = repository.wishes
     private val _uiState = MutableStateFlow(WishListUiState())
     val uiState: StateFlow<WishListUiState> = _uiState.asStateFlow()
 
 
     init {
-        fetchWishes()
-
-
+        viewModelScope.launch {
+            repository.getWishes()
+        }
     }
-    // Dummy function should get data from repository
-    fun fetchWishes() {
-        _uiState.update {
-            it.copy(wishes = listOf(
-                WishUiState(image = R.drawable._nske2, wishName = "Ting"),
-                WishUiState(image = R.drawable.coffee_machine, wishName = "Ting"),
-                WishUiState(image = R.drawable._nske3, wishName = "Ting"),
-                WishUiState(image = R.drawable._nske2, wishName = "Ting"),
-                WishUiState(image = R.drawable.coffee_machine, wishName = "Ting", price = 1000),
-                WishUiState(image = R.drawable._nske3, wishName = "Ting", isReserved = true),
-            ),
-                wishListName = "Hans' Ønskeliste"
+
+    fun changeWishOn(newStatus: Boolean) {
+        _uiState.update { currentState ->
+            currentState.copy(
+                addWish = newStatus
             )
+        }
+    }
+    fun changeWishName(newName: String) {
+        _uiState.update { currentState ->
+            currentState.copy(
+                newWish = currentState.newWish.copy(wishName = newName)
+            )
+        }
+    }
+    fun changeLinkName(newLink: String) {
+        _uiState.update { currentState ->
+            currentState.copy(
+                newWish = currentState.newWish.copy(link = newLink)
+            )
+
+        }
+    }
+    fun changeDescription(newDescript: String) {
+        _uiState.update { currentState ->
+            currentState.copy(
+                newWish = currentState.newWish.copy(description = newDescript)
+            )
+        }
+    }
+    fun changePrice(newPrice: Int) {
+        _uiState.update { currentState ->
+            currentState.copy(
+                newWish = currentState.newWish.copy(price = newPrice)
+            )
+
+        }
+    }
+
+    fun addWishes() {
+        viewModelScope.launch {
+            val state = _uiState.value
+            repository.addWish(Wish(
+                wishName = state.wishListName
+            ), onResult = {
+
+            })
         }
     }
 }

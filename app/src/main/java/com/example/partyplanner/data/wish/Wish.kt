@@ -1,8 +1,8 @@
-package com.example.partyplanner.ui.pages.wishlist
+package com.example.partyplanner.data.wish
 
 import androidx.annotation.DrawableRes
 
-data class WishUiState(
+data class Wish(
     @DrawableRes val image: Int = 0,
     val wishName: String = "",
     val price: Int = 0,
@@ -10,12 +10,4 @@ data class WishUiState(
     val link : String = "",
     val isReserved : Boolean = false,
     val isGuest : Boolean = false
-)
-
-
-data class WishListUiState(
-    val wishes : List<WishUiState> = listOf(),
-    val wishListName : String = "",
-    val newWish : WishUiState = WishUiState(),
-    val addWish : Boolean = false
 )

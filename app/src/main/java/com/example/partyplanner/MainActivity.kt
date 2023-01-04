@@ -13,22 +13,22 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.partyplanner.data.GuestRepository
+import com.example.partyplanner.data.GuestServiceImpl
 import com.example.partyplanner.data.PartiesRepository
 import com.example.partyplanner.data.account.AccountServiceImpl
 import com.example.partyplanner.data.party.PartyServiceImpl
-import com.example.partyplanner.ui.elements.CreatePartyConfirmation
-import com.example.partyplanner.ui.elements.PartyListAndCreate
-import com.example.partyplanner.ui.elements.SetPartyDataOnCreation
-import com.example.partyplanner.ui.elements.StartPartyCreation
+import com.example.partyplanner.data.wish.WishService
+import com.example.partyplanner.data.wish.WishServiceImpl
+import com.example.partyplanner.ui.elements.*
 import com.example.partyplanner.ui.pages.guestlist.GuestListPage
 import com.example.partyplanner.ui.pages.guestlist.GuestListViewModel
 import com.example.partyplanner.ui.pages.login.LoginViewModel
 import com.example.partyplanner.ui.pages.login.SignInScreen
 import com.example.partyplanner.ui.pages.partiesList.NewPartyViewModel
-import com.example.partyplanner.ui.state.PartyType
 import com.example.partyplanner.ui.state.PartyViewModel
+import com.example.partyplanner.ui.state.WishListViewModel
 import com.example.partyplanner.ui.theme.PartyPlannerTheme
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
@@ -73,10 +73,15 @@ fun PartyPlannerApp(viewModel: PartyViewModel){
             composable(route = LoginPage.route) {
                 val loginViewModel = LoginViewModel(loginService) {
                     navigationController.navigateSingleTopTo(
-                        PartiesOverviewPage.route
+                        WishPage.route
                     )
                 }
                 SignInScreen(loginViewModel)
+            }
+            composable(route = WishPage.route) {
+                val wishViewModel = WishListViewModel(WishServiceImpl(firestore = FirebaseFirestore.getInstance(),"7v3WIdoU8FmJFnb3fvA7"))
+
+                WishListPage(wishViewModel)
             }
             composable(route = PartiesOverviewPage.route) {
                 viewModel.fetchParties()
@@ -116,7 +121,7 @@ fun PartyPlannerApp(viewModel: PartyViewModel){
 
             composable(route = Guestlist.route){
                 val db = Firebase.firestore
-                GuestListPage(viewModel = GuestListViewModel(GuestRepository(db, "7v3WIdoU8FmJFnb3fvA7")))
+                GuestListPage(viewModel = GuestListViewModel(GuestServiceImpl(db, "7v3WIdoU8FmJFnb3fvA7")))
             }
         }
     }
