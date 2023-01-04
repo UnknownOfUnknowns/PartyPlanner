@@ -134,63 +134,6 @@ fun BottomBarWhenNotAttending(){
 }
 
 
-
-
-
-
-@Composable
-fun InvitationAttendingMenu(){
-    Column(modifier = Modifier
-        .background(AttendingColor)
-        .fillMaxWidth()
-        .padding(30.dp)) {
-
-        Text(text = "EVENTBESKRIVELSE")
-
-        Spacer (modifier = Modifier.height(10.dp))
-
-        Text(text = "Du deltager til denne begivenhed", color = AlreadyAttendingTextColor)
-
-        Spacer (modifier = Modifier.height(50.dp))
-
-        Button(
-            onClick = {},
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            colors = ButtonDefaults.buttonColors(
-            NotAttendingColor)) {
-            Text("Meld afbud", color = OnPrimaryContainer)
-
-        }
-    }
-}
-
-@Composable
-fun InvitationNotAttendingMenu(){
-    Column(modifier = Modifier
-        .background(AttendingColor)
-        .fillMaxWidth()
-        .padding(30.dp)) {
-
-        Text(text = "EVENTBESKRIVELSE")
-
-        Spacer (modifier = Modifier.height(10.dp))
-
-        Text(text = "Du deltager ikke til denne begivenhed", color = androidx.compose.ui.graphics.Color.Red)
-
-        Spacer (modifier = Modifier.height(50.dp))
-
-        Button(
-            onClick = {},
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            colors = ButtonDefaults.buttonColors(
-                NotAttendingColor)) {
-            Text("Deltag", color = AttendingColor)
-
-        }
-    }
-}
-
-
 @Composable
 fun WishListButtonInvitationMenu(){
     Button(onClick = {}) {
