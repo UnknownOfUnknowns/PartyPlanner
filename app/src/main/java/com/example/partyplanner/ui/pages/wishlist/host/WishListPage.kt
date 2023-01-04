@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddAPhoto
 import androidx.compose.material.icons.filled.Done
@@ -22,10 +23,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import androidx.core.text.isDigitsOnly
 import com.example.partyplanner.data.wish.WishServiceImpl
 import com.example.partyplanner.ui.pages.wishlist.WishListUiState
 import com.example.partyplanner.ui.pages.wishlist.WishUiState
@@ -85,7 +88,8 @@ fun AddWishDialog(
             // Der skal justeres på højden af kortet.
     Dialog(onDismissRequest = onDismiss) {
         Card(modifier = Modifier
-            .padding(all = 15.dp)
+            .padding(all = 15.dp),
+            shape = RoundedCornerShape(10)
         ) {
             Column(
                 horizontalAlignment = CenterHorizontally,
@@ -108,6 +112,7 @@ fun AddWishDialog(
                     colors = TextFieldDefaults.outlinedTextFieldColors(
                         containerColor = Color.White
                     ),
+                    shape = RoundedCornerShape(10)
                 )
                 OutlinedTextField(
                     value = wishUiState.link, onValueChange = onLinkChange,
@@ -118,9 +123,16 @@ fun AddWishDialog(
                     colors = TextFieldDefaults.outlinedTextFieldColors(
                         containerColor = Color.White
                     ),
+                    shape = RoundedCornerShape(10)
                 )
                 OutlinedTextField(
-                    value = wishUiState.link, onValueChange = { onPriceChange(it.toInt()) },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    value = wishUiState.price.toString(),
+                    onValueChange = {
+                        if (it.isDigitsOnly()) {
+                            onPriceChange(it.toInt())
+                        }
+                    },
                     modifier = Modifier
                         .align(CenterHorizontally)
                         .padding(vertical = 10.dp),
@@ -128,6 +140,7 @@ fun AddWishDialog(
                     colors = TextFieldDefaults.outlinedTextFieldColors(
                         containerColor = Color.White
                     ),
+                    shape = RoundedCornerShape(10)
                 )
                 OutlinedTextField(
                     modifier = Modifier
@@ -137,8 +150,8 @@ fun AddWishDialog(
                     onValueChange = onDescriptionChange,
                     label = { Text(text = "Tilføj en beskrivelse") },
                     colors = TextFieldDefaults.outlinedTextFieldColors(containerColor = Color.White),
-                    minLines = 3
-
+                    minLines = 3,
+                    shape = RoundedCornerShape(10)
                 )
 
 
@@ -153,11 +166,13 @@ fun AddWishDialog(
                         contentDescription = "add photo",
                     )
                 }
+                // Opret skal add wish, og føre tilbage til wishpage
+                // Afbryg skal føre tilbage til wishpage(Dissmiss-Request)
                 Row() {
-                    TextButton(onClick = { /*TODO*/ }) {
+                    TextButton(onClick = onDismiss) {
                         Text(text = "Afbryd")
                     }
-                    TextButton(onClick = { /*TODO*/ }) {
+                    TextButton(onClick = onAddWish) {
                         Text(text = "Opret", fontWeight = FontWeight.ExtraBold)
                     }
                 }

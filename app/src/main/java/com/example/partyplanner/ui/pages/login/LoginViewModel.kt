@@ -3,7 +3,6 @@ package com.example.partyplanner.ui.pages.login
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.example.partyplanner.data.account.AccountService
-import com.example.partyplanner.ui.elements.SendEmail
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 
 /**

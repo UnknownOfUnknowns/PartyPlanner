@@ -65,7 +65,7 @@ class WishListViewModel (private val repository : WishService) : ViewModel() {
         viewModelScope.launch {
             val state = _uiState.value
             repository.addWish(Wish(
-                wishName = state.wishListName
+                wishName = state.newWish.wishName
             ), onResult = {
 
             })
