@@ -24,8 +24,8 @@ import com.example.partyplanner.ui.pages.guestlist.GuestListViewModel
 import com.example.partyplanner.ui.pages.login.LoginViewModel
 import com.example.partyplanner.ui.pages.login.SignInScreen
 import com.example.partyplanner.ui.pages.partiesList.NewPartyViewModel
-import com.example.partyplanner.ui.state.PartyViewModel
 import com.example.partyplanner.ui.pages.wishlist.WishListViewModel
+import com.example.partyplanner.ui.state.PartyViewModel
 import com.example.partyplanner.ui.theme.PartyPlannerTheme
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
@@ -37,7 +37,6 @@ class MainActivity : ComponentActivity() {
     private val viewModel = PartyViewModel(PartiesRepository)
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
 
         setContent {
@@ -72,7 +71,7 @@ fun PartyPlannerApp(viewModel: PartyViewModel){
             composable(route = LoginPage.route) {
                 val loginViewModel = LoginViewModel(loginService) {
                     navigationController.navigateSingleTopTo(
-                        WishPage.route
+                        BudgetPage.route
                     )
                 }
                 SignInScreen(loginViewModel)
@@ -92,6 +91,9 @@ fun PartyPlannerApp(viewModel: PartyViewModel){
                     },
                     onEdit = {navigationController.navigateSingleTopTo(Guestlist.route)}
                 )
+            }
+            composable(route = BudgetPage.route) {
+                TODO("INSERT BUDGET PAGE COMPOSABLE")
             }
             composable(route = NewPartyPage.route) {
 
