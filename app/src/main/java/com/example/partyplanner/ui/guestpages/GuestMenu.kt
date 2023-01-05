@@ -35,28 +35,24 @@ fun GuestMenuPage(viewModel: GuestMenuViewModel) {
 
             Spacer (modifier = Modifier.height(20.dp))
 
-            InviteArea(uiState.value.attendingState, uiState.value.eventName, uiState.value.eventDescription)
+            InviteArea(uiState.value.attendingState, uiState.value.eventDescription,
+                updateAttendanceState = {viewModel.updateAttendanceState(it)})
 
             Spacer (modifier = Modifier.height(15.dp))
 
-            WishListButtonInvitationMenu()
+            WishListButton(onWishListPress = viewModel::navigateToWishList)
         }
     }
 }
 
 @Composable
-fun InviteArea(attendanceState: AttendanceState, eventTitle: String, eventDesription: String) {
-    var invitationColorState = BudgetBoxColor
-
-    if (attendanceState == AttendanceState.AWAITING){
-        invitationColorState = BudgetBoxColor
-    }
-    if (attendanceState == AttendanceState.ATTENDS){
-        invitationColorState = AttendingColor
-    }
-
-    if (attendanceState == AttendanceState.NOT_ATTENDING){
-        invitationColorState = NotAttendingColor
+fun InviteArea(attendanceState: AttendanceState,
+               eventDescription: String,
+               updateAttendanceState: (AttendanceState) -> Unit) {
+    val invitationColorState = when (attendanceState) {
+        AttendanceState.AWAITING -> BudgetBoxColor
+        AttendanceState.ATTENDS -> AttendingColor
+        else -> NotAttendingColor
     }
 
     Column(
@@ -65,39 +61,45 @@ fun InviteArea(attendanceState: AttendanceState, eventTitle: String, eventDesrip
             .fillMaxWidth()
             .padding(30.dp)
     ){
-        Text(text = eventTitle)
 
         Spacer(modifier = Modifier.height(10.dp))
 
-        Text(text = eventDesription)
+        Text(text = eventDescription)
 
         Spacer (modifier = Modifier.height(10.dp))
 
 
-        if (attendanceState == AttendanceState.AWAITING){
-            Text(text = "")
-            BottomBarWhenAwaiting()
-        }
-        if (attendanceState == AttendanceState.ATTENDS){
-            Text(text = "Du deltager til denne begivenhed", color = AlreadyAttendingTextColor)
-            Spacer (modifier = Modifier.height(10.dp))
-            BottomBarWhenAttends(modifier = Modifier.align(Alignment.CenterHorizontally))
-        }
-        if (attendanceState == AttendanceState.NOT_ATTENDING){
-            Text(text = "Du deltager ikke til denne begivenhed", color = androidx.compose.ui.graphics.Color.Red)
-            Spacer (modifier = Modifier.height(10.dp))
-            BottomBarWhenNotAttending(modifier = Modifier.align(Alignment.CenterHorizontally))
+        when (attendanceState) {
+            AttendanceState.AWAITING -> {
+                Text(text = "")
+                BottomBarWhenAwaiting(updateAttendanceState)
+            }
+            AttendanceState.ATTENDS -> {
+                Text(text = "Du deltager til denne begivenhed", color = AlreadyAttendingTextColor)
+                Spacer (modifier = Modifier.height(10.dp))
+
+                BottomBarWhenAttends(
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                    updateAttendanceState= updateAttendanceState
+                )
+            }
+            AttendanceState.NOT_ATTENDING -> {
+                Text(text = "Du deltager ikke til denne begivenhed", color = androidx.compose.ui.graphics.Color.Red)
+                Spacer (modifier = Modifier.height(10.dp))
+                BottomBarWhenNotAttending(
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                    updateAttendanceState = updateAttendanceState
+                )
+            }
         }
     }
 }
 
 @Composable
-fun BottomBarWhenAwaiting(){
-    Row(){
-
-
+fun BottomBarWhenAwaiting(updateAttendanceState: (AttendanceState) -> Unit){
+    Row{
         Button(onClick = {
-            AttendanceState.ATTENDS
+            updateAttendanceState(AttendanceState.ATTENDS)
         },
             colors = ButtonDefaults.buttonColors(AttendingColor)) {
 
@@ -107,7 +109,7 @@ fun BottomBarWhenAwaiting(){
         Spacer (modifier = Modifier.weight(1f))
 
         Button(onClick = {
-            AttendanceState.NOT_ATTENDING
+            updateAttendanceState(AttendanceState.NOT_ATTENDING)
         },  colors = ButtonDefaults.buttonColors(
             NotAttendingColor)) {
             Text("Deltager ikke", color = OnPrimaryContainer)
@@ -116,9 +118,9 @@ fun BottomBarWhenAwaiting(){
 }
 
 @Composable
-fun BottomBarWhenAttends(modifier : Modifier = Modifier){
+fun BottomBarWhenAttends(modifier : Modifier = Modifier, updateAttendanceState: (AttendanceState) -> Unit){
     Button(
-        onClick = {},
+        onClick = {updateAttendanceState(AttendanceState.NOT_ATTENDING)},
         colors = ButtonDefaults.buttonColors(
             NotAttendingColor),
         modifier = modifier
@@ -129,9 +131,9 @@ fun BottomBarWhenAttends(modifier : Modifier = Modifier){
 }
 
 @Composable
-fun BottomBarWhenNotAttending(modifier : Modifier = Modifier){
+fun BottomBarWhenNotAttending(modifier : Modifier = Modifier, updateAttendanceState: (AttendanceState) -> Unit){
     Button(
-        onClick = {},
+        onClick = {updateAttendanceState(AttendanceState.ATTENDS)},
 
         colors = ButtonDefaults.buttonColors(AttendingColor),
         modifier = modifier
@@ -143,8 +145,8 @@ fun BottomBarWhenNotAttending(modifier : Modifier = Modifier){
 
 
 @Composable
-fun WishListButtonInvitationMenu(){
-    Button(onClick = {}) {
+fun WishListButton(onWishListPress : () -> Unit){
+    Button(onClick = onWishListPress) {
 
         Text("Ønskeliste")
 
@@ -154,4 +156,10 @@ fun WishListButtonInvitationMenu(){
         modifier = Modifier.size(ButtonDefaults.IconSize))
 
     }
+}
+
+@Preview
+@Composable
+fun GuestMenuPreview() {
+    GuestMenuPage(viewModel = GuestMenuViewModel())
 }
