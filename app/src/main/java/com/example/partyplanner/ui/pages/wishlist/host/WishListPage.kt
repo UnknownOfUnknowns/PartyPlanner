@@ -30,7 +30,9 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.core.text.isDigitsOnly
 import com.example.partyplanner.R
+import com.example.partyplanner.data.budget.BudgetServiceImpl
 import com.example.partyplanner.data.wish.WishServiceImpl
+import com.example.partyplanner.ui.pages.budget.BudgetViewModel
 import com.example.partyplanner.ui.pages.wishlist.WishListViewModel
 import com.example.partyplanner.ui.pages.wishlist.WishUiState
 import com.example.partyplanner.ui.theme.AttendingInfoColor
@@ -63,11 +65,12 @@ fun WishListPage(viewModel: WishListViewModel){
                 onDescriptionChange = { viewModel.changeDescription(it)}
             )
         }
-        DefaultFAB(modifier = Modifier
-            .align(Alignment.BottomEnd), onClick = { viewModel.changeWishOn(true) })
-        ShareFAB(modifier = Modifier
-            .align(Alignment.BottomStart), onClick = {})
-
+        if(!uiState.value.addWish) {
+            DefaultFAB(modifier = Modifier
+                .align(Alignment.BottomEnd), onClick = { viewModel.changeWishOn(true) })
+            ShareFAB(modifier = Modifier
+                .align(Alignment.BottomStart), onClick = {})
+        }
     }
 
 }
@@ -84,8 +87,7 @@ fun AddWishDialog(
 
 
     ) {
-            // Her er der indsat fillMaxSize for at se hvordan hele kortet ser ud.
-            // Der skal justeres på højden af kortet.
+            // Det skal være muligt at indtaste æ,ø,å i add wish
     Dialog(onDismissRequest = onDismiss) {
         Card(modifier = Modifier
             .padding(all = 15.dp),
@@ -153,6 +155,7 @@ fun AddWishDialog(
                     minLines = 3,
                     shape = RoundedCornerShape(10)
                 )
+
 
 
                 Row(modifier = Modifier
@@ -263,7 +266,7 @@ fun Wish(modifier: Modifier = Modifier, wishUiState: WishUiState, showTopBar: Bo
                 if (showTopBar) {
                     WishTopBar(isReserved = wishUiState.isReserved, price = wishUiState.price)
                 }
-                TODO("Insert fetched Image and check if it is loadable")
+                // TODO("Insert fetched Image and check if it is loadable")
                 Image(
                 painter = painterResource(id = R.drawable.coffee_machine),
                 contentDescription = null,

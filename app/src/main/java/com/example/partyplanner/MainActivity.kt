@@ -16,9 +16,11 @@ import androidx.navigation.compose.rememberNavController
 import com.example.partyplanner.data.GuestServiceImpl
 import com.example.partyplanner.data.PartiesRepository
 import com.example.partyplanner.data.account.AccountServiceImpl
+import com.example.partyplanner.data.budget.BudgetServiceImpl
 import com.example.partyplanner.data.party.PartyServiceImpl
 import com.example.partyplanner.data.wish.WishServiceImpl
 import com.example.partyplanner.ui.elements.*
+import com.example.partyplanner.ui.pages.budget.BudgetViewModel
 import com.example.partyplanner.ui.pages.guestlist.GuestListPage
 import com.example.partyplanner.ui.pages.guestlist.GuestListViewModel
 import com.example.partyplanner.ui.pages.login.LoginViewModel
@@ -93,7 +95,8 @@ fun PartyPlannerApp(viewModel: PartyViewModel){
                 )
             }
             composable(route = BudgetPage.route) {
-                TODO("INSERT BUDGET PAGE COMPOSABLE")
+                val budgetViewModel = BudgetViewModel(BudgetServiceImpl(firestore = FirebaseFirestore.getInstance(),"7v3WIdoU8FmJFnb3fvA7"))
+                BudgetPage(budgetViewModel)
             }
             composable(route = NewPartyPage.route) {
 

@@ -6,3 +6,4 @@ const val HOST_VARIABLE = "host"
 const val WISH_COLLECTION = "wish"
 
 const val WISH_LIST_NAME_VARIABLE = "wishListName"
+const val BUDGET_COLLECTION = "budget"
