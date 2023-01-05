@@ -20,6 +20,8 @@ import com.example.partyplanner.data.budget.BudgetServiceImpl
 import com.example.partyplanner.data.party.PartyServiceImpl
 import com.example.partyplanner.data.wish.WishServiceImpl
 import com.example.partyplanner.ui.elements.*
+import com.example.partyplanner.ui.guestpages.GuestMenuPage
+import com.example.partyplanner.ui.guestpages.GuestMenuViewModel
 import com.example.partyplanner.ui.pages.budget.BudgetViewModel
 import com.example.partyplanner.ui.pages.guestlist.GuestListPage
 import com.example.partyplanner.ui.pages.guestlist.GuestListViewModel
@@ -126,6 +128,10 @@ fun PartyPlannerApp(viewModel: PartyViewModel){
             composable(route = Guestlist.route){
                 val db = Firebase.firestore
                 GuestListPage(viewModel = GuestListViewModel(GuestServiceImpl(db, "7v3WIdoU8FmJFnb3fvA7")))
+            }
+
+            composable(route = GuestMenuPagee.route){
+                GuestMenuPage(GuestMenuViewModel())
             }
         }
     }
