@@ -9,6 +9,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -19,7 +20,9 @@ import com.example.partyplanner.ui.theme.*
 
 
 @Composable
-fun GuestMenuPage(attendanceState: AttendanceState = AttendanceState.AWAITING) {
+fun GuestMenuPage(viewModel: GuestMenuViewModel) {
+
+    val uiState = viewModel.uiState.collectAsState()
 
     FadeBackground() {
         Column(
@@ -28,11 +31,11 @@ fun GuestMenuPage(attendanceState: AttendanceState = AttendanceState.AWAITING) {
         ) {
             Spacer (modifier = Modifier.height(20.dp))
 
-            Text(text = "EVENTNAVN")
+            Text(text = uiState.value.eventName)
 
             Spacer (modifier = Modifier.height(20.dp))
 
-            InviteArea(attendanceState = attendanceState)
+            InviteArea(uiState.value.attendingState, uiState.value.eventName, uiState.value.eventDescription)
 
             Spacer (modifier = Modifier.height(15.dp))
 
@@ -42,7 +45,7 @@ fun GuestMenuPage(attendanceState: AttendanceState = AttendanceState.AWAITING) {
 }
 
 @Composable
-fun InviteArea(attendanceState: AttendanceState) {
+fun InviteArea(attendanceState: AttendanceState, eventTitle: String, eventDesription: String) {
     var invitationColorState = BudgetBoxColor
 
     if (attendanceState == AttendanceState.AWAITING){
@@ -62,11 +65,11 @@ fun InviteArea(attendanceState: AttendanceState) {
             .fillMaxWidth()
             .padding(30.dp)
     ){
-        Text(text = "EVENT")
+        Text(text = eventTitle)
 
         Spacer(modifier = Modifier.height(10.dp))
 
-        Text(text = "BESKRIVELSE")
+        Text(text = eventDesription)
 
         Spacer (modifier = Modifier.height(10.dp))
 
@@ -151,11 +154,4 @@ fun WishListButtonInvitationMenu(){
         modifier = Modifier.size(ButtonDefaults.IconSize))
 
     }
-}
-
-
-@Preview
-@Composable
-fun Denherertiltest(){
-    GuestMenuPage()
 }
