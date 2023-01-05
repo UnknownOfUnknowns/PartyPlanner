@@ -12,10 +12,16 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.tasks.await
 
-class WishServiceImpl(private val firestore: FirebaseFirestore, @DocumentId private val partyId : String) : WishService {
+class WishServiceImpl(private val firestore: FirebaseFirestore,
+                      @DocumentId private val partyId : String) : WishService {
     override val wishes: Flow<List<Wish>>
         get() = wishCollection()
-            .snapshots().map { snapshot -> snapshot.toObjects() }
+            .snapshots().
+            map {
+                    snapshot ->
+                println(snapshot)
+                snapshot.toObjects()
+            }
 
 
     override suspend fun update(wish: Wish) {

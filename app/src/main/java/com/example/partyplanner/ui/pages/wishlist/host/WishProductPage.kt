@@ -18,7 +18,6 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.partyplanner.R
 import com.example.partyplanner.ui.pages.wishlist.WishUiState
 import com.example.partyplanner.ui.theme.Primary
 /*
@@ -183,7 +182,7 @@ fun WishProductPage(wishUiState: WishUiState, isGuest: Boolean) {
 @Preview(showBackground = true)
 fun WishProductPreview() {
     //WishDescription(wishUiState = WishUiState(image = R.drawable._nske2, wishName = "Ting"), showButton = true)
-    WishProductPage(wishUiState = WishUiState(image = R.drawable._nske2,
+    WishProductPage(wishUiState = WishUiState(
         wishName = "ROLEX",
         price = 15000,
         description = "FED KAFFEMASKINE!",

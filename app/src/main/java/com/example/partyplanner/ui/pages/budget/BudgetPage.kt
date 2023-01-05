@@ -25,8 +25,8 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.core.text.isDigitsOnly
 import com.example.partyplanner.data.budget.BudgetServiceImpl
+import com.example.partyplanner.ui.pages.budget.BudgetElementUiState
 import com.example.partyplanner.ui.pages.budget.BudgetListUiState
-import com.example.partyplanner.ui.pages.budget.BudgetUiState
 import com.example.partyplanner.ui.pages.budget.BudgetViewModel
 import com.example.partyplanner.ui.theme.Background
 import com.example.partyplanner.ui.theme.OnPrimaryContainer
@@ -55,25 +55,25 @@ fun BudgetPage(viewModel: BudgetViewModel) {
                     .size(width = 360.dp, height = 50.dp)
             )
             Spacer(modifier = Modifier.height(10.dp))
-            BudgetInfoTopScreen(budgetListUiState = BudgetListUiState(),
+            BudgetInfoTopScreen(budgetListUiState = uiState.value,
                 onMaxBudgetChange = { viewModel.changeBudgetMax(true) }
             )
             if (uiState.value.addTotalBudgetStatus) {
                 SetMaxBudgetDialog(
                     onDismiss = { viewModel.changeBudgetMax(false) },
-                    budgetUiState = uiState.value.newBudget,
+                    budgetElementUiState = uiState.value,
                     onAddNewBudgetMax = { viewModel.setMaxBudget() },
-                    onNewMaxChange = {viewModel.changeBudgetPrice(it)}
+                    onNewMaxChange = {viewModel.changeTotalBudget(it)}
                 )
             }
 
             Spacer(modifier = Modifier.height(10.dp))
-            IndividualBudgetList(budgets = uiState.value.budgets)
+            IndividualBudgetList(budgets = uiState.value.budgetElements)
         }
         if(uiState.value.addBudgetStatus) {
             AddBudgetDialog(
                 onDismiss = { viewModel.addBudgetStatus(false) },
-                budgetUiState = uiState.value.newBudget,
+                budgetElementUiState = uiState.value.newBudgetElement,
                 onNameChange = {viewModel.changeBudgetName(it)},
                 onPriceChange = {viewModel.changeBudgetPrice(it)},
                 onAddBudgetItem = {viewModel.addBudget()}
@@ -94,11 +94,11 @@ fun BudgetPage(viewModel: BudgetViewModel) {
 @Composable
 fun SetMaxBudgetDialog(
     onDismiss: () -> Unit,
-    budgetUiState: BudgetUiState,
+    budgetElementUiState: BudgetListUiState,
     onAddNewBudgetMax: () -> Unit,
     onNewMaxChange: (Int) -> Unit,
 
-) {
+    ) {
     Dialog(onDismissRequest = onDismiss) {
         Card(modifier = Modifier
             .padding(all = 15.dp),
@@ -116,9 +116,9 @@ fun SetMaxBudgetDialog(
                 )
                 OutlinedTextField(
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    value = budgetUiState.budgetPrice.toString(),
+                    value = budgetElementUiState.newBudgetMax.toString(),
                     onValueChange = {
-                        if (it.isDigitsOnly()) {
+                        if (it.isDigitsOnly() && it.isNotEmpty()) {
                             onNewMaxChange(it.toInt())
                         }
                     },
@@ -149,13 +149,10 @@ fun SetMaxBudgetDialog(
 @Composable
 fun AddBudgetDialog(
     onDismiss: () -> Unit,
-    budgetUiState: BudgetUiState,
+    budgetElementUiState: BudgetElementUiState,
     onNameChange: (String) -> Unit,
     onPriceChange: (Int) -> Unit,
     onAddBudgetItem: () -> Unit,
-
-
-
 ) {
     Dialog(onDismissRequest = onDismiss) {
         Card(modifier = Modifier
@@ -174,7 +171,7 @@ fun AddBudgetDialog(
                     .padding(vertical = 10.dp),
                 fontSize = 30.sp
                 )
-                OutlinedTextField(value = budgetUiState.budgetName, onValueChange = onNameChange,
+                OutlinedTextField(value = budgetElementUiState.budgetName, onValueChange = onNameChange,
                 modifier = Modifier
                     .align(CenterHorizontally)
                     .padding(vertical = 10.dp),
@@ -184,7 +181,7 @@ fun AddBudgetDialog(
                 )
                 OutlinedTextField(
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    value = budgetUiState.budgetPrice.toString(),
+                    value = budgetElementUiState.budgetPrice.toString(),
                     onValueChange = {
                         if (it.isDigitsOnly()) {
                          onPriceChange(it.toInt())
@@ -246,7 +243,7 @@ fun BudgetInfoTopScreen(
         Column() {
             // Her skal input fra de rigtige tal i budgettet ind
             Spacer(modifier = Modifier.height(5.dp))
-            Text ("1kr", color = OnSecondaryContainer)
+            Text (budgetListUiState.budgetMax.toString(), color = OnSecondaryContainer)
             Spacer(modifier = Modifier.height(5.dp))
             Text ("2kr", color = OnSecondaryContainer)
             Spacer(modifier = Modifier.height(5.dp))
@@ -267,7 +264,7 @@ fun BudgetInfoTopScreen(
 }
 
 @Composable
-fun BudgetInformationIndividual(budgetUiState: BudgetUiState){
+fun BudgetInformationIndividual(budgetElementUiState: BudgetElementUiState){
     Row(
         modifier = Modifier
             .background(PrimaryContainer, shape = RoundedCornerShape(10.dp))
@@ -277,7 +274,7 @@ fun BudgetInformationIndividual(budgetUiState: BudgetUiState){
         horizontalArrangement = Arrangement.SpaceBetween
     ){
         //Her skal vi indtaste navnet oprettet på budgettet
-        Text(budgetUiState.budgetName + ": " + budgetUiState.budgetPrice.toString() + "KR",
+        Text(budgetElementUiState.budgetName + ": " + budgetElementUiState.budgetPrice.toString() + "KR",
             color = OnPrimaryContainer,
             fontSize = 25.sp
         )
@@ -287,7 +284,7 @@ fun BudgetInformationIndividual(budgetUiState: BudgetUiState){
 }
 // Her er Items tilføjet til at kunne gøre igennem listen af forskellige budgets
 @Composable
-fun IndividualBudgetList(budgets : List<BudgetUiState>){
+fun IndividualBudgetList(budgets : List<BudgetElementUiState>){
     LazyColumn(
         modifier = Modifier
             .background(Background, shape = RoundedCornerShape(10.dp))
@@ -297,7 +294,7 @@ fun IndividualBudgetList(budgets : List<BudgetUiState>){
 
     ){
         items(budgets) { budgetInformationIndividual ->
-            BudgetInformationIndividual(budgetUiState = budgetInformationIndividual)
+            BudgetInformationIndividual(budgetElementUiState = budgetInformationIndividual)
         }
 
         }

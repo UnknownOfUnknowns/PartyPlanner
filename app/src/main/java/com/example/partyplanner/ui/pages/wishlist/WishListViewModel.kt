@@ -3,6 +3,8 @@ package com.example.partyplanner.ui.pages.wishlist
 import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.partyplanner.data.imageLoader.ImageService
+import com.example.partyplanner.data.imageLoader.ImageServiceImpl
 import com.example.partyplanner.data.wish.Wish
 import com.example.partyplanner.data.wish.WishService
 import com.example.partyplanner.data.wish.getFromUiState
@@ -10,14 +12,17 @@ import com.example.partyplanner.data.wish.toUiState
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
-class WishListViewModel (private val repository : WishService) : ViewModel() {
+class WishListViewModel (private val repository : WishService,
+                         private val imageService: ImageService = ImageServiceImpl()) : ViewModel() {
     private val _internalState = MutableStateFlow(WishListUiState())
     val uiState = combine(
         _internalState,
         repository.wishes
     ) {
         _internalState, wishes ->
-        _internalState.copy(wishes = wishes.map { it.toUiState() })
+        _internalState.copy(wishes = wishes.map { wish ->
+            wish.toUiState()
+        })
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),

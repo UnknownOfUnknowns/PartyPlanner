@@ -16,26 +16,36 @@ class BudgetViewModel (private val repository : BudgetService) : ViewModel() {
         repository.budgets
     ) {
         _internalState, budgets ->
-        _internalState.copy(budgets = budgets.map { it.toUiState() })
+        _internalState.copy(budgetElements = budgets.map { it.toUiState() })
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = BudgetListUiState()
     )
 
-    fun onChangeTotalBudget(newMaxPrice: Int) {
+    init {
+        viewModelScope.launch {
+            repository.getBudgetMax{ max ->
+                _internalState.update {
+                    it.copy(budgetMax = max, newBudgetMax = max)
+                }
+            }
+        }
+    }
+
+    fun changeTotalBudget(newMaxPrice: Int) {
         _internalState.update { currentState ->
-            currentState.copy(newBudget = currentState.newBudget.copy(budgetMaxPrice = newMaxPrice))
+            currentState.copy(newBudgetMax = newMaxPrice)
         }
     }
 
     fun addBudget() {
         viewModelScope.launch {
             val state = _internalState.value
-            repository.addBudgetItem(Budget().getFromUiState(state.newBudget)){
+            repository.addBudgetItem(Budget().getFromUiState(state.newBudgetElement)){
                 if (it == null) {
                     _internalState.update { currentState ->
-                        currentState.copy(newBudget = BudgetUiState(), addBudgetStatus = false)
+                        currentState.copy(newBudgetElement = BudgetElementUiState(), addBudgetStatus = false)
                     }
                 }
             }
@@ -43,11 +53,11 @@ class BudgetViewModel (private val repository : BudgetService) : ViewModel() {
     }
     fun setMaxBudget() {
         viewModelScope.launch {
-            val state = _internalState.value
-            repository.setBudgetMax(Budget().getFromUiState(state.newBudget)) {
+            repository.setBudgetMax(_internalState.value.newBudgetMax) {
                 if(it == null) {
                     _internalState.update { currentState ->
-                        currentState.copy(newBudget = BudgetUiState(), addTotalBudgetStatus = false)
+                        currentState.copy(budgetMax = _internalState.value.newBudgetMax,
+                            addTotalBudgetStatus = false)
                     }
                 }
             }
@@ -55,7 +65,7 @@ class BudgetViewModel (private val repository : BudgetService) : ViewModel() {
     }
     fun changeBudgetName(newName: String) {
         _internalState.update { currentState ->
-            currentState.copy(newBudget = currentState.newBudget.copy(budgetName = newName))
+            currentState.copy(newBudgetElement = currentState.newBudgetElement.copy(budgetName = newName))
         }
     }
 
@@ -73,7 +83,7 @@ class BudgetViewModel (private val repository : BudgetService) : ViewModel() {
 
     fun changeBudgetPrice(newPrice: Int) {
         _internalState.update { currentState ->
-            currentState.copy(newBudget = currentState.newBudget.copy(budgetPrice = newPrice))
+            currentState.copy(newBudgetElement = currentState.newBudgetElement.copy(budgetPrice = newPrice))
         }
     }
 

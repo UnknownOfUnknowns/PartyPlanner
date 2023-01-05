@@ -24,11 +24,26 @@ class BudgetServiceImpl(private val firestore: FirebaseFirestore, @DocumentId pr
             .addOnFailureListener { onResult(Exception()) }
     }
 
-    override suspend fun setBudgetMax(budget: Budget, onResult: (Throwable?) -> Unit) {
+    override suspend fun setBudgetMax(newMax : Int, onResult: (Throwable?) -> Unit) {
         currentPartyDocument()
-            .update(MAX_BUDGET, budget.budgetMax)
+            .update(MAX_BUDGET, newMax)
             .addOnSuccessListener { onResult(null) }
             .addOnSuccessListener { onResult(Exception()) }
+    }
+
+    override suspend fun getBudgetMax(onResult: (Int) -> Unit){
+        currentPartyDocument().get().addOnSuccessListener { snapshot ->
+            val data = snapshot.data
+            val maxBudget = data?.get(MAX_BUDGET)
+            when(maxBudget) {
+                is Long -> onResult(maxBudget.toInt())
+                is Int -> onResult(maxBudget)
+                else -> onResult(0)
+            }
+        }.addOnFailureListener {
+            onResult(0)
+        }
+
     }
 
     private fun budgetCollection() : CollectionReference =

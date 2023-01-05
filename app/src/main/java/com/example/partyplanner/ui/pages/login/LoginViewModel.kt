@@ -43,5 +43,6 @@ class LoginViewModel(
     }
 
     fun createNewUser() {
+
     }
 }

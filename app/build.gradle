@@ -8,6 +8,7 @@ plugins {
     id 'com.google.firebase.firebase-perf'
     id 'dagger.hilt.android.plugin'
     id "com.ncorti.ktfmt.gradle" version "0.10.0"
+    id 'kotlinx-serialization'
 }
 
 android {
@@ -83,6 +84,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore-ktx'
     implementation 'com.google.firebase:firebase-perf-ktx'
     implementation 'com.google.firebase:firebase-config-ktx'
+    implementation 'com.google.firebase:firebase-storage-ktx'
+    implementation 'com.firebaseui:firebase-ui-storage:7.2.0'
 
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.5.0'

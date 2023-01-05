@@ -20,6 +20,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -30,9 +32,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.core.text.isDigitsOnly
 import com.example.partyplanner.R
-import com.example.partyplanner.data.budget.BudgetServiceImpl
 import com.example.partyplanner.data.wish.WishServiceImpl
-import com.example.partyplanner.ui.pages.budget.BudgetViewModel
 import com.example.partyplanner.ui.pages.wishlist.WishListViewModel
 import com.example.partyplanner.ui.pages.wishlist.WishUiState
 import com.example.partyplanner.ui.theme.AttendingInfoColor
@@ -267,20 +267,25 @@ fun Wish(modifier: Modifier = Modifier, wishUiState: WishUiState, showTopBar: Bo
                     WishTopBar(isReserved = wishUiState.isReserved, price = wishUiState.price)
                 }
                 // TODO("Insert fetched Image and check if it is loadable")
+                val painter = if(wishUiState.img != null) {
+                    BitmapPainter(wishUiState.img.asImageBitmap())
+                } else {
+                    painterResource(id = R.drawable.coffee_machine)
+                }
                 Image(
-                painter = painterResource(id = R.drawable.coffee_machine),
-                contentDescription = null,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(0.8f),
-                contentScale = ContentScale.Crop
+                    painter = painter,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(0.8f),
+                    contentScale = ContentScale.Crop
                 )
                 Text(
-                modifier = Modifier.weight(0.2f),
-                text = wishUiState.wishName,
-                color = Color.White,
-                fontSize = 15.sp,
-                fontWeight = FontWeight.Bold
+                    modifier = Modifier.weight(0.2f),
+                    text = wishUiState.wishName,
+                    color = Color.White,
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.Bold
                 )
             }
 

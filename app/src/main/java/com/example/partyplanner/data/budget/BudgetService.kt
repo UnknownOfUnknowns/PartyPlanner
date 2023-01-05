@@ -7,5 +7,7 @@ interface BudgetService {
 
     suspend fun addBudgetItem(budget: Budget, onResult: (Throwable?) -> Unit)
 
-    suspend fun setBudgetMax(budget: Budget, onResult: (Throwable?) -> Unit)
+    suspend fun setBudgetMax(newMax : Int, onResult: (Throwable?) -> Unit)
+
+    suspend fun getBudgetMax(onResult: (Int) -> Unit)
 }

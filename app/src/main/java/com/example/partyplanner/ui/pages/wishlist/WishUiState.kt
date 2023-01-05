@@ -1,14 +1,14 @@
 package com.example.partyplanner.ui.pages.wishlist
 
-import androidx.annotation.DrawableRes
+import android.graphics.Bitmap
 
 data class WishUiState(
-    @DrawableRes val image: Int = 0,
     val wishName: String = "",
     val price: Int = 0,
     val description : String = "",
     val link : String = "",
     val isReserved : Boolean = false,
+    val img : Bitmap? = null
 )
 
 
@@ -17,5 +17,5 @@ data class WishListUiState(
     val wishListName : String = "",
     val newWish : WishUiState = WishUiState(),
     val addWish : Boolean = false,
-    val isGuest : Boolean = false
+    val isGuest : Boolean = false,
 )
