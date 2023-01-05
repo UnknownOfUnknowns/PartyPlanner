@@ -2,8 +2,10 @@ package com.example.partyplanner.ui.guestpages
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Toc
+import androidx.compose.material3.AlertDialogDefaults.shape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -14,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.partyplanner.ui.elements.FadeBackground
 import com.example.partyplanner.ui.state.AttendanceState
 import com.example.partyplanner.ui.theme.*
@@ -31,7 +34,7 @@ fun GuestMenuPage(viewModel: GuestMenuViewModel) {
         ) {
             Spacer (modifier = Modifier.height(20.dp))
 
-            Text(text = uiState.value.eventName)
+            Text(text = uiState.value.eventName, fontSize = 25.sp)
 
             Spacer (modifier = Modifier.height(20.dp))
 
@@ -54,19 +57,24 @@ fun InviteArea(attendanceState: AttendanceState,
         AttendanceState.ATTENDS -> AttendingColor
         else -> NotAttendingColor
     }
+Row(
+modifier = Modifier.fillMaxWidth()
+) {
+
+    Spacer (modifier = Modifier.width(10.dp))
 
     Column(
         modifier = Modifier
-            .background(invitationColorState)
+            .background(invitationColorState, shape = RoundedCornerShape(15.dp))
             .fillMaxWidth()
-            .padding(30.dp)
-    ){
+            .padding(20.dp),
+    ) {
 
         Spacer(modifier = Modifier.height(10.dp))
 
         Text(text = eventDescription)
 
-        Spacer (modifier = Modifier.height(10.dp))
+        Spacer(modifier = Modifier.height(10.dp))
 
 
         when (attendanceState) {
@@ -76,16 +84,19 @@ fun InviteArea(attendanceState: AttendanceState,
             }
             AttendanceState.ATTENDS -> {
                 Text(text = "Du deltager til denne begivenhed", color = AlreadyAttendingTextColor)
-                Spacer (modifier = Modifier.height(10.dp))
+                Spacer(modifier = Modifier.height(10.dp))
 
                 BottomBarWhenAttends(
                     modifier = Modifier.align(Alignment.CenterHorizontally),
-                    updateAttendanceState= updateAttendanceState
+                    updateAttendanceState = updateAttendanceState
                 )
             }
             AttendanceState.NOT_ATTENDING -> {
-                Text(text = "Du deltager ikke til denne begivenhed", color = androidx.compose.ui.graphics.Color.Red)
-                Spacer (modifier = Modifier.height(10.dp))
+                Text(
+                    text = "Du deltager ikke til denne begivenhed",
+                    color = androidx.compose.ui.graphics.Color.Red
+                )
+                Spacer(modifier = Modifier.height(10.dp))
                 BottomBarWhenNotAttending(
                     modifier = Modifier.align(Alignment.CenterHorizontally),
                     updateAttendanceState = updateAttendanceState
@@ -93,6 +104,9 @@ fun InviteArea(attendanceState: AttendanceState,
             }
         }
     }
+    Spacer (modifier = Modifier.width(10.dp))
+}
+
 }
 
 @Composable

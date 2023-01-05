@@ -19,6 +19,8 @@ import com.example.partyplanner.data.account.AccountServiceImpl
 import com.example.partyplanner.data.party.PartyServiceImpl
 import com.example.partyplanner.data.wish.WishServiceImpl
 import com.example.partyplanner.ui.elements.*
+import com.example.partyplanner.ui.guestpages.GuestMenuPage
+import com.example.partyplanner.ui.guestpages.GuestMenuViewModel
 import com.example.partyplanner.ui.pages.guestlist.GuestListPage
 import com.example.partyplanner.ui.pages.guestlist.GuestListViewModel
 import com.example.partyplanner.ui.pages.login.LoginViewModel
@@ -71,7 +73,7 @@ fun PartyPlannerApp(viewModel: PartyViewModel){
             composable(route = LoginPage.route) {
                 val loginViewModel = LoginViewModel(loginService) {
                     navigationController.navigateSingleTopTo(
-                        BudgetPage.route
+                        GuestMenuPagee.route
                     )
                 }
                 SignInScreen(loginViewModel)
@@ -123,6 +125,10 @@ fun PartyPlannerApp(viewModel: PartyViewModel){
             composable(route = Guestlist.route){
                 val db = Firebase.firestore
                 GuestListPage(viewModel = GuestListViewModel(GuestServiceImpl(db, "7v3WIdoU8FmJFnb3fvA7")))
+            }
+
+            composable(route = GuestMenuPagee.route){
+                GuestMenuPage(GuestMenuViewModel())
             }
         }
     }
