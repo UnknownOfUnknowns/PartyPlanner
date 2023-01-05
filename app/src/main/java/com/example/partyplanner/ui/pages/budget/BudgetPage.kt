@@ -28,7 +28,10 @@ import com.example.partyplanner.data.budget.BudgetServiceImpl
 import com.example.partyplanner.ui.pages.budget.BudgetListUiState
 import com.example.partyplanner.ui.pages.budget.BudgetUiState
 import com.example.partyplanner.ui.pages.budget.BudgetViewModel
-import com.example.partyplanner.ui.theme.*
+import com.example.partyplanner.ui.theme.Background
+import com.example.partyplanner.ui.theme.OnPrimaryContainer
+import com.example.partyplanner.ui.theme.OnSecondaryContainer
+import com.example.partyplanner.ui.theme.PrimaryContainer
 import com.google.firebase.firestore.FirebaseFirestore
 
 @Composable
@@ -58,7 +61,7 @@ fun BudgetPage(viewModel: BudgetViewModel) {
                 onMaxBudgetChange = { viewModel.changeBudgetMax(true) }
             )
             if (uiState.value.addTotalBudgetStatus) {
-                addMaxBudgetDialog(
+                SetMaxBudgetDialog(
                     onDismiss = { viewModel.changeBudgetMax(false) },
                     budgetUiState = uiState.value.newBudget,
                     onAddNewBudgetMax = { viewModel.addBudget() },
@@ -70,7 +73,7 @@ fun BudgetPage(viewModel: BudgetViewModel) {
             IndividualBudgetList(budgets = uiState.value.budgets)
         }
         if(uiState.value.addBudgetStatus) {
-            addBudgetDialog(
+            AddBudgetDialog(
                 onDismiss = { viewModel.addBudgetStatus(false) },
                 budgetUiState = uiState.value.newBudget,
                 onNameChange = {viewModel.changeBudgetName(it)},
@@ -90,7 +93,7 @@ fun BudgetPage(viewModel: BudgetViewModel) {
 }
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun addMaxBudgetDialog(
+fun SetMaxBudgetDialog(
     onDismiss: () -> Unit,
     budgetUiState: BudgetUiState,
     onAddNewBudgetMax: () -> Unit,
@@ -139,7 +142,7 @@ fun addMaxBudgetDialog(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun addBudgetDialog(
+fun AddBudgetDialog(
     onDismiss: () -> Unit,
     budgetUiState: BudgetUiState,
     onNameChange: (String) -> Unit,
@@ -247,7 +250,7 @@ fun BudgetInfoTopScreen(
         }
         //Denne knap skal lave en dialog, hvor der kan ændres budget maksimum
         OutlinedButton(
-            onClick = { onMaxBudgetChange },
+            onClick = { onMaxBudgetChange() },
             colors = ButtonDefaults.buttonColors(PrimaryContainer)
         ) {
             Icon(imageVector = Icons.Outlined.Settings, contentDescription = null, modifier = Modifier.size(24.dp), tint = Color.Black)
