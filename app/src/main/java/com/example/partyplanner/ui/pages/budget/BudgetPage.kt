@@ -54,8 +54,6 @@ fun BudgetPage(viewModel: BudgetViewModel) {
                 modifier = Modifier
                     .size(width = 360.dp, height = 50.dp)
             )
-            // Noget galt med denne funktion. Jeg kan ikke "ændr" til true, så der kommer
-            // Dialog frem
             Spacer(modifier = Modifier.height(10.dp))
             BudgetInfoTopScreen(budgetListUiState = BudgetListUiState(),
                 onMaxBudgetChange = { viewModel.changeBudgetMax(true) }
@@ -64,7 +62,7 @@ fun BudgetPage(viewModel: BudgetViewModel) {
                 SetMaxBudgetDialog(
                     onDismiss = { viewModel.changeBudgetMax(false) },
                     budgetUiState = uiState.value.newBudget,
-                    onAddNewBudgetMax = { viewModel.addBudget() },
+                    onAddNewBudgetMax = { viewModel.setMaxBudget() },
                     onNewMaxChange = {viewModel.changeBudgetPrice(it)}
                 )
             }
@@ -91,6 +89,7 @@ fun BudgetPage(viewModel: BudgetViewModel) {
         }
     }
 }
+// Den sætter max budget for festen ind som en budgetpost
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SetMaxBudgetDialog(
@@ -101,39 +100,45 @@ fun SetMaxBudgetDialog(
 
 ) {
     Dialog(onDismissRequest = onDismiss) {
-        Column(
-
+        Card(modifier = Modifier
+            .padding(all = 15.dp),
+            shape = RoundedCornerShape(10)
         ) {
-            Text(text = "Tilføj forventet total budget",
-                modifier = Modifier
-                    .align(CenterHorizontally)
-                    .padding(vertical = 10.dp),
-                fontSize = 30.sp
-            )
-            OutlinedTextField(
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                value = budgetUiState.budgetPrice.toString(),
-                onValueChange = {
-                    if (it.isDigitsOnly()) {
-                        onNewMaxChange(it.toInt())
-                    }
-                },
-                modifier = Modifier
-                    .align(CenterHorizontally)
-                    .padding(vertical = 10.dp),
-                label = { Text(text = "Budget for festen") },
-                colors = TextFieldDefaults.outlinedTextFieldColors(
-                    containerColor = Color.White
-                ),
-                shape = RoundedCornerShape(10)
-            )
+            Column(
 
-            Row() {
-                TextButton(onClick = onDismiss) {
-                    Text(text = "Afbryd")
-                }
-                TextButton(onClick = onAddNewBudgetMax) {
-                    Text(text = "Opret", fontWeight = FontWeight.ExtraBold)
+            ) {
+                Text(
+                    text = "Tilføj forventet total budget",
+                    modifier = Modifier
+                        .align(CenterHorizontally)
+                        .padding(vertical = 10.dp),
+                    fontSize = 30.sp
+                )
+                OutlinedTextField(
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    value = budgetUiState.budgetPrice.toString(),
+                    onValueChange = {
+                        if (it.isDigitsOnly()) {
+                            onNewMaxChange(it.toInt())
+                        }
+                    },
+                    modifier = Modifier
+                        .align(CenterHorizontally)
+                        .padding(vertical = 10.dp),
+                    label = { Text(text = "Budget for festen") },
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        containerColor = Color.White
+                    ),
+                    shape = RoundedCornerShape(10)
+                )
+
+                Row() {
+                    TextButton(onClick = onDismiss) {
+                        Text(text = "Afbryd")
+                    }
+                    TextButton(onClick = onAddNewBudgetMax) {
+                        Text(text = "Opret", fontWeight = FontWeight.ExtraBold)
+                    }
                 }
             }
         }

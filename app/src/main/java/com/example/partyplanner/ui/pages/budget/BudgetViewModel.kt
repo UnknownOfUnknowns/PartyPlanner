@@ -41,6 +41,18 @@ class BudgetViewModel (private val repository : BudgetService) : ViewModel() {
             }
         }
     }
+    fun setMaxBudget() {
+        viewModelScope.launch {
+            val state = _internalState.value
+            repository.setBudgetMax(Budget().getFromUiState(state.newBudget)) {
+                if(it == null) {
+                    _internalState.update { currentState ->
+                        currentState.copy(newBudget = BudgetUiState(), addTotalBudgetStatus = false)
+                    }
+                }
+            }
+        }
+    }
     fun changeBudgetName(newName: String) {
         _internalState.update { currentState ->
             currentState.copy(newBudget = currentState.newBudget.copy(budgetName = newName))

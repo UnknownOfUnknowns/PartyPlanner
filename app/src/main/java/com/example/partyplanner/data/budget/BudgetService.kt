@@ -6,4 +6,6 @@ interface BudgetService {
     val budgets: Flow<List<Budget>>
 
     suspend fun addBudgetItem(budget: Budget, onResult: (Throwable?) -> Unit)
+
+    suspend fun setBudgetMax(budget: Budget, onResult: (Throwable?) -> Unit)
 }
