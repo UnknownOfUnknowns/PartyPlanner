@@ -5,15 +5,13 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Toc
+import androidx.compose.material3.*
 import androidx.compose.material3.AlertDialogDefaults.shape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -112,9 +110,8 @@ modifier = Modifier.fillMaxWidth()
 @Composable
 fun BottomBarWhenAwaiting(updateAttendanceState: (AttendanceState) -> Unit){
     Row{
-        Button(onClick = {
-            updateAttendanceState(AttendanceState.ATTENDS)
-        },
+        ElevatedButton(
+            onClick = { updateAttendanceState(AttendanceState.ATTENDS) },
             colors = ButtonDefaults.buttonColors(AttendingColor)) {
 
             Text("Deltager", color = OnPrimaryContainer)
@@ -122,10 +119,12 @@ fun BottomBarWhenAwaiting(updateAttendanceState: (AttendanceState) -> Unit){
 
         Spacer (modifier = Modifier.weight(1f))
 
-        Button(onClick = {
+        ElevatedButton(onClick = {
             updateAttendanceState(AttendanceState.NOT_ATTENDING)
-        },  colors = ButtonDefaults.buttonColors(
-            NotAttendingColor)) {
+        },
+            colors = ButtonDefaults.buttonColors(
+            NotAttendingColor))
+        {
             Text("Deltager ikke", color = OnPrimaryContainer)
         }
     }
@@ -133,7 +132,7 @@ fun BottomBarWhenAwaiting(updateAttendanceState: (AttendanceState) -> Unit){
 
 @Composable
 fun BottomBarWhenAttends(modifier : Modifier = Modifier, updateAttendanceState: (AttendanceState) -> Unit){
-    Button(
+    ElevatedButton(
         onClick = {updateAttendanceState(AttendanceState.NOT_ATTENDING)},
         colors = ButtonDefaults.buttonColors(
             NotAttendingColor),
@@ -146,7 +145,7 @@ fun BottomBarWhenAttends(modifier : Modifier = Modifier, updateAttendanceState: 
 
 @Composable
 fun BottomBarWhenNotAttending(modifier : Modifier = Modifier, updateAttendanceState: (AttendanceState) -> Unit){
-    Button(
+    ElevatedButton(
         onClick = {updateAttendanceState(AttendanceState.ATTENDS)},
 
         colors = ButtonDefaults.buttonColors(AttendingColor),
@@ -160,9 +159,12 @@ fun BottomBarWhenNotAttending(modifier : Modifier = Modifier, updateAttendanceSt
 
 @Composable
 fun WishListButton(onWishListPress : () -> Unit){
-    Button(onClick = onWishListPress) {
+    ElevatedButton(
+        onClick = onWishListPress,
+        colors  = ButtonDefaults.buttonColors(Primary)
+    ) {
 
-        Text("Ønskeliste")
+        Text("Ønskeliste", color = Color.White)
 
         Spacer (modifier = Modifier.width(10.dp))
 

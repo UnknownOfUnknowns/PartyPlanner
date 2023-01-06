@@ -75,7 +75,7 @@ fun PartyPlannerApp(viewModel: PartyViewModel){
             composable(route = LoginPage.route) {
                 val loginViewModel = LoginViewModel(loginService) {
                     navigationController.navigateSingleTopTo(
-                        BudgetPage.route
+                        GuestMenuPagee.route
                     )
                 }
                 SignInScreen(loginViewModel)
