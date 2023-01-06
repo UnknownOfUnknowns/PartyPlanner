@@ -28,7 +28,7 @@ class BudgetServiceImpl(private val firestore: FirebaseFirestore, @DocumentId pr
         currentPartyDocument()
             .update(MAX_BUDGET, newMax)
             .addOnSuccessListener { onResult(null) }
-            .addOnSuccessListener { onResult(Exception()) }
+            .addOnFailureListener { onResult(Exception()) }
     }
 
     override suspend fun getBudgetMax(onResult: (Int) -> Unit){
@@ -44,6 +44,13 @@ class BudgetServiceImpl(private val firestore: FirebaseFirestore, @DocumentId pr
             onResult(0)
         }
 
+    }
+
+    override suspend fun setNewNote(newNote: String, onResult: (Throwable?) -> Unit) {
+        budgetCollection()
+            .add(newNote.toString())
+            .addOnSuccessListener { onResult(null) }
+            .addOnFailureListener { onResult(Exception()) }
     }
 
     private fun budgetCollection() : CollectionReference =

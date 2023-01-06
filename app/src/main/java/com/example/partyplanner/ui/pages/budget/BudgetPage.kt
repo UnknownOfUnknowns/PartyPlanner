@@ -9,12 +9,13 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowDropDown
+import androidx.compose.material.icons.outlined.ExpandLess
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
+import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -68,7 +69,7 @@ fun BudgetPage(viewModel: BudgetViewModel) {
             }
 
             Spacer(modifier = Modifier.height(10.dp))
-            IndividualBudgetList(budgets = uiState.value.budgetElements)
+            IndividualBudgetList(budgets = uiState.value.budgetElements, onNoteChange = { viewModel.setNewBudgetNote(it) })
         }
         if(uiState.value.addBudgetStatus) {
             AddBudgetDialog(
@@ -262,9 +263,23 @@ fun BudgetInfoTopScreen(
         }
     }
 }
+@Composable
+private fun InfoDropDownIndividualBudget(
+    expanded: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    IconButton(onClick = onClick, ) {
+        Icon(imageVector = if(expanded) {Icons.Outlined.ExpandLess} else {Icons.Outlined.ArrowDropDown},
+            contentDescription = "Dropdown for budget",
+            modifier = modifier.size(30.dp)
+        )
+    }
+}
 
 @Composable
-fun BudgetInformationIndividual(budgetElementUiState: BudgetElementUiState){
+fun BudgetInformationIndividual(budgetElementUiState: BudgetElementUiState, onNoteChange: (String) -> Unit){
+    var expanded by remember { mutableStateOf(false) }
     Row(
         modifier = Modifier
             .background(PrimaryContainer, shape = RoundedCornerShape(10.dp))
@@ -272,19 +287,43 @@ fun BudgetInformationIndividual(budgetElementUiState: BudgetElementUiState){
             .border(width = 1.dp, color = Color.Black, shape = RoundedCornerShape(10.dp))
             .padding(start = 10.dp, end = 10.dp, top = 10.dp, bottom = 10.dp),
         horizontalArrangement = Arrangement.SpaceBetween
-    ){
+    ) {
         //Her skal vi indtaste navnet oprettet på budgettet
-        Text(budgetElementUiState.budgetName + ": " + budgetElementUiState.budgetPrice.toString() + "KR",
+        Text(
+            budgetElementUiState.budgetName + ": " + budgetElementUiState.budgetPrice.toString() + "KR",
             color = OnPrimaryContainer,
             fontSize = 25.sp
         )
-        Spacer (modifier = Modifier.width(10.dp))
-        Icon(imageVector = Icons.Outlined.ArrowDropDown, contentDescription = null, modifier = Modifier.size(30.dp))
+        Spacer(modifier = Modifier.width(10.dp))
+        InfoDropDownIndividualBudget(expanded = expanded, onClick = { expanded = !expanded })
+    }
+    if (expanded) {
+        expandedTextField(budgetUiState = budgetElementUiState, onNoteChange)
     }
 }
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun expandedTextField(
+    budgetUiState: BudgetElementUiState,
+    onNoteChange: (String) -> Unit,
+
+) {
+    OutlinedTextField(
+        modifier = Modifier
+            .padding(vertical = 10.dp),
+        value = budgetUiState.budgetNote,
+        onValueChange = onNoteChange,
+        label = { Text(text = "Tilføj en beskrivelse") },
+        colors = TextFieldDefaults.outlinedTextFieldColors(containerColor = Color.White),
+        minLines = 3,
+        shape = RoundedCornerShape(10)
+    )
+}
+
+
 // Her er Items tilføjet til at kunne gøre igennem listen af forskellige budgets
 @Composable
-fun IndividualBudgetList(budgets : List<BudgetElementUiState>){
+fun IndividualBudgetList(budgets : List<BudgetElementUiState>, onNoteChange: (String) -> Unit){
     LazyColumn(
         modifier = Modifier
             .background(Background, shape = RoundedCornerShape(10.dp))
@@ -294,7 +333,7 @@ fun IndividualBudgetList(budgets : List<BudgetElementUiState>){
 
     ){
         items(budgets) { budgetInformationIndividual ->
-            BudgetInformationIndividual(budgetElementUiState = budgetInformationIndividual)
+            BudgetInformationIndividual(budgetElementUiState = budgetInformationIndividual, onNoteChange)
         }
 
         }

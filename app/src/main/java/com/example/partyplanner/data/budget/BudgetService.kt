@@ -10,4 +10,6 @@ interface BudgetService {
     suspend fun setBudgetMax(newMax : Int, onResult: (Throwable?) -> Unit)
 
     suspend fun getBudgetMax(onResult: (Int) -> Unit)
+
+    suspend fun setNewNote(newNote: String,onResult: (Throwable?) -> Unit)
 }

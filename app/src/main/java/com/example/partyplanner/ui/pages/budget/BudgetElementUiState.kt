@@ -4,6 +4,8 @@ package com.example.partyplanner.ui.pages.budget
 data class BudgetElementUiState(
     val budgetName: String = "",
     val budgetPrice: Int = 0,
+    val budgetNote: String = "",
+
 
 )
 
