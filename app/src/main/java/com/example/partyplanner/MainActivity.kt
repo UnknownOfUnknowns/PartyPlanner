@@ -1,12 +1,9 @@
 package com.example.partyplanner
 
 
-import android.graphics.Bitmap
 import android.os.Bundle
-import android.util.Size
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -22,7 +19,6 @@ import com.example.partyplanner.data.account.AccountServiceImpl
 import com.example.partyplanner.data.budget.BudgetServiceImpl
 import com.example.partyplanner.data.party.PartyServiceImpl
 import com.example.partyplanner.data.wish.WishServiceImpl
-import com.example.partyplanner.domain.ImagePicker
 import com.example.partyplanner.ui.elements.*
 import com.example.partyplanner.ui.guestpages.GuestMenuPage
 import com.example.partyplanner.ui.guestpages.GuestMenuViewModel
@@ -38,7 +34,6 @@ import com.example.partyplanner.ui.theme.PartyPlannerTheme
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-
 
 class MainActivity : ComponentActivity() {
 
@@ -61,10 +56,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             PartyPlannerApp(viewModel)
         }
-
     }
-
-
 
 
 }
@@ -93,12 +85,11 @@ fun PartyPlannerApp(viewModel: PartyViewModel){
             composable(route = LoginPage.route) {
                 val loginViewModel = LoginViewModel(loginService) {
                     navigationController.navigateSingleTopTo(
-                        WishPage.route
+                        BudgetPage.route
                     )
                 }
                 SignInScreen(loginViewModel)
             }
-
             composable(route = WishPage.route) {
                 val wishViewModel = WishListViewModel(WishServiceImpl(firestore = FirebaseFirestore.getInstance(),"7v3WIdoU8FmJFnb3fvA7"))
 
