@@ -31,6 +31,7 @@ class BudgetViewModel (private val repository : BudgetService) : ViewModel() {
                 }
             }
         }
+
     }
 
     fun changeTotalBudget(newMaxPrice: Int) {

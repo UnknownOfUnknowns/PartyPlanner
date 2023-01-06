@@ -1,9 +1,12 @@
 package com.example.partyplanner
 
 
+import android.graphics.Bitmap
 import android.os.Bundle
+import android.util.Size
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -19,6 +22,7 @@ import com.example.partyplanner.data.account.AccountServiceImpl
 import com.example.partyplanner.data.budget.BudgetServiceImpl
 import com.example.partyplanner.data.party.PartyServiceImpl
 import com.example.partyplanner.data.wish.WishServiceImpl
+import com.example.partyplanner.domain.ImagePicker
 import com.example.partyplanner.ui.elements.*
 import com.example.partyplanner.ui.guestpages.GuestMenuPage
 import com.example.partyplanner.ui.guestpages.GuestMenuViewModel
@@ -35,18 +39,32 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
+
 class MainActivity : ComponentActivity() {
 
 
     private val viewModel = PartyViewModel(PartiesRepository)
-
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+        ImagePicker.launcher = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+                if (uri != null) {
+                        val bmp : Bitmap = applicationContext.contentResolver.loadThumbnail(
+                            uri, Size(640,480), null
+                        )
+                        ImagePicker.callback(bmp)
 
+                } else {
+                    ImagePicker.callback(null)
+                }
+
+            }
+        super.onCreate(savedInstanceState)
         setContent {
             PartyPlannerApp(viewModel)
         }
+
     }
+
+
 
 
 }
@@ -75,11 +93,12 @@ fun PartyPlannerApp(viewModel: PartyViewModel){
             composable(route = LoginPage.route) {
                 val loginViewModel = LoginViewModel(loginService) {
                     navigationController.navigateSingleTopTo(
-                        BudgetPage.route
+                        WishPage.route
                     )
                 }
                 SignInScreen(loginViewModel)
             }
+
             composable(route = WishPage.route) {
                 val wishViewModel = WishListViewModel(WishServiceImpl(firestore = FirebaseFirestore.getInstance(),"7v3WIdoU8FmJFnb3fvA7"))
 
@@ -138,4 +157,27 @@ fun PartyPlannerApp(viewModel: PartyViewModel){
 }
 
 
+/*
+    private fun test2(){
+        val cursor = contentResolver.query(ContactsContract.Data.CONTENT_URI,
+            arrayOf(ContactsContract.Data._ID, Phone.NUMBER, Phone.TYPE, Phone.LABEL),
+            "1=1",
+            arrayOf(), null)
 
+        println(cursor?.getString(0))
+
+    }
+    private fun test(){
+        var resultValue = 1
+        if( applicationContext.checkSelfPermission( WRITE_CONTACTS) != PackageManager.PERMISSION_GRANTED )
+            ActivityCompat.requestPermissions(this, arrayOf(WRITE_CONTACTS, READ_CONTACTS), resultValue);
+        val values = ContentValues();
+        values.put(ContactsContract.Data.RAW_CONTACT_ID, "1234")
+        values.put(ContactsContract.Data.MIMETYPE, Phone.CONTENT_ITEM_TYPE)
+        values.put(Phone.NUMBER, "93935411")
+        values.put(Phone.TYPE, Phone.TYPE_CUSTOM)
+        values.put(Phone.LABEL, "What a try")
+        val dataUri = contentResolver.insert(ContactsContract.Data.CONTENT_URI, values)
+        println(dataUri.toString() + "dfjadsjkjlkjæadsadjsladfskjæl")
+    }
+* */

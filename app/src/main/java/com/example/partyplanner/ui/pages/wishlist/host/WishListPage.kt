@@ -3,6 +3,7 @@ package com.example.partyplanner.ui.elements
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -62,7 +63,8 @@ fun WishListPage(viewModel: WishListViewModel){
                 onWishNameChange = { viewModel.changeWishName(it)},
                 onLinkChange = { viewModel.changeLinkName(it)},
                 onPriceChange = { viewModel.changePrice(it)},
-                onDescriptionChange = { viewModel.changeDescription(it)}
+                onDescriptionChange = { viewModel.changeDescription(it)},
+                onChooseImage = viewModel::chooseWishImage
             )
         }
         if(!uiState.value.addWish) {
@@ -84,7 +86,7 @@ fun AddWishDialog(
     onLinkChange: (String) -> Unit,
     onPriceChange: (Int) -> Unit,
     onDescriptionChange: (String) -> Unit,
-
+    onChooseImage: () -> Unit
 
     ) {
             // Det skal være muligt at indtaste æ,ø,å i add wish
@@ -167,8 +169,17 @@ fun AddWishDialog(
                     Divider(Modifier.width(4.dp))
                     Icon(imageVector = Icons.Default.AddAPhoto,
                         contentDescription = "add photo",
+                        modifier = Modifier.clickable {
+                           onChooseImage()
+                        }
                     )
                 }
+                val painter = if(wishUiState.img != null) {
+                    BitmapPainter(wishUiState.img.asImageBitmap())
+                } else {
+                    painterResource(id = R.drawable.coffee_machine)
+                }
+                Image(painter = painter, contentDescription = null)
                 // Opret skal add wish, og føre tilbage til wishpage
                 // Afbryg skal føre tilbage til wishpage(Dissmiss-Request)
                 Row() {
@@ -335,6 +346,7 @@ fun ShareFAB(modifier: Modifier = Modifier, onClick: () -> Unit) {
             .fillMaxSize()
             .padding(8.dp, end = 10.dp))
     }
+
 }
 
 @Preview(showBackground = true)
