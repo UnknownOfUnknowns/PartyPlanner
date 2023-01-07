@@ -15,7 +15,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
-import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -69,8 +68,20 @@ fun BudgetPage(viewModel: BudgetViewModel) {
             }
 
             Spacer(modifier = Modifier.height(10.dp))
-            IndividualBudgetList(budgets = uiState.value.budgetElements, onNoteChange = { viewModel.setNewBudgetNote(it) })
+            IndividualBudgetList(budgets = uiState.value.budgetElements,
+                onChangeNote = {viewModel.startNoteUpdate(it)}
+            )
         }
+
+        if(uiState.value.setBudgetNote) {
+            SetNoteDialog(onDismiss = { viewModel.endNoteUpdate(updateInDatabase = false) },
+                value = uiState.value.changeNoteState.newValue,
+                onNoteChange = {viewModel.updateNoteValue(it)},
+                onSubmit = {viewModel.endNoteUpdate(updateInDatabase = true)}
+            )
+        }
+
+
         if(uiState.value.addBudgetStatus) {
             AddBudgetDialog(
                 onDismiss = { viewModel.addBudgetStatus(false) },
@@ -90,6 +101,54 @@ fun BudgetPage(viewModel: BudgetViewModel) {
         }
     }
 }
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun SetNoteDialog(
+    onDismiss: () -> Unit,
+    value : String,
+    onNoteChange: (String) -> Unit,
+    onSubmit : () -> Unit
+) {
+    Dialog(onDismissRequest = onDismiss) {
+        Card(modifier = Modifier
+            .padding(all = 15.dp),
+            shape = RoundedCornerShape(10),
+            colors = CardDefaults.cardColors(Background)
+        ) {
+            Column(
+                horizontalAlignment = CenterHorizontally,
+                modifier = Modifier
+                    .padding(horizontal = 10.dp)
+            ) {
+                Text(text = "Beskrivelse:",
+                    modifier = Modifier
+                        .align(CenterHorizontally)
+                        .padding(vertical = 10.dp),
+                    fontSize = 30.sp
+                )
+                OutlinedTextField(value = value, onValueChange = onNoteChange,
+                    modifier = Modifier
+                        .align(CenterHorizontally)
+                        .padding(vertical = 10.dp),
+                    label = { Text(text = "Vælg beskrivelse")},
+                    colors = TextFieldDefaults.outlinedTextFieldColors(containerColor = Color.White),
+                    shape = RoundedCornerShape(10)
+                )
+                Row() {
+                    TextButton(onClick = onDismiss) {
+                        Text(text = "Afbryd")
+                    }
+                    TextButton(onClick = onSubmit) {
+                        Text(text = "Opret", fontWeight = FontWeight.ExtraBold)
+                    }
+                }
+            }
+        }
+    }
+}
+
+
 // Den sætter max budget for festen ind som en budgetpost
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -278,32 +337,41 @@ private fun InfoDropDownIndividualBudget(
 }
 
 @Composable
-fun BudgetInformationIndividual(budgetElementUiState: BudgetElementUiState, onNoteChange: (String) -> Unit){
+fun BudgetInformationIndividual(budgetElementUiState: BudgetElementUiState,
+                                onChangeNote : (BudgetElementUiState) -> Unit
+){
     var expanded by remember { mutableStateOf(false) }
-    Row(
+
+    Column(
         modifier = Modifier
             .background(PrimaryContainer, shape = RoundedCornerShape(10.dp))
             .fillMaxWidth()
             .border(width = 1.dp, color = Color.Black, shape = RoundedCornerShape(10.dp))
             .padding(start = 10.dp, end = 10.dp, top = 10.dp, bottom = 10.dp),
-        horizontalArrangement = Arrangement.SpaceBetween
     ) {
         //Her skal vi indtaste navnet oprettet på budgettet
-        Text(
-            budgetElementUiState.budgetName + ": " + budgetElementUiState.budgetPrice.toString() + "KR",
-            color = OnPrimaryContainer,
-            fontSize = 25.sp
-        )
-        Spacer(modifier = Modifier.width(10.dp))
-        InfoDropDownIndividualBudget(expanded = expanded, onClick = { expanded = !expanded })
+        Row(modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween){
+            Text(
+                budgetElementUiState.budgetName + ": " + budgetElementUiState.budgetPrice.toString() + "KR",
+                color = OnPrimaryContainer,
+                fontSize = 25.sp
+            )
+            InfoDropDownIndividualBudget(expanded = expanded, onClick = { expanded = !expanded })
+        }
+        if (expanded) {
+            Text(text = "Beskrivelse:", fontWeight = FontWeight.Bold)
+            Text(text = budgetElementUiState.budgetNote)
+            Button(onClick = {onChangeNote(budgetElementUiState)}) {
+                Text(text = "Ændr beskrivelse")
+            }
+        }
     }
-    if (expanded) {
-        expandedTextField(budgetUiState = budgetElementUiState, onNoteChange)
-    }
+
 }
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun expandedTextField(
+fun ExpandedTextField(
     budgetUiState: BudgetElementUiState,
     onNoteChange: (String) -> Unit,
 
@@ -323,7 +391,7 @@ fun expandedTextField(
 
 // Her er Items tilføjet til at kunne gøre igennem listen af forskellige budgets
 @Composable
-fun IndividualBudgetList(budgets : List<BudgetElementUiState>, onNoteChange: (String) -> Unit){
+fun IndividualBudgetList(budgets : List<BudgetElementUiState>, onChangeNote: (BudgetElementUiState) -> Unit){
     LazyColumn(
         modifier = Modifier
             .background(Background, shape = RoundedCornerShape(10.dp))
@@ -333,12 +401,12 @@ fun IndividualBudgetList(budgets : List<BudgetElementUiState>, onNoteChange: (St
 
     ){
         items(budgets) { budgetInformationIndividual ->
-            BudgetInformationIndividual(budgetElementUiState = budgetInformationIndividual, onNoteChange)
+            BudgetInformationIndividual(budgetElementUiState = budgetInformationIndividual, onChangeNote)
         }
 
-        }
-        
     }
+        
+}
 
 @Preview(showBackground = true)
 @Composable

@@ -5,6 +5,7 @@ import com.example.partyplanner.data.WISH_COLLECTION
 import com.example.partyplanner.data.WISH_LIST_NAME_VARIABLE
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentId
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.snapshots
 import com.google.firebase.firestore.ktx.toObjects
@@ -19,7 +20,7 @@ class WishServiceImpl(private val firestore: FirebaseFirestore,
             .snapshots().
             map {
                     snapshot ->
-                println(snapshot)
+                println("dd")
                 snapshot.toObjects()
             }
 
@@ -35,7 +36,11 @@ class WishServiceImpl(private val firestore: FirebaseFirestore,
     override suspend fun addWish(wish: Wish, onResult: (Throwable?) -> Unit) {
         wishCollection()
             .add(wish)
-            .addOnSuccessListener { onResult(null) }
+            .addOnSuccessListener { ref ->
+                if(wish.newImage != null) {
+
+                }
+            }
             .addOnFailureListener { onResult(Exception()) }
     }
 
@@ -54,6 +59,8 @@ class WishServiceImpl(private val firestore: FirebaseFirestore,
             .collection(WISH_COLLECTION)
 
     private fun partiesCollection() : CollectionReference = firestore.collection(PARTIES_COLLECTION)
+
+    private fun wishDocument(id : String) : DocumentReference = wishCollection().document(id)
 
 }
 

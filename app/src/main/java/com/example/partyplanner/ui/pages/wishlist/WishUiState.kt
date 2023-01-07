@@ -7,8 +7,9 @@ data class WishUiState(
     val price: Int = 0,
     val description : String = "",
     val link : String = "",
+    val imageLink : String = "",
     val isReserved : Boolean = false,
-    val img : Bitmap? = null
+    val newImage : Bitmap? = null
 )
 
 

@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.core.text.isDigitsOnly
+import coil.compose.AsyncImage
 import com.example.partyplanner.R
 import com.example.partyplanner.data.wish.WishServiceImpl
 import com.example.partyplanner.ui.pages.wishlist.WishListViewModel
@@ -174,8 +175,8 @@ fun AddWishDialog(
                         }
                     )
                 }
-                val painter = if(wishUiState.img != null) {
-                    BitmapPainter(wishUiState.img.asImageBitmap())
+                val painter = if(wishUiState.newImage != null) {
+                    BitmapPainter(wishUiState.newImage.asImageBitmap())
                 } else {
                     painterResource(id = R.drawable.coffee_machine)
                 }
@@ -277,20 +278,24 @@ fun Wish(modifier: Modifier = Modifier, wishUiState: WishUiState, showTopBar: Bo
                 if (showTopBar) {
                     WishTopBar(isReserved = wishUiState.isReserved, price = wishUiState.price)
                 }
-                // TODO("Insert fetched Image and check if it is loadable")
-                val painter = if(wishUiState.img != null) {
-                    BitmapPainter(wishUiState.img.asImageBitmap())
+                if(wishUiState.imageLink.isNotEmpty()){
+                    AsyncImage(model = wishUiState.imageLink,
+                        contentDescription = null,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(0.8f),
+                        contentScale = ContentScale.Crop,
+                        placeholder = painterResource(id = R.drawable.coffee_machine))
+
                 } else {
-                    painterResource(id = R.drawable.coffee_machine)
+                    Image(
+                        painter = painterResource(id = R.drawable.coffee_machine),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(0.8f),
+                        contentScale = ContentScale.Crop)
                 }
-                Image(
-                    painter = painter,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(0.8f),
-                    contentScale = ContentScale.Crop
-                )
                 Text(
                     modifier = Modifier.weight(0.2f),
                     text = wishUiState.wishName,
@@ -334,6 +339,7 @@ fun WishList(wishes : List<WishUiState>, showTopBar: Boolean = false) {
 
 @Composable
 fun ShareFAB(modifier: Modifier = Modifier, onClick: () -> Unit) {
+
     FloatingActionButton(onClick = onClick,
         modifier = modifier
             .padding(start = 10.dp, bottom = 10.dp)

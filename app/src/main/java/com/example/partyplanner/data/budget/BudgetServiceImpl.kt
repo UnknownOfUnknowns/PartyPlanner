@@ -1,8 +1,6 @@
 package com.example.partyplanner.data.budget
 
-import com.example.partyplanner.data.BUDGET_COLLECTION
-import com.example.partyplanner.data.MAX_BUDGET
-import com.example.partyplanner.data.PARTIES_COLLECTION
+import com.example.partyplanner.data.*
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentId
 import com.google.firebase.firestore.DocumentReference
@@ -15,7 +13,9 @@ import kotlinx.coroutines.flow.map
 class BudgetServiceImpl(private val firestore: FirebaseFirestore, @DocumentId private  val partyId : String) : BudgetService {
     override val budgets: Flow<List<Budget>>
         get() = budgetCollection()
-            .snapshots().map { snapshot -> snapshot.toObjects() }
+            .snapshots().map { snapshot ->
+                snapshot.toObjects()
+            }
 
     override suspend fun addBudgetItem(budget: Budget, onResult: (Throwable?) -> Unit) {
         budgetCollection()
@@ -46,11 +46,20 @@ class BudgetServiceImpl(private val firestore: FirebaseFirestore, @DocumentId pr
 
     }
 
-    override suspend fun setNewNote(newNote: String, onResult: (Throwable?) -> Unit) {
-        budgetCollection()
-            .add(newNote.toString())
-            .addOnSuccessListener { onResult(null) }
-            .addOnFailureListener { onResult(Exception()) }
+    override suspend fun setNewNote(newNote : String, budget: Budget, onResult: (Throwable?) -> Unit) {
+        budgetCollection().whereEqualTo(BUDGET_NAME, budget.budgetName).get().addOnSuccessListener {
+            it.forEach { doc ->
+                budgetDocument(doc.id).update(BUDGET_NOTE, newNote)
+                    .addOnSuccessListener {
+                        onResult(null)
+                    }
+                    .addOnFailureListener{
+                        onResult(Exception())
+                    }
+            }
+        }
+
+
     }
 
     private fun budgetCollection() : CollectionReference =
@@ -61,6 +70,9 @@ class BudgetServiceImpl(private val firestore: FirebaseFirestore, @DocumentId pr
     private fun currentPartyDocument() : DocumentReference =
         firestore.collection(PARTIES_COLLECTION)
             .document(partyId)
+
+    private fun budgetDocument(id : String) : DocumentReference =
+        budgetCollection().document(id)
 }
 
 

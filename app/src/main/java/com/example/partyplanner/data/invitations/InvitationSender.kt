@@ -7,7 +7,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody
 import org.json.JSONArray
 import org.json.JSONObject
@@ -39,7 +39,7 @@ class InvitationSender {
 
         CoroutineScope(Dispatchers.IO).launch {
             val response = service
-                .sendNewMail(RequestBody.create(MediaType.parse("application/json"),jsonObject.toString()), "Bearer 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")
+                .sendNewMail(RequestBody.create("application/json".toMediaTypeOrNull(),jsonObject.toString()), "Bearer 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")
             withContext(Dispatchers.Main) {
                 println(response.errorBody())
                 val gson = GsonBuilder().setPrettyPrinting().create()

@@ -13,7 +13,6 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class WishListViewModel (private val repository : WishService,
-                         private val imagePicker: ImagePicker? = null,
                          private val imageService: ImageService = ImageServiceImpl()) : ViewModel() {
     private val _internalState = MutableStateFlow(WishListUiState())
     val uiState = combine(
@@ -94,12 +93,10 @@ class WishListViewModel (private val repository : WishService,
     }
 
     fun chooseWishImage() {
-
         ImagePicker.getImage { bitmap ->
             _internalState.update {
-                it.copy(newWish = it.newWish.copy(img = bitmap))
+                it.copy(newWish = it.newWish.copy(newImage = bitmap))
             }
-
         }
     }
 

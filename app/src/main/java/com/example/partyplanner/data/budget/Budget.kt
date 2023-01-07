@@ -1,8 +1,10 @@
 package com.example.partyplanner.data.budget
 
 import com.example.partyplanner.ui.pages.budget.BudgetElementUiState
+import com.google.firebase.firestore.DocumentId
 
 data class Budget(
+    @DocumentId val id : String = "",
     val budgetName: String = "",
     val budgetPrice: Int = 0,
     val budgetNote: String = "",
