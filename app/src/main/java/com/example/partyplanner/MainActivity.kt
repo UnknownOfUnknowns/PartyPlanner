@@ -24,6 +24,8 @@ import com.example.partyplanner.data.party.PartyServiceImpl
 import com.example.partyplanner.data.wish.WishServiceImpl
 import com.example.partyplanner.domain.ImagePicker
 import com.example.partyplanner.ui.elements.*
+import com.example.partyplanner.ui.elements.tableplannerpages.CreateTable
+import com.example.partyplanner.ui.elements.tableplannerpages.TablePlannerViewModel
 import com.example.partyplanner.ui.guestpages.GuestMenuPage
 import com.example.partyplanner.ui.guestpages.GuestMenuViewModel
 import com.example.partyplanner.ui.pages.budget.BudgetViewModel
@@ -89,7 +91,7 @@ fun PartyPlannerApp(viewModel: PartyViewModel){
             composable(route = LoginPage.route) {
                 val loginViewModel = LoginViewModel(loginService) {
                     navigationController.navigateSingleTopTo(
-                        BudgetPage.route
+                        TablePlannerPage.route
                     )
                 }
                 SignInScreen(loginViewModel)
@@ -146,6 +148,10 @@ fun PartyPlannerApp(viewModel: PartyViewModel){
 
             composable(route = GuestMenuPagee.route){
                 GuestMenuPage(GuestMenuViewModel())
+            }
+
+            composable(route = TablePlannerPage.route){
+                CreateTable(TablePlannerViewModel())
             }
         }
     }
