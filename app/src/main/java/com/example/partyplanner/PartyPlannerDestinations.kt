@@ -43,4 +43,8 @@ object GuestMenuPagee : PartyPlannerDestination{
     override val route = "GuestMenu"
 }
 
+object TablePlannerPage : PartyPlannerDestination{
+    override val route = "TablePlanner"
+}
+
 val partyPlannerScreens = listOf(StartPage, NewPartyPage)
