@@ -2,8 +2,6 @@ package com.example.partyplanner.ui.elements
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import android.content.Context
-import android.widget.DatePicker
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -15,8 +13,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Alarm
 import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material.icons.filled.LockClock
-import androidx.compose.material.icons.filled.Watch
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -33,7 +29,6 @@ import com.example.partyplanner.ui.pages.partiesList.NewPartyViewModel
 import com.example.partyplanner.ui.state.PartyCoreInfoUiState
 import com.example.partyplanner.ui.state.PartyType
 import com.example.partyplanner.ui.theme.Background
-import com.example.partyplanner.ui.theme.PrimaryContainer
 import com.google.firebase.Timestamp
 import java.util.*
 
@@ -194,11 +189,11 @@ fun SetPartyDataOnCreation(
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            showDatePicker(LocalContext.current, party.date, setDate)
+            showDatePicker(party.date, setDate)
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            ShowTimePicker(LocalContext.current)
+            ShowTimePicker(party.date, setDate)
 
             Spacer(modifier = Modifier.height(10.dp))
 
@@ -246,23 +241,25 @@ fun SetPartyDataOnCreation(
 
 
 @Composable
-fun showDatePicker(context: Context, date : Timestamp, setDate : (Date) -> Unit){
-    val year: Int
-    val month: Int
-    val day: Int
+fun showDatePicker(date : Timestamp, setDate : (Date) -> Unit){
+
+
 
 
     val calendar = Calendar.getInstance()
     calendar.time = date.toDate()
-    year = calendar.get(Calendar.YEAR)
-    month = calendar.get(Calendar.MONTH)
-    day = calendar.get(Calendar.DAY_OF_MONTH)
+    val year = calendar.get(Calendar.YEAR)
+    val month = calendar.get(Calendar.MONTH)
+    val day = calendar.get(Calendar.DAY_OF_MONTH)
 
 
 
     val datePickerDialog = DatePickerDialog(
-        context,
-        { picker: DatePicker, year: Int,  month: Int, dayOfMonth: Int ->
+        LocalContext.current,
+        { _,y : Int, m : Int, d : Int ->
+            calendar.set(Calendar.DAY_OF_MONTH, d)
+            calendar.set(Calendar.MONTH, m)
+            calendar.set(Calendar.YEAR, y)
             setDate(calendar.time)
         }, year, month, day
     )
@@ -293,20 +290,22 @@ fun showDatePicker(context: Context, date : Timestamp, setDate : (Date) -> Unit)
 }
 
 @Composable
-fun ShowTimePicker(context: Context) {
+fun ShowTimePicker(date : Timestamp, setDate : (Date) -> Unit) {
     val mContext = LocalContext.current
 
     val mCalendar = Calendar.getInstance()
+    mCalendar.time = date.toDate()
     val mHour = mCalendar[Calendar.HOUR_OF_DAY]
     val mMinute = mCalendar[Calendar.MINUTE]
 
-    val mTime = remember { mutableStateOf("") }
 
     val mTimePickerDialog = TimePickerDialog(
         mContext,
-        { _, mHour: Int, mMinute: Int ->
-            mTime.value = "$mHour:$mMinute"
-        }, mHour, mMinute, false
+        { _,  h : Int, m : Int  ->
+            mCalendar.set(Calendar.HOUR_OF_DAY, h)
+            mCalendar.set(Calendar.MINUTE, m)
+            setDate(mCalendar.time)
+        }, mHour, mMinute, true
     )
 
         Box(
@@ -324,7 +323,7 @@ fun ShowTimePicker(context: Context) {
                 modifier = Modifier.padding(15.dp),
             ){
                 Text (
-                    text = "Vælg starttidspunkt :" + " ${mTime.value}",
+                    text = "Vælg starttidspunkt :" + " ${mHour}:$mMinute",
                     modifier = Modifier.weight(1F),
                     color = Color.DarkGray
                 )
