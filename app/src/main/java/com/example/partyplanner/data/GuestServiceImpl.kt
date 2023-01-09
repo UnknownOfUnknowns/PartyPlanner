@@ -13,6 +13,8 @@ import kotlinx.coroutines.flow.map
 data class Guest(
     @DocumentId val id : String = "",
     val name: String = "",
+    val partyRef : String = "",
+    val guestId : String = "",
     val attendanceState: AttendanceState = AttendanceState.AWAITING,
     val contactAddress : String = "",
     val sendingMethod: SendingMethod = SendingMethod.EMAIL
@@ -30,7 +32,13 @@ interface GuestService{
 class GuestServiceImpl(private val firestore: FirebaseFirestore, @DocumentId private val partyId: String) : GuestService {
 
     override val guests: Flow<List<Guest>>
-        get() = currentCollection().snapshots().map { snapshot -> snapshot.toObjects() }
+        get() = currentCollection()
+            .whereEqualTo("partyRef", partyId)
+                .snapshots()
+                .map { snapshot ->
+                    println(snapshot)
+                    snapshot.toObjects()
+                }
 
 
 
@@ -41,7 +49,7 @@ class GuestServiceImpl(private val firestore: FirebaseFirestore, @DocumentId pri
 
 
     override suspend fun addGuest(guest: Guest, onResult: (Throwable?) -> Unit) {
-        currentCollection().add(guest).addOnSuccessListener { onResult(null) }
+        currentCollection().add(guest.copy(partyRef = partyId)).addOnSuccessListener { onResult(null) }
             .addOnFailureListener { onResult(Exception()) }
     }
 
@@ -52,9 +60,8 @@ class GuestServiceImpl(private val firestore: FirebaseFirestore, @DocumentId pri
     }
 
     private fun currentCollection(): CollectionReference =
-        firestore.collection(PARTIES_COLLECTION)
-            .document(partyId)
-            .collection(GUESTS_COLLECTION)
+        firestore.collection(GUESTS_COLLECTION)
+
 
 
 }

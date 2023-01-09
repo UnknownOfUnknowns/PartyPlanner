@@ -1,5 +1,6 @@
 package com.example.partyplanner.data.party
 
+import com.example.partyplanner.data.GUESTS_COLLECTION
 import com.example.partyplanner.data.HOST_VARIABLE
 import com.example.partyplanner.data.PARTIES_COLLECTION
 import com.example.partyplanner.data.WISH_LIST_NAME_VARIABLE
@@ -14,11 +15,25 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class PartyServiceImpl(private val account : AccountService) : PartyService {
-    override val parties: Flow<List<Party>>
-        get() = currentCollection()
+    override val hostParties: Flow<List<Party>>
+        get() = partiesCollection()
             .whereEqualTo(HOST_VARIABLE, Firebase.auth.uid)
             .snapshots()
-            .map { snapshot -> snapshot.toObjects() }
+            .map { snapshot ->
+                println(snapshot)
+                snapshot.toObjects()
+            }
+    override val guestParties: Flow<List<Party>>
+        get() = partiesCollection()
+            .whereArrayContains("guests", Firebase.auth.uid ?: "")
+            .snapshots()
+            .map { snapshot ->
+                println(snapshot)
+                snapshot.toObjects()
+            }
+
+
+
 
     override suspend fun update(party: Party) {
         TODO("Not yet implemented")
@@ -26,8 +41,8 @@ class PartyServiceImpl(private val account : AccountService) : PartyService {
 
     override suspend fun addParty(party: Party, onResult: (Throwable?) -> Unit) {
         Firebase.firestore.runTransaction {
-            currentCollection().add(party).addOnSuccessListener {
-                currentCollection().document(it.id).update(WISH_LIST_NAME_VARIABLE, party.partyName + " Ønskeliste")
+            partiesCollection().add(party).addOnSuccessListener {
+                partiesCollection().document(it.id).update(WISH_LIST_NAME_VARIABLE, party.partyName + " Ønskeliste")
             }
         }.addOnSuccessListener {
             onResult(null)
@@ -36,7 +51,11 @@ class PartyServiceImpl(private val account : AccountService) : PartyService {
         }
     }
 
-    private fun currentCollection() : CollectionReference =
+    private fun partiesCollection() : CollectionReference =
         Firebase.firestore.collection(PARTIES_COLLECTION)
+
+
+    private fun guestsCollection () : CollectionReference =
+        Firebase.firestore.collection(GUESTS_COLLECTION)
 
 }

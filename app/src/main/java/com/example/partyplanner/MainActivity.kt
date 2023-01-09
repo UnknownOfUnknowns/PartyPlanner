@@ -75,7 +75,6 @@ fun PartyPlannerApp(viewModel: PartyViewModel){
                 restoreState = true
             }
         val navigationController = rememberNavController()
-        val state = viewModel.uiState.collectAsState().value
         val loginService = AccountServiceImpl()
         NavHost(
             navController = navigationController,
@@ -85,21 +84,23 @@ fun PartyPlannerApp(viewModel: PartyViewModel){
             composable(route = LoginPage.route) {
                 val loginViewModel = LoginViewModel(loginService) {
                     navigationController.navigateSingleTopTo(
-                        Guestlist.route
+                        PartiesOverviewPage.route
                     )
                 }
                 SignInScreen(loginViewModel)
             }
             hostPartyGraph(navigationController)
             composable(route = PartiesOverviewPage.route) {
-                viewModel.fetchParties()
                 PartyListAndCreate(
                     NewPartyViewModel(PartyServiceImpl(loginService)),
                     onAddButton = {
                         viewModel.newParty()
                         navigationController.navigateSingleTopTo(NewPartyPage.route)
                     },
-                    onEdit = {navigationController.navigateSingleTopTo(Guestlist.route)}
+                    onEdit = {
+                        println(it)
+                        navigationController.navigateSingleTopTo("${Guestlist.route}/${it.id}")
+                    }
                 )
             }
 

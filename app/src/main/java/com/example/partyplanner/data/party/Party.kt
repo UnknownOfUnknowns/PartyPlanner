@@ -2,9 +2,11 @@ package com.example.partyplanner.data.party
 
 import com.example.partyplanner.ui.state.PartyCoreInfoUiState
 import com.example.partyplanner.ui.state.PartyType
+import com.google.firebase.firestore.DocumentId
 import java.time.LocalDateTime
 
 data class Party (
+    @DocumentId val id : String = "",
     val host : String = "",
     val partyName : String = "",
     val name: String = "",

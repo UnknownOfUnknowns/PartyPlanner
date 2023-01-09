@@ -14,7 +14,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class NewPartyViewModel(private val repository : PartyService) : ViewModel() {
-    val parties = repository.parties
+    val parties = repository.hostParties
+    val guestParties = repository.guestParties
     private val _coreInfoUiState = MutableStateFlow(PartyCoreInfoUiState())
     val uiState: StateFlow<PartyCoreInfoUiState> = _coreInfoUiState.asStateFlow()
 

@@ -25,7 +25,7 @@ import com.example.partyplanner.ui.theme.OnPrimary
 
 
 @Composable
-fun PartyListAndCreate(viewModel: NewPartyViewModel, onAddButton: () -> Unit, onEdit: () -> Unit) {
+fun PartyListAndCreate(viewModel: NewPartyViewModel, onAddButton: () -> Unit, onEdit: (Party) -> Unit) {
     val parties by viewModel.parties.collectAsState(initial = listOf())
 
     Box {
@@ -39,7 +39,7 @@ fun PartyListAndCreate(viewModel: NewPartyViewModel, onAddButton: () -> Unit, on
                 val partyIndex = parties.indexOf(party)
                 val alpha : Double = (partyIndex+6)*(1.0/(parties.size+5))
                 PartyCard(partyInfo = party,
-                    onClick = onEdit,
+                    onClick = {onEdit(party)},
                     backgroundColor = Color(30/256f, 0f, 93/256f, alpha.toFloat()))
             }
 

@@ -32,39 +32,55 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
 
 fun NavGraphBuilder.hostPartyGraph(navController : NavController) {
-    navigation(startDestination = Guestlist.name, route = "host") {
+    val partyId = "partyId"
+    navigation(startDestination = "${Guestlist.route}/{$partyId}", route = "host") {
+        val navigatePage : (PartyPlannerDestination, String) -> Unit = { dest, id ->
+            if(dest.route == PartiesOverviewPage.route) {
+                navController.navigate(PartiesOverviewPage.route)
+            } else {
+                navController.navigate("${dest.route}/$id")
+            }
+        }
 
-        composable(route = WishPage.route) {
-            val wishViewModel = WishListViewModel(WishServiceImpl(firestore = FirebaseFirestore.getInstance(),"7v3WIdoU8FmJFnb3fvA7"))
-            NavigationOverlay(currentDestination = hostPartyScreens.find { it.route == navController.currentDestination?.route } ?: WishPage,
+        composable(route = "${WishPage.route}/{$partyId}") { backStack ->
+
+            val id = backStack.arguments?.getString(partyId) ?: ""
+            val wishViewModel = WishListViewModel(WishServiceImpl(firestore = FirebaseFirestore.getInstance(),id))
+            NavigationOverlay(
+                currentDestination = hostPartyScreens.find { it.route == navController.currentDestination?.route?.substringBefore("/") } ?: WishPage,
                 destinations = hostPartyScreens,
-                navigate = {navController.navigate(it.route)}) {
+                navigate = { dest -> navigatePage(dest,id) }
+            ) {
                 WishListPage(wishViewModel)
             }
 
         }
 
-        composable(route = BudgetPage.route) {
-            val budgetViewModel = BudgetViewModel(BudgetServiceImpl(firestore = FirebaseFirestore.getInstance(),"7v3WIdoU8FmJFnb3fvA7"))
-            NavigationOverlay(currentDestination = hostPartyScreens.find { it.route == navController.currentDestination?.route } ?: WishPage,
+        composable(route = "${BudgetPage.route}/{$partyId}") { backStack ->
+            val id = backStack.arguments?.getString(partyId) ?: ""
+            val budgetViewModel = BudgetViewModel(BudgetServiceImpl(firestore = FirebaseFirestore.getInstance(),id))
+            NavigationOverlay(currentDestination = hostPartyScreens.find { it.route == navController.currentDestination?.route?.substringBefore("/") } ?: WishPage,
                 destinations = hostPartyScreens,
-                navigate = {navController.navigate(it.route)}) {
+                navigate = { dest -> navigatePage(dest,id) }) {
                 BudgetPage(budgetViewModel)
             }
         }
-        composable(route = Guestlist.route){
+        composable(route = "${Guestlist.route}/{$partyId}"){ backStack ->
+            val id = backStack.arguments?.getString(partyId) ?: ""
             val db = Firebase.firestore
-            NavigationOverlay(currentDestination = hostPartyScreens.find { it.route == navController.currentDestination?.route } ?: WishPage,
+            NavigationOverlay(currentDestination = hostPartyScreens.find { it.route == navController.currentDestination?.route?.substringBefore("/") } ?: WishPage,
                 destinations = hostPartyScreens,
-                navigate = {navController.navigate(it.route)}) {
-                GuestListPage(viewModel = GuestListViewModel(GuestServiceImpl(db, "7v3WIdoU8FmJFnb3fvA7")))
+                navigate = { dest -> navigatePage(dest,id) }) {
+                GuestListPage(viewModel = GuestListViewModel(GuestServiceImpl(db, id)))
             }
 
         }
-        composable(route = TablePlannerPage.route){
-            NavigationOverlay(currentDestination = hostPartyScreens.find { it.route == navController.currentDestination?.route } ?: WishPage,
+        //PartyId is gonna be used later hence it is required now
+        composable(route = "${TablePlannerPage.route}/{$partyId}"){ backStack ->
+            val id = backStack.arguments?.getString(partyId) ?: ""
+            NavigationOverlay(currentDestination = hostPartyScreens.find { it.route == navController.currentDestination?.route?.substringBefore("/") } ?: WishPage,
                 destinations = hostPartyScreens,
-                navigate = {navController.navigate(it.route)}
+                navigate = { dest -> navigatePage(dest,id) }
             ) {
                 CreateTable(TablePlannerViewModel())
             }
