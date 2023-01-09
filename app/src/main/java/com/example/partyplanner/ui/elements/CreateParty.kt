@@ -6,13 +6,22 @@ import android.content.Context
 import android.widget.DatePicker
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Alarm
+import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.LockClock
+import androidx.compose.material.icons.filled.Watch
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -24,6 +33,7 @@ import com.example.partyplanner.ui.pages.partiesList.NewPartyViewModel
 import com.example.partyplanner.ui.state.PartyCoreInfoUiState
 import com.example.partyplanner.ui.state.PartyType
 import com.example.partyplanner.ui.theme.Background
+import com.example.partyplanner.ui.theme.PrimaryContainer
 import com.google.firebase.Timestamp
 import java.util.*
 
@@ -173,7 +183,9 @@ fun SetPartyDataOnCreation(
             Spacer(modifier = Modifier.height(30.dp))
 
 
-            TextField(
+            OutlinedTextField(
+                modifier = Modifier.fillMaxWidth()
+                    .padding(10.dp),
                 value = party.name,
                 onValueChange = setName,
                 label = { Text("Vælg titel på begivenheden") },
@@ -190,7 +202,9 @@ fun SetPartyDataOnCreation(
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            TextField(
+            OutlinedTextField(
+                modifier = Modifier.fillMaxWidth()
+                    .padding(10.dp),
                 value = party.address,
                 onValueChange = setAddress,
                 label = { Text("Adresse på begivenheden") },
@@ -198,8 +212,8 @@ fun SetPartyDataOnCreation(
             )
 
             Spacer(modifier = Modifier.height(10.dp))
-            Row (Modifier.padding(start = 25.dp, end = 25.dp)) {
-                TextField(
+            Row (Modifier.padding(start = 10.dp, end = 10.dp).fillMaxWidth()) {
+                OutlinedTextField(
                     value = party.zip,
                     onValueChange = setZip,
                     label = { Text("Post nr") },
@@ -210,7 +224,7 @@ fun SetPartyDataOnCreation(
 
                 Spacer(modifier = Modifier.width(10.dp))
 
-                TextField(
+                OutlinedTextField(
                     value = party.city,
                     onValueChange = setCity,
                     label = { Text("By") },
@@ -253,23 +267,29 @@ fun showDatePicker(context: Context, date : Timestamp, setDate : (Date) -> Unit)
         }, year, month, day
     )
 
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
+        Box(
+            modifier = Modifier.
+                fillMaxWidth()
+                .clickable{datePickerDialog.show()}
+                .padding(10.dp)
+                .border(width = 1.dp,
+                shape = RoundedCornerShape(10),
+                color = Color.Gray,
+            ),
+        ){
 
+            Row(
+                modifier = Modifier.padding(15.dp),
+            ){
+                Text (
+                    text = "Vælg dato",
+                    modifier = Modifier.weight(1F),
+                    color = Color.DarkGray
+                )
 
-        Button(onClick={
-            datePickerDialog.show()
-        }) {
-            Text(text = "Vælg dato")
+                Icon(Icons.Default.DateRange, contentDescription = "Select Date")
+            }
         }
-        Spacer(modifier = Modifier.size(5.dp))
-
-        Text(
-            text = "Valgt dato: 1"
-        )
-    }
 }
 
 @Composable
@@ -288,23 +308,30 @@ fun ShowTimePicker(context: Context) {
             mTime.value = "$mHour:$mMinute"
         }, mHour, mMinute, false
     )
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
 
+        Box(
+            modifier = Modifier.
+            fillMaxWidth()
+                .clickable{mTimePickerDialog.show()}
+                .padding(10.dp)
+                .border(width = 1.dp,
+                    shape = RoundedCornerShape(10),
+                    color = Color.Gray,
+                ),
+        ){
 
-        Button(
-            onClick = { mTimePickerDialog.show() }
-            )
-         {
-            Text(text = "Vælg starttidspunkt")
+            Row(
+                modifier = Modifier.padding(15.dp),
+            ){
+                Text (
+                    text = "Vælg starttidspunkt :" + " ${mTime.value}",
+                    modifier = Modifier.weight(1F),
+                    color = Color.DarkGray
+                )
+
+                Icon(Icons.Default.Alarm, contentDescription = "Select Time")
+            }
         }
-        Spacer(modifier = Modifier.size(5.dp))
-
-        Text(text = "Valgt tidspunkt: ${mTime.value}", fontSize = 15.sp)
-
-    }
 }
 
 
