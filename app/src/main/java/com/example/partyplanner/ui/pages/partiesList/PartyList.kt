@@ -6,6 +6,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -19,9 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.partyplanner.data.party.Party
 import com.example.partyplanner.ui.pages.partiesList.NewPartyViewModel
-import com.example.partyplanner.ui.theme.Background
-import com.example.partyplanner.ui.theme.OnPrimary
-import com.example.partyplanner.ui.theme.Primary
+import com.example.partyplanner.ui.theme.*
 
 
 @Composable
@@ -108,8 +107,10 @@ fun StatusTab(tabIndex : Int, onTap : (Int) -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight(),
-        contentColor = Color.White,
-        containerColor = Primary
+        contentColor = OnPrimaryContainer,
+        containerColor = Background,
+
+
     ) {
         tabData.forEachIndexed {index, data ->
             val selected = tabIndex == index
@@ -119,11 +120,13 @@ fun StatusTab(tabIndex : Int, onTap : (Int) -> Unit) {
                 enabled = true,
 
                 interactionSource = MutableInteractionSource(),
-                selectedContentColor = Color.White,
-                unselectedContentColor = Color.LightGray
+                selectedContentColor = OnPrimaryContainer,
+                unselectedContentColor = OnPrimaryContainer
             ) {
                  Text(
                     text = data,
+                     fontSize = 20.sp,
+                     modifier = Modifier.padding(12.dp),
                     fontWeight = if (selected) {
                         FontWeight.Bold
                     }
