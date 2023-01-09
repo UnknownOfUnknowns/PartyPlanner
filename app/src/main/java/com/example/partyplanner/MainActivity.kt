@@ -17,31 +17,23 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.partyplanner.data.GuestServiceImpl
 import com.example.partyplanner.data.PartiesRepository
 import com.example.partyplanner.data.account.AccountServiceImpl
-import com.example.partyplanner.data.budget.BudgetServiceImpl
-import com.example.partyplanner.data.party.Party
 import com.example.partyplanner.data.party.PartyServiceImpl
-import com.example.partyplanner.data.wish.WishServiceImpl
 import com.example.partyplanner.domain.ImagePicker
-import com.example.partyplanner.ui.elements.*
-import com.example.partyplanner.ui.elements.tableplannerpages.CreateTable
-import com.example.partyplanner.ui.elements.tableplannerpages.TablePlannerViewModel
+import com.example.partyplanner.navigation.*
+import com.example.partyplanner.ui.elements.CreatePartyConfirmation
+import com.example.partyplanner.ui.elements.PartyListAndCreate
+import com.example.partyplanner.ui.elements.SetPartyDataOnCreation
+import com.example.partyplanner.ui.elements.StartPartyCreation
 import com.example.partyplanner.ui.guestpages.GuestMenuPage
 import com.example.partyplanner.ui.guestpages.GuestMenuViewModel
-import com.example.partyplanner.ui.pages.budget.BudgetViewModel
-import com.example.partyplanner.ui.pages.guestlist.GuestListPage
-import com.example.partyplanner.ui.pages.guestlist.GuestListViewModel
 import com.example.partyplanner.ui.pages.login.LoginViewModel
 import com.example.partyplanner.ui.pages.login.SignInScreen
 import com.example.partyplanner.ui.pages.partiesList.NewPartyViewModel
-import com.example.partyplanner.ui.pages.wishlist.WishListViewModel
 import com.example.partyplanner.ui.state.PartyViewModel
 import com.example.partyplanner.ui.theme.PartyPlannerTheme
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
+import hostPartyGraph
 
 class MainActivity : ComponentActivity() {
 
@@ -93,16 +85,12 @@ fun PartyPlannerApp(viewModel: PartyViewModel){
             composable(route = LoginPage.route) {
                 val loginViewModel = LoginViewModel(loginService) {
                     navigationController.navigateSingleTopTo(
-                        PartiesOverviewPage.route
+                        Guestlist.route
                     )
                 }
                 SignInScreen(loginViewModel)
             }
-            composable(route = WishPage.route) {
-                val wishViewModel = WishListViewModel(WishServiceImpl(firestore = FirebaseFirestore.getInstance(),"7v3WIdoU8FmJFnb3fvA7"))
-
-                WishListPage(wishViewModel)
-            }
+            hostPartyGraph(navigationController)
             composable(route = PartiesOverviewPage.route) {
                 viewModel.fetchParties()
                 PartyListAndCreate(
@@ -113,10 +101,6 @@ fun PartyPlannerApp(viewModel: PartyViewModel){
                     },
                     onEdit = {navigationController.navigateSingleTopTo(Guestlist.route)}
                 )
-            }
-            composable(route = BudgetPage.route) {
-                val budgetViewModel = BudgetViewModel(BudgetServiceImpl(firestore = FirebaseFirestore.getInstance(),"7v3WIdoU8FmJFnb3fvA7"))
-                BudgetPage(budgetViewModel)
             }
 
             val partyViewModel = NewPartyViewModel(PartyServiceImpl(loginService))
@@ -149,18 +133,13 @@ fun PartyPlannerApp(viewModel: PartyViewModel){
                 CreatePartyConfirmation()
             }
 
-            composable(route = Guestlist.route){
-                val db = Firebase.firestore
-                GuestListPage(viewModel = GuestListViewModel(GuestServiceImpl(db, "7v3WIdoU8FmJFnb3fvA7")))
-            }
+
 
             composable(route = GuestMenuPagee.route){
                 GuestMenuPage(GuestMenuViewModel())
             }
 
-            composable(route = TablePlannerPage.route){
-                CreateTable(TablePlannerViewModel())
-            }
+
         }
     }
 }
