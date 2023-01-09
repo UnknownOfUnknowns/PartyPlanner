@@ -1,10 +1,6 @@
 package com.example.partyplanner.data
 
-import android.os.Build
-import androidx.annotation.RequiresApi
-import com.example.partyplanner.ui.state.PartyCoreInfoUiState
-import com.example.partyplanner.ui.state.PartyUiState
-import java.time.LocalDateTime
+/*
 /**
  * IMPORTANT!
  * This class is a dummy class that for now just provides data in the form of UiState this will be
@@ -98,3 +94,5 @@ object PartiesRepository {
         parties.add(party)
     }
 }
+
+*/

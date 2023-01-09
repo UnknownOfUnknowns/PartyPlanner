@@ -17,9 +17,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.partyplanner.data.PartiesRepository
 import com.example.partyplanner.data.account.AccountServiceImpl
-import com.example.partyplanner.data.budget.BudgetServiceImpl
 import com.example.partyplanner.data.party.PartyServiceImpl
 import com.example.partyplanner.data.wish.WishServiceImpl
 import com.example.partyplanner.domain.ImagePicker
@@ -31,7 +29,6 @@ import com.example.partyplanner.ui.pages.login.LoginViewModel
 import com.example.partyplanner.ui.pages.login.SignInScreen
 import com.example.partyplanner.ui.pages.partiesList.NewPartyViewModel
 import com.example.partyplanner.ui.pages.wishlist.WishListViewModel
-import com.example.partyplanner.ui.state.PartyViewModel
 import com.example.partyplanner.ui.theme.PartyPlannerTheme
 import com.google.firebase.firestore.FirebaseFirestore
 import hostPartyGraph
@@ -39,7 +36,6 @@ import hostPartyGraph
 class MainActivity : ComponentActivity() {
 
 
-    private val viewModel = PartyViewModel(PartiesRepository)
     override fun onCreate(savedInstanceState: Bundle?) {
         ImagePicker.launcher = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
                 if (uri != null) {
@@ -55,7 +51,7 @@ class MainActivity : ComponentActivity() {
             }
         super.onCreate(savedInstanceState)
         setContent {
-            PartyPlannerApp(viewModel)
+            PartyPlannerApp()
         }
     }
 
@@ -63,7 +59,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun PartyPlannerApp(viewModel: PartyViewModel){
+fun PartyPlannerApp(){
     PartyPlannerTheme {
         fun NavHostController.navigateSingleTopTo(route: String) =
             this.navigate(route) {
@@ -107,7 +103,6 @@ fun PartyPlannerApp(viewModel: PartyViewModel){
                 PartyListAndCreate(
                     NewPartyViewModel(PartyServiceImpl(loginService)),
                     onAddButton = {
-                        viewModel.newParty()
                         navigationController.navigateSingleTopTo(NewPartyPage.route)
                     },
                     onEdit = {
@@ -140,7 +135,8 @@ fun PartyPlannerApp(viewModel: PartyViewModel){
                     setAddress = {partyViewModel.updateAddress(it)},
                     setCity = {partyViewModel.updateCity(it)},
                     setName = {partyViewModel.updateName(it)},
-                    setZip = {partyViewModel.updateZip(it)}
+                    setZip = {partyViewModel.updateZip(it)},
+                    setDate = {partyViewModel.updateDate(it)}
                 )
             }
             composable(route = ConfirmationPage.route){

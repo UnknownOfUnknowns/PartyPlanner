@@ -6,6 +6,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -15,33 +16,36 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.partyplanner.data.party.Party
 import com.example.partyplanner.ui.pages.partiesList.NewPartyViewModel
-import com.example.partyplanner.ui.theme.Background
-import com.example.partyplanner.ui.theme.OnPrimary
-import com.example.partyplanner.ui.theme.Primary
+import com.example.partyplanner.ui.theme.*
 
 
 @Composable
 fun PartyListAndCreate(viewModel: NewPartyViewModel, onAddButton: () -> Unit, onEdit: (Party) -> Unit) {
-    val parties by viewModel.parties.collectAsState(initial = listOf())
-
+    val hostParties by viewModel.parties.collectAsState(initial = listOf())
+    val guestParties by viewModel.guestParties.collectAsState(initial = listOf())
+    var tabIndex by remember { mutableStateOf(0) }
+    val parties = if(tabIndex == 0) hostParties else guestParties
     Box {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Background),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            items(parties){ party ->
-                val partyIndex = parties.indexOf(party)
-                val alpha : Double = (partyIndex+6)*(1.0/(parties.size+5))
-                PartyCard(partyInfo = party,
-                    onClick = {onEdit(party)},
-                    backgroundColor = Color(30/256f, 0f, 93/256f, alpha.toFloat()))
+        Column {
+            StatusTab(tabIndex = tabIndex, { tabIndex = it })
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Background),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                items(parties){ party ->
+                    val partyIndex = parties.indexOf(party)
+                    val alpha : Double = (partyIndex+6)*(1.0/(parties.size+5))
+                    PartyCard(partyInfo = party,
+                        onClick = {onEdit(party)},
+                        backgroundColor = Color(30/256f, 0f, 93/256f, alpha.toFloat()))
+                }
+
             }
 
         }
@@ -93,8 +97,8 @@ fun PartyCard(partyInfo: Party, backgroundColor : Color = Color.White, onClick: 
 }
 
 @Composable
-fun StatusTab() {
-    var tabIndex by remember { mutableStateOf(0) }
+fun StatusTab(tabIndex : Int, onTap : (Int) -> Unit) {
+
     val tabData = listOf(
         "Arrangør",
         "Gæst"
@@ -103,22 +107,26 @@ fun StatusTab() {
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight(),
-        contentColor = Color.White,
-        containerColor = Primary
+        contentColor = OnPrimaryContainer,
+        containerColor = Background,
+
+
     ) {
         tabData.forEachIndexed {index, data ->
             val selected = tabIndex == index
 
-            Tab(selected = selected, onClick = { tabIndex = index },
+            Tab(selected = selected, onClick = {onTap(index)},
                 modifier = Modifier,
                 enabled = true,
 
                 interactionSource = MutableInteractionSource(),
-                selectedContentColor = Color.White,
-                unselectedContentColor = Color.LightGray
+                selectedContentColor = OnPrimaryContainer,
+                unselectedContentColor = OnPrimaryContainer
             ) {
                  Text(
                     text = data,
+                     fontSize = 20.sp,
+                     modifier = Modifier.padding(12.dp),
                     fontWeight = if (selected) {
                         FontWeight.Bold
                     }
@@ -131,8 +139,3 @@ fun StatusTab() {
     }
 }
 
-@Preview
-@Composable
-fun WATCHOUT(){
-    StatusTab()
-}

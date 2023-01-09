@@ -7,11 +7,13 @@ import com.example.partyplanner.data.party.PartyService
 import com.example.partyplanner.data.party.getFromUiState
 import com.example.partyplanner.ui.state.PartyCoreInfoUiState
 import com.example.partyplanner.ui.state.PartyType
+import com.google.firebase.Timestamp
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.util.*
 
 class NewPartyViewModel(private val repository : PartyService) : ViewModel() {
     val parties = repository.hostParties
@@ -55,6 +57,12 @@ class NewPartyViewModel(private val repository : PartyService) : ViewModel() {
             currentState.copy(
                 address = newAddress
         ) }
+    }
+
+    fun updateDate(newDate: Date) {
+        _coreInfoUiState.update { currentState ->
+            currentState.copy(date = Timestamp(newDate))
+        }
     }
 
     fun updateZip(newZip: String){
