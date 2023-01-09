@@ -8,6 +8,7 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment.Companion.BottomEnd
 import androidx.compose.ui.Alignment.Companion.BottomStart
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
@@ -18,8 +19,13 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.partyplanner.data.wish.WishServiceImpl
+import com.example.partyplanner.ui.pages.wishlist.WishListUiState
+import com.example.partyplanner.ui.pages.wishlist.WishListViewModel
 import com.example.partyplanner.ui.pages.wishlist.WishUiState
 import com.example.partyplanner.ui.theme.Primary
+import com.google.firebase.firestore.FirebaseFirestore
+
 /*
 @Composable
 fun WishDescription(wishUiState: WishUiState, showButton: Boolean = false) {
@@ -56,6 +62,38 @@ fun WishDescription(wishUiState: WishUiState, showButton: Boolean = false) {
         }
     }
 }*/
+@Composable
+fun WishProductPage(viewModel: WishListViewModel, isGuest: Boolean) {
+    val uiState = viewModel.uiState.collectAsState()
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .background(MaterialTheme.colorScheme.background)
+    ){
+        Column(
+            modifier = Modifier,
+            horizontalAlignment = CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            NameCardWishList(name = uiState.value.wishListName, modifier = Modifier
+                .fillMaxWidth()
+                .height(120.dp)
+                .padding(start = 11.dp, end = 11.dp, bottom = 17.dp))
+            CardWithProduct(wishUiState = uiState.value.newWish, isGuest = isGuest)
+        }
+        if(!isGuest) {
+            DeleteFAB(
+                onClick = {}, modifier = Modifier
+                    .align(BottomStart)
+            )
+            EditFAB(
+                onClick = {}, modifier = Modifier
+                    .align(BottomEnd)
+            )
+        }
+    }
+}
+
+
 @Composable
 fun CardWithProduct(modifier: Modifier = Modifier, wishUiState: WishUiState, isGuest : Boolean) {
     Card(
@@ -146,45 +184,12 @@ fun DeleteFAB(onClick: () -> Unit, modifier: Modifier = Modifier) {
     }
 }
 
-@Composable
-fun WishProductPage(wishUiState: WishUiState, isGuest: Boolean) {
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .background(MaterialTheme.colorScheme.background)
-    ){
-        Column(
-        modifier = Modifier,
-            horizontalAlignment = CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            NameCardWishList(name = wishUiState.wishName, modifier = Modifier
-                .fillMaxWidth()
-                .height(120.dp)
-                .padding(start = 11.dp, end = 11.dp, bottom = 17.dp))
-            CardWithProduct(wishUiState = wishUiState, isGuest = isGuest)
-        }
 
-        if(!isGuest) {
-            DeleteFAB(
-                onClick = {}, modifier = Modifier
-                    .align(BottomStart)
-            )
-            EditFAB(
-                onClick = {}, modifier = Modifier
-                    .align(BottomEnd)
-            )
-        }
-    }
-}
 
 
 @Composable
 @Preview(showBackground = true)
 fun WishProductPreview() {
     //WishDescription(wishUiState = WishUiState(image = R.drawable._nske2, wishName = "Ting"), showButton = true)
-    WishProductPage(wishUiState = WishUiState(
-        wishName = "ROLEX",
-        price = 15000,
-        description = "FED KAFFEMASKINE!",
-        link = "www.elgigantos.dk"), isGuest = false)
+    WishProductPage(viewModel = WishListViewModel(WishServiceImpl(firestore = FirebaseFirestore.getInstance(),"7v3WIdoU8FmJFnb3fvA7")), isGuest = false)
 }
