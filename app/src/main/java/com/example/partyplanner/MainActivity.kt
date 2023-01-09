@@ -10,6 +10,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -20,6 +21,7 @@ import com.example.partyplanner.data.GuestServiceImpl
 import com.example.partyplanner.data.PartiesRepository
 import com.example.partyplanner.data.account.AccountServiceImpl
 import com.example.partyplanner.data.budget.BudgetServiceImpl
+import com.example.partyplanner.data.party.Party
 import com.example.partyplanner.data.party.PartyServiceImpl
 import com.example.partyplanner.data.wish.WishServiceImpl
 import com.example.partyplanner.domain.ImagePicker
@@ -91,7 +93,7 @@ fun PartyPlannerApp(viewModel: PartyViewModel){
             composable(route = LoginPage.route) {
                 val loginViewModel = LoginViewModel(loginService) {
                     navigationController.navigateSingleTopTo(
-                        TablePlannerPage.route
+                        PartiesOverviewPage.route
                     )
                 }
                 SignInScreen(loginViewModel)
@@ -116,25 +118,31 @@ fun PartyPlannerApp(viewModel: PartyViewModel){
                 val budgetViewModel = BudgetViewModel(BudgetServiceImpl(firestore = FirebaseFirestore.getInstance(),"7v3WIdoU8FmJFnb3fvA7"))
                 BudgetPage(budgetViewModel)
             }
+
+            val partyViewModel = NewPartyViewModel(PartyServiceImpl(loginService))
+
             composable(route = NewPartyPage.route) {
 
                 StartPartyCreation(onNextButtonClick =  {
                     navigationController.navigateSingleTopTo(AdditionalPartyDataPage.route)
                 },
-                    viewModel = NewPartyViewModel(PartyServiceImpl(loginService))
+                    viewModel = partyViewModel
                 )
             }
 
             composable(route = AdditionalPartyDataPage.route){
 
+                val state by partyViewModel.uiState.collectAsState()
+
                 SetPartyDataOnCreation(onNextButtonClick = {
+                    partyViewModel.createParty()
                     navigationController.navigateSingleTopTo(ConfirmationPage.route)
                     },
-                    party = state.currentParty.coreInfo,
-                    setAddress = {viewModel.updateAddress(it)},
-                    setCity = {viewModel.updateCity(it)},
-                    setName = {viewModel.updateName(it)},
-                    setZip = {viewModel.updateZip(it)}
+                    party = state,
+                    setAddress = {partyViewModel.updateAddress(it)},
+                    setCity = {partyViewModel.updateCity(it)},
+                    setName = {partyViewModel.updateName(it)},
+                    setZip = {partyViewModel.updateZip(it)}
                 )
             }
             composable(route = ConfirmationPage.route){

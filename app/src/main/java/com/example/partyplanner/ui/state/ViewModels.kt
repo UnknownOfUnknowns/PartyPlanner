@@ -26,6 +26,7 @@ class PartyViewModel(private val repository: PartiesRepository) : ViewModel() {
         _uiState.value.currentParty = newParty
     }
 
+
     fun updateAddress(address: String){
         _uiState.update { currentState ->
             currentState.copy(

@@ -25,7 +25,8 @@ data class PartyCoreInfoUiState(
     val zip: String = "",
     val city: String = "",
     val date: LocalDateTime = LocalDateTime.MAX,
-    val partyType: PartyType = PartyType.NONE
+    val partyType: PartyType = PartyType.NONE,
+    val partyHost: String = ""
 )
 
 

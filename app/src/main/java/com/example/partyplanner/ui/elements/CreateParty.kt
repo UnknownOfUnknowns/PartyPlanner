@@ -57,7 +57,7 @@ fun StartPartyCreation(onNextButtonClick: () -> Unit, viewModel: NewPartyViewMod
             Spacer(modifier = Modifier.height(20.dp))
 
 
-            TextField(value = "", onValueChange = {},
+            TextField(value = uiState.value.partyHost, onValueChange = {viewModel.changeHostName(it)},
                 label = { Text(text = stringResource(R.string.whoHostsTheParty))}
                 )
 
