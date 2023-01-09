@@ -1,5 +1,6 @@
 package com.example.partyplanner.ui.pages.login
 
+import android.widget.NumberPicker.OnValueChangeListener
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -22,7 +23,9 @@ import com.example.partyplanner.R
 import com.example.partyplanner.ui.elements.FadeBackground
 
 @Composable
-fun CreateLoginPage(){
+fun CreateLoginPage(viewModel: LoginViewModel){
+
+    val state = viewModel.uiState.value
 
     FadeBackground() {
 
@@ -36,19 +39,19 @@ fun CreateLoginPage(){
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            FullName()
+            FullName(viewModel::onFullNameChange, state.fullname)
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            Email()
+            Email(viewModel::onUsernameChange, state.email)
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            NewPassword()
+            NewPassword(viewModel::onPasswordChange, state.password)
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            RepeatPassword()
+            RepeatPassword(viewModel::onPasswordChange, state.password)
 
             Spacer(modifier = Modifier.height(20.dp))
 
@@ -63,9 +66,7 @@ fun CreateLoginPage(){
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FullName() {
-
-var fullName by remember { mutableStateOf(TextFieldValue("")) }
+fun FullName(onValueChange: (String) -> Unit, fullName: String) {
 
     OutlinedTextField(
         modifier = Modifier
@@ -73,7 +74,7 @@ var fullName by remember { mutableStateOf(TextFieldValue("")) }
             .padding(10.dp)
             .clip(RoundedCornerShape(10)),
         value = fullName,
-        onValueChange = { newfullName -> fullName = newfullName },
+        onValueChange = onValueChange,
         shape = RoundedCornerShape(10),
         colors = TextFieldDefaults.textFieldColors(),
         label = { Text(text = "Indast fulde navn",
@@ -87,9 +88,7 @@ var fullName by remember { mutableStateOf(TextFieldValue("")) }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Email() {
-
-    var email by remember { mutableStateOf(TextFieldValue("")) }
+fun Email(onValueChange: (String) -> Unit, email: String) {
 
     OutlinedTextField(
         modifier = Modifier
@@ -97,7 +96,7 @@ fun Email() {
             .padding(10.dp)
             .clip(RoundedCornerShape(10)),
         value = email,
-        onValueChange = { newemail -> email = newemail},
+        onValueChange = onValueChange,
         shape = RoundedCornerShape(10),
         colors = TextFieldDefaults.textFieldColors(),
         label = { Text(text = "Indtast e-mail addresse",
@@ -111,18 +110,17 @@ fun Email() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NewPassword(){
+fun NewPassword(onValueChange: (String) -> Unit, password: String){
 
     val showPassword = remember { mutableStateOf(false) }
-    var newPassword by remember { mutableStateOf(TextFieldValue("")) }
 
     OutlinedTextField(
         modifier = Modifier
             .fillMaxWidth()
             .padding(10.dp)
             .clip(RoundedCornerShape(10)),
-        value = newPassword,
-        onValueChange = { newnewPassword -> newPassword = newnewPassword },
+        value = password,
+        onValueChange = onValueChange,
         shape = RoundedCornerShape(10),
 
         visualTransformation = if (showPassword.value) {
@@ -155,10 +153,9 @@ fun NewPassword(){
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RepeatPassword(){
+fun RepeatPassword(onValueChange: (String) -> Unit, repeatPassword: String){
 
     val showPassword = remember { mutableStateOf(false) }
-    var repeatPassword by remember { mutableStateOf(TextFieldValue("")) }
 
     OutlinedTextField(
         modifier = Modifier
@@ -166,7 +163,7 @@ fun RepeatPassword(){
             .padding(10.dp)
             .clip(RoundedCornerShape(10)),
         value = repeatPassword,
-        onValueChange = {newrepeatPassword -> repeatPassword = newrepeatPassword},
+        onValueChange = onValueChange,
         shape = RoundedCornerShape(10),
 
         visualTransformation = if (showPassword.value) {
@@ -195,11 +192,4 @@ fun RepeatPassword(){
         }
 
     )
-}
-
-
-@Preview
-@Composable
-fun PreviewCreateLoginPage(){
-    CreateLoginPage()
 }
