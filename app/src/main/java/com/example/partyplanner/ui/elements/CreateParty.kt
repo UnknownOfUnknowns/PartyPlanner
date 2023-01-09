@@ -279,7 +279,7 @@ fun showDatePicker(date : Timestamp, setDate : (Date) -> Unit){
                 modifier = Modifier.padding(15.dp),
             ){
                 Text (
-                    text = "Vælg dato",
+                    text = "Vælg dato : " + "${day} /" + " ${month+1} -" + " ${year}",
                     modifier = Modifier.weight(1F),
                     color = Color.DarkGray
                 )
