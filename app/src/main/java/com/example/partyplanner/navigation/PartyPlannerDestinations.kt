@@ -48,6 +48,14 @@ object ConfirmationPage : PartyPlannerDestination {
     override val icon: ImageVector
         get() = TODO("Not yet implemented")
 }
+object WishListGuestPage : PartyPlannerDestination {
+    override val route: String = "wishListGuest"
+    override val name: String
+        get() = TODO("Not yet implemented")
+    override val icon: ImageVector
+        get() = TODO("Not yet implemented")
+
+}
 
 object Guestlist : PartyPlannerDestination {
     override val route = "Guestlist"

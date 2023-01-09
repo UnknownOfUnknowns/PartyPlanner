@@ -101,6 +101,8 @@ fun BudgetPage(viewModel: BudgetViewModel) {
         }
     }
 }
+// Fejl i denne funktion. Den skal udvide sig sammen med den indtastede tekst.
+// Fejl i alle dialogs, undtagen GuestPage, da den er sat singleline = true
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
