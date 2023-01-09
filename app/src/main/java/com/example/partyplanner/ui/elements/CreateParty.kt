@@ -24,6 +24,7 @@ import com.example.partyplanner.ui.pages.partiesList.NewPartyViewModel
 import com.example.partyplanner.ui.state.PartyCoreInfoUiState
 import com.example.partyplanner.ui.state.PartyType
 import com.example.partyplanner.ui.theme.Background
+import com.google.firebase.Timestamp
 import java.util.*
 
 
@@ -158,6 +159,7 @@ fun SetPartyDataOnCreation(
     setAddress: (String) -> Unit,
     setZip: (String) -> Unit,
     setCity: (String) -> Unit,
+    setDate: (Date) -> Unit
 ) {
 
     FadeBackground() {
@@ -180,7 +182,7 @@ fun SetPartyDataOnCreation(
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            showDatePicker(LocalContext.current)
+            showDatePicker(LocalContext.current, party.date, setDate)
 
             Spacer(modifier = Modifier.height(10.dp))
 
@@ -230,24 +232,24 @@ fun SetPartyDataOnCreation(
 
 
 @Composable
-fun showDatePicker(context: Context){
+fun showDatePicker(context: Context, date : Timestamp, setDate : (Date) -> Unit){
     val year: Int
     val month: Int
     val day: Int
 
+
     val calendar = Calendar.getInstance()
+    calendar.time = date.toDate()
     year = calendar.get(Calendar.YEAR)
     month = calendar.get(Calendar.MONTH)
     day = calendar.get(Calendar.DAY_OF_MONTH)
-    calendar.time = Date()
 
-    val date = remember {
-        mutableStateOf("")
-    }
+
+
     val datePickerDialog = DatePickerDialog(
         context,
-        { _: DatePicker, year: Int,  month: Int, dayOfMonth: Int ->
-        date.value = "$dayOfMonth/$month/$year"
+        { picker: DatePicker, year: Int,  month: Int, dayOfMonth: Int ->
+            setDate(calendar.time)
         }, year, month, day
     )
 
@@ -265,7 +267,7 @@ fun showDatePicker(context: Context){
         Spacer(modifier = Modifier.size(5.dp))
 
         Text(
-            text = "Valgt dato: ${date.value}"
+            text = "Valgt dato: 1"
         )
     }
 }

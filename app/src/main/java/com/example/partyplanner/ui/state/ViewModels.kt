@@ -1,12 +1,11 @@
 package com.example.partyplanner.ui.state
 
 import androidx.lifecycle.ViewModel
-import com.example.partyplanner.data.PartiesRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-
+/*
 class PartyViewModel(private val repository: PartiesRepository) : ViewModel() {
     private val _uiState = MutableStateFlow(PartiesUiState())
     val uiState: StateFlow<PartiesUiState> = _uiState.asStateFlow()
@@ -79,3 +78,6 @@ class PartyViewModel(private val repository: PartiesRepository) : ViewModel() {
         }
     }
 }
+
+
+*/

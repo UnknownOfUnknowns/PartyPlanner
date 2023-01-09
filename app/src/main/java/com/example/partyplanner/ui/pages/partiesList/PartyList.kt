@@ -15,7 +15,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.partyplanner.data.party.Party
@@ -27,21 +26,27 @@ import com.example.partyplanner.ui.theme.Primary
 
 @Composable
 fun PartyListAndCreate(viewModel: NewPartyViewModel, onAddButton: () -> Unit, onEdit: (Party) -> Unit) {
-    val parties by viewModel.parties.collectAsState(initial = listOf())
-
+    val hostParties by viewModel.parties.collectAsState(initial = listOf())
+    val guestParties by viewModel.guestParties.collectAsState(initial = listOf())
+    var tabIndex by remember { mutableStateOf(0) }
+    val parties = if(tabIndex == 0) hostParties else guestParties
     Box {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Background),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            items(parties){ party ->
-                val partyIndex = parties.indexOf(party)
-                val alpha : Double = (partyIndex+6)*(1.0/(parties.size+5))
-                PartyCard(partyInfo = party,
-                    onClick = {onEdit(party)},
-                    backgroundColor = Color(30/256f, 0f, 93/256f, alpha.toFloat()))
+        Column {
+            StatusTab(tabIndex = tabIndex, { tabIndex = it })
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Background),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                items(parties){ party ->
+                    val partyIndex = parties.indexOf(party)
+                    val alpha : Double = (partyIndex+6)*(1.0/(parties.size+5))
+                    PartyCard(partyInfo = party,
+                        onClick = {onEdit(party)},
+                        backgroundColor = Color(30/256f, 0f, 93/256f, alpha.toFloat()))
+                }
+
             }
 
         }
@@ -93,8 +98,8 @@ fun PartyCard(partyInfo: Party, backgroundColor : Color = Color.White, onClick: 
 }
 
 @Composable
-fun StatusTab() {
-    var tabIndex by remember { mutableStateOf(0) }
+fun StatusTab(tabIndex : Int, onTap : (Int) -> Unit) {
+
     val tabData = listOf(
         "Arrangør",
         "Gæst"
@@ -109,7 +114,7 @@ fun StatusTab() {
         tabData.forEachIndexed {index, data ->
             val selected = tabIndex == index
 
-            Tab(selected = selected, onClick = { tabIndex = index },
+            Tab(selected = selected, onClick = {onTap(index)},
                 modifier = Modifier,
                 enabled = true,
 
@@ -131,8 +136,3 @@ fun StatusTab() {
     }
 }
 
-@Preview
-@Composable
-fun WATCHOUT(){
-    StatusTab()
-}
