@@ -2,6 +2,7 @@ package com.example.partyplanner.ui.elements
 
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -9,19 +10,19 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.partyplanner.data.party.Party
 import com.example.partyplanner.ui.pages.partiesList.NewPartyViewModel
 import com.example.partyplanner.ui.theme.Background
 import com.example.partyplanner.ui.theme.OnPrimary
+import com.example.partyplanner.ui.theme.Primary
 
 
 @Composable
@@ -89,4 +90,49 @@ fun PartyCard(partyInfo: Party, backgroundColor : Color = Color.White, onClick: 
             }
         }
     }
+}
+
+@Composable
+fun StatusTab() {
+    var tabIndex by remember { mutableStateOf(0) }
+    val tabData = listOf(
+        "Arrangør",
+        "Gæst"
+    )
+    TabRow(selectedTabIndex = tabIndex,
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight(),
+        contentColor = Color.White,
+        containerColor = Primary
+    ) {
+        tabData.forEachIndexed {index, data ->
+            val selected = tabIndex == index
+
+            Tab(selected = selected, onClick = { tabIndex = index },
+                modifier = Modifier,
+                enabled = true,
+
+                interactionSource = MutableInteractionSource(),
+                selectedContentColor = Color.White,
+                unselectedContentColor = Color.LightGray
+            ) {
+                 Text(
+                    text = data,
+                    fontWeight = if (selected) {
+                        FontWeight.Bold
+                    }
+                    else {
+                        FontWeight.Normal
+                    }
+                )
+            }
+        }
+    }
+}
+
+@Preview
+@Composable
+fun WATCHOUT(){
+    StatusTab()
 }

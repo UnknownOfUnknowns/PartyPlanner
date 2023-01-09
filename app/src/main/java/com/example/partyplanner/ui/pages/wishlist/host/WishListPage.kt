@@ -90,7 +90,6 @@ fun AddWishDialog(
     onChooseImage: () -> Unit
 
     ) {
-            // Det skal være muligt at indtaste æ,ø,å i add wish
     Dialog(onDismissRequest = onDismiss) {
         Card(modifier = Modifier
             .padding(all = 15.dp),
@@ -178,7 +177,7 @@ fun AddWishDialog(
                 val painter = if(wishUiState.newImage != null) {
                     BitmapPainter(wishUiState.newImage.asImageBitmap())
                 } else {
-                    painterResource(id = R.drawable.coffee_machine)
+                    painterResource(id = R.drawable.no_image_placeholder_svg)
                 }
                 Image(painter = painter, contentDescription = null)
                 // Opret skal add wish, og føre tilbage til wishpage
@@ -289,7 +288,7 @@ fun Wish(modifier: Modifier = Modifier, wishUiState: WishUiState, showTopBar: Bo
 
                 } else {
                     Image(
-                        painter = painterResource(id = R.drawable.coffee_machine),
+                        painter = painterResource(id = R.drawable.no_image_placeholder_svg),
                         contentDescription = null,
                         modifier = Modifier
                             .fillMaxWidth()

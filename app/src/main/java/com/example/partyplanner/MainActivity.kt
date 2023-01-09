@@ -19,20 +19,21 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.partyplanner.data.PartiesRepository
 import com.example.partyplanner.data.account.AccountServiceImpl
+import com.example.partyplanner.data.budget.BudgetServiceImpl
 import com.example.partyplanner.data.party.PartyServiceImpl
+import com.example.partyplanner.data.wish.WishServiceImpl
 import com.example.partyplanner.domain.ImagePicker
 import com.example.partyplanner.navigation.*
-import com.example.partyplanner.ui.elements.CreatePartyConfirmation
-import com.example.partyplanner.ui.elements.PartyListAndCreate
-import com.example.partyplanner.ui.elements.SetPartyDataOnCreation
-import com.example.partyplanner.ui.elements.StartPartyCreation
+import com.example.partyplanner.ui.elements.*
 import com.example.partyplanner.ui.guestpages.GuestMenuPage
 import com.example.partyplanner.ui.guestpages.GuestMenuViewModel
 import com.example.partyplanner.ui.pages.login.LoginViewModel
 import com.example.partyplanner.ui.pages.login.SignInScreen
 import com.example.partyplanner.ui.pages.partiesList.NewPartyViewModel
+import com.example.partyplanner.ui.pages.wishlist.WishListViewModel
 import com.example.partyplanner.ui.state.PartyViewModel
 import com.example.partyplanner.ui.theme.PartyPlannerTheme
+import com.google.firebase.firestore.FirebaseFirestore
 import hostPartyGraph
 
 class MainActivity : ComponentActivity() {
@@ -88,6 +89,18 @@ fun PartyPlannerApp(viewModel: PartyViewModel){
                     )
                 }
                 SignInScreen(loginViewModel)
+            }
+
+            composable(route = WishListGuestPage.route) {
+                val wishViewModel = WishListViewModel(WishServiceImpl(firestore = FirebaseFirestore.getInstance(),"7v3WIdoU8FmJFnb3fvA7"))
+
+                WishListGuestPage(wishViewModel)
+            }
+
+            composable(route = WishPage.route) {
+                val wishViewModel = WishListViewModel(WishServiceImpl(firestore = FirebaseFirestore.getInstance(),"7v3WIdoU8FmJFnb3fvA7"))
+
+                WishListPage(wishViewModel)
             }
             hostPartyGraph(navigationController)
             composable(route = PartiesOverviewPage.route) {
