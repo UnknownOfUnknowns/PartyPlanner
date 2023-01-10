@@ -78,7 +78,7 @@ fun WishProductPage(viewModel: WishListViewModel, isGuest: Boolean) {
                 .fillMaxWidth()
                 .height(120.dp)
                 .padding(start = 11.dp, end = 11.dp, bottom = 17.dp))
-            CardWithProduct(wishUiState = uiState.value.newWish, isGuest = isGuest)
+            CardWithProduct(wishUiState = uiState.value.newWish, isGuest = isGuest, navigateToProduct = {})
         }
         if(!isGuest) {
             DeleteFAB(
@@ -95,7 +95,7 @@ fun WishProductPage(viewModel: WishListViewModel, isGuest: Boolean) {
 
 
 @Composable
-fun CardWithProduct(modifier: Modifier = Modifier, wishUiState: WishUiState, isGuest : Boolean) {
+fun CardWithProduct(modifier: Modifier = Modifier, wishUiState: WishUiState, isGuest : Boolean, navigateToProduct: () -> Unit) {
     Card(
         modifier = modifier.padding(start = 11.dp, end = 11.dp, bottom = 30.dp),
         shape = RoundedCornerShape(15.dp),
@@ -115,7 +115,7 @@ fun CardWithProduct(modifier: Modifier = Modifier, wishUiState: WishUiState, isG
 
             Spacer(modifier = Modifier.height(30.dp))
 
-            Wish(wishUiState = wishUiState, modifier = Modifier.size(height = 200.dp, width = 150.dp))
+            Wish(wishUiState = wishUiState, modifier = Modifier.size(height = 200.dp, width = 150.dp), onImageClick = { navigateToProduct() })
 
             Spacer(modifier = Modifier.height(5.dp))
 
