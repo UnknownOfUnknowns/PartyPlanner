@@ -1,8 +1,10 @@
 package com.example.partyplanner.ui.pages.wishlist
 
 import android.graphics.Bitmap
+import com.google.firebase.firestore.DocumentId
 
 data class WishUiState(
+    @DocumentId val id : String = "",
     val wishName: String = "",
     val price: Int = 0,
     val description : String = "",

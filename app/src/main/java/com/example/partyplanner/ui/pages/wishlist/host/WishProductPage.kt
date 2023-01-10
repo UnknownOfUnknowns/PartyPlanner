@@ -16,15 +16,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.partyplanner.data.wish.WishServiceImpl
-import com.example.partyplanner.ui.pages.wishlist.WishListUiState
-import com.example.partyplanner.ui.pages.wishlist.WishListViewModel
 import com.example.partyplanner.ui.pages.wishlist.WishUiState
+import com.example.partyplanner.ui.pages.wishlist.WishViewModel
 import com.example.partyplanner.ui.theme.Primary
-import com.google.firebase.firestore.FirebaseFirestore
 
 /*
 @Composable
@@ -63,7 +59,7 @@ fun WishDescription(wishUiState: WishUiState, showButton: Boolean = false) {
     }
 }*/
 @Composable
-fun WishProductPage(viewModel: WishListViewModel, isGuest: Boolean) {
+fun WishProductPage(viewModel: WishViewModel, isGuest: Boolean) {
     val uiState = viewModel.uiState.collectAsState()
     Box(modifier = Modifier
         .fillMaxSize()
@@ -74,11 +70,11 @@ fun WishProductPage(viewModel: WishListViewModel, isGuest: Boolean) {
             horizontalAlignment = CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            NameCardWishList(name = uiState.value.wishListName, modifier = Modifier
+            NameCardWishList(name = viewModel.wishListName.value, modifier = Modifier
                 .fillMaxWidth()
                 .height(120.dp)
                 .padding(start = 11.dp, end = 11.dp, bottom = 17.dp))
-            CardWithProduct(wishUiState = uiState.value.newWish, isGuest = isGuest, navigateToProduct = {})
+            CardWithProduct(wishUiState = uiState.value, isGuest = isGuest, navigateToProduct = {})
         }
         if(!isGuest) {
             DeleteFAB(
@@ -187,9 +183,3 @@ fun DeleteFAB(onClick: () -> Unit, modifier: Modifier = Modifier) {
 
 
 
-@Composable
-@Preview(showBackground = true)
-fun WishProductPreview() {
-    //WishDescription(wishUiState = WishUiState(image = R.drawable._nske2, wishName = "Ting"), showButton = true)
-    WishProductPage(viewModel = WishListViewModel(WishServiceImpl(firestore = FirebaseFirestore.getInstance(),"7v3WIdoU8FmJFnb3fvA7")), isGuest = false)
-}

@@ -8,6 +8,7 @@ import com.google.firebase.firestore.DocumentId
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.snapshots
+import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.firestore.ktx.toObjects
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -51,6 +52,14 @@ class WishServiceImpl(private val firestore: FirebaseFirestore,
     override suspend fun getWishListName() : String{
         val snapshot = partiesCollection().document(partyId).get().await()
         return snapshot.data?.get(WISH_LIST_NAME_VARIABLE)?.toString() ?: ""
+    }
+
+    override suspend fun getWish(id: String, onResult: (Wish?) -> Unit) {
+        wishDocument(id).get().addOnSuccessListener {
+            onResult(it.toObject())
+        }.addOnFailureListener {
+            onResult(null)
+        }
     }
 
     private fun wishCollection() : CollectionReference =

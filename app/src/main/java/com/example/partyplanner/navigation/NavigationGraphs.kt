@@ -20,12 +20,14 @@ import com.example.partyplanner.data.wish.WishServiceImpl
 import com.example.partyplanner.navigation.*
 import com.example.partyplanner.ui.elements.BudgetPage
 import com.example.partyplanner.ui.elements.WishListPage
+import com.example.partyplanner.ui.elements.WishProductPage
 import com.example.partyplanner.ui.elements.tableplannerpages.CreateTable
 import com.example.partyplanner.ui.elements.tableplannerpages.TablePlannerViewModel
 import com.example.partyplanner.ui.pages.budget.BudgetViewModel
 import com.example.partyplanner.ui.pages.guestlist.GuestListPage
 import com.example.partyplanner.ui.pages.guestlist.GuestListViewModel
 import com.example.partyplanner.ui.pages.wishlist.WishListViewModel
+import com.example.partyplanner.ui.pages.wishlist.WishViewModel
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -33,6 +35,7 @@ import kotlinx.coroutines.launch
 
 fun NavGraphBuilder.hostPartyGraph(navController : NavController) {
     val partyId = "partyId"
+    val wishId = "wishId"
     navigation(startDestination = "${Guestlist.route}/{$partyId}", route = "host") {
         val navigatePage : (PartyPlannerDestination, String) -> Unit = { dest, id ->
             if(dest.route == PartiesOverviewPage.route) {
@@ -51,8 +54,17 @@ fun NavGraphBuilder.hostPartyGraph(navController : NavController) {
                 destinations = hostPartyScreens,
                 navigate = { dest -> navigatePage(dest,id) }
             ) {
-                WishListPage(wishViewModel, navigateToProduct = {})
+                WishListPage(wishViewModel, navigateToProduct = {navController.navigate("${WishProduct.route}/${it.id}/$id")})
             }
+
+        }
+
+        composable(route = "${WishProduct.route}/{$wishId}/{$partyId}") { backStack ->
+            val party = backStack.arguments?.getString(partyId) ?: ""
+            val wish = backStack.arguments?.getString(wishId) ?: ""
+
+            val viewModel = WishViewModel(repository = WishServiceImpl(FirebaseFirestore.getInstance(), party), wish)
+            WishProductPage(viewModel = viewModel, isGuest = false)
 
         }
 
