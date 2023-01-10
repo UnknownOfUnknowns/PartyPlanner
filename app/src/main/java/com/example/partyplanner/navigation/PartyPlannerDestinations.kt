@@ -97,6 +97,12 @@ object TablePlannerPage : PartyPlannerDestination {
     override val icon: ImageVector = Icons.Default.NextPlan
 }
 
+object CreateLoginPage : PartyPlannerDestination {
+    override val route = "CreateLogin"
+    override val name: String = "CreateLogin"
+    override val icon: ImageVector = Icons.Default.Login
+}
+
 val partyPlannerScreens = listOf(StartPage, NewPartyPage)
 
 

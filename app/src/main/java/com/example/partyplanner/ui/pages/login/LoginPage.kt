@@ -58,7 +58,7 @@ fun SignInScreen(viewModel: LoginViewModel){
             Spacer(modifier = Modifier.weight(0.4f))
 
             Button(
-                onClick = viewModel::createNewUser,
+                onClick = viewModel::navigateToCreateUser,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(10.dp),

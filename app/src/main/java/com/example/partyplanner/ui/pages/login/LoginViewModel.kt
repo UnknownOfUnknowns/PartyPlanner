@@ -11,6 +11,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
  * */
 class LoginViewModel(
     private val loginService: AccountService,
+    private val onCreateNewUser : () -> Unit,
     private val onSuccessfulLogin : () -> Unit
     ) : ViewModel() {
     var uiState = mutableStateOf(LoginUiState())
@@ -47,7 +48,7 @@ class LoginViewModel(
         }
     }
 
-    fun createNewUser() {
-
+    fun navigateToCreateUser() {
+        onCreateNewUser()
     }
 }

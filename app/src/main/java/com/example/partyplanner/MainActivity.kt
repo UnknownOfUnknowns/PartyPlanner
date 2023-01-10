@@ -25,6 +25,8 @@ import com.example.partyplanner.navigation.*
 import com.example.partyplanner.ui.elements.*
 import com.example.partyplanner.ui.guestpages.GuestMenuPage
 import com.example.partyplanner.ui.guestpages.GuestMenuViewModel
+import com.example.partyplanner.ui.pages.login.CreateLoginScreen
+import com.example.partyplanner.ui.pages.login.CreateUserViewModel
 import com.example.partyplanner.ui.pages.login.LoginViewModel
 import com.example.partyplanner.ui.pages.login.SignInScreen
 import com.example.partyplanner.ui.pages.partiesList.NewPartyViewModel
@@ -79,12 +81,20 @@ fun PartyPlannerApp(){
             modifier = Modifier.fillMaxSize()
         ) {
             composable(route = LoginPage.route) {
-                val loginViewModel = LoginViewModel(loginService) {
+                val loginViewModel = LoginViewModel(loginService, onCreateNewUser = {navigationController.navigateSingleTopTo(CreateLoginPage.route)}) {
                     navigationController.navigateSingleTopTo(
                         PartiesOverviewPage.route
                     )
                 }
                 SignInScreen(loginViewModel)
+            }
+
+            composable(route = CreateLoginPage.route) {
+                val createUserViewModel = CreateUserViewModel(onCreateNewUser = {
+                    navigationController.navigateSingleTopTo(CreateLoginPage.route)
+                })
+
+                CreateLoginScreen(viewModel = createUserViewModel)
             }
 
             composable(route = WishListGuestPage.route) {
