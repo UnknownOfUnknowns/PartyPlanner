@@ -56,7 +56,6 @@ fun NavGraphBuilder.hostPartyGraph(navController : NavController) {
             ) {
                 WishListPage(wishViewModel, navigateToProduct = {navController.navigate("${WishProduct.route}/${it.id}/$id")})
             }
-
         }
 
         composable(route = "${WishProduct.route}/{$wishId}/{$partyId}") { backStack ->
