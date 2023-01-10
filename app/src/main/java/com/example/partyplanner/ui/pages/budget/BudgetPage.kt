@@ -46,7 +46,7 @@ fun BudgetPage(viewModel: BudgetViewModel) {
         Column(modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = 10.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = CenterHorizontally
         ) {
             // Her skal uistate.value.wishlistname indtastes evt fra den allerede
             // kendte i wishlistpage (Samme ui state)
@@ -305,11 +305,11 @@ fun BudgetInfoTopScreen(
         Column() {
             // Her skal input fra de rigtige tal i budgettet ind
             Spacer(modifier = Modifier.height(5.dp))
-            Text (budgetListUiState.budgetMax.toString(), color = OnSecondaryContainer)
+            Text (budgetListUiState.budgetMax.toString() +" kr", color = OnSecondaryContainer)
             Spacer(modifier = Modifier.height(5.dp))
-            Text ("2kr", color = OnSecondaryContainer)
+            Text (budgetListUiState.budgetSpent.toString()+ " kr", color = OnSecondaryContainer)
             Spacer(modifier = Modifier.height(5.dp))
-            Text ("3kr", color = OnSecondaryContainer)
+            Text (budgetListUiState.budgetLeft.toString()+ " kr", color = OnSecondaryContainer)
             Spacer(modifier = Modifier.height(5.dp))
         }
         //Denne knap skal lave en dialog, hvor der kan ændres budget maksimum

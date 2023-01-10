@@ -16,7 +16,12 @@ class BudgetViewModel (private val repository : BudgetService) : ViewModel() {
         repository.budgets
     ) {
         _internalState, budgets ->
-        _internalState.copy(budgetElements = budgets.map { it.toUiState() })
+        val elements = budgets.map { it.toUiState() }
+        val spent = elements.sumOf { it.budgetPrice }
+        _internalState.copy(
+            budgetElements = elements,
+            budgetSpent =spent,
+            budgetLeft = _internalState.budgetMax-spent)
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
