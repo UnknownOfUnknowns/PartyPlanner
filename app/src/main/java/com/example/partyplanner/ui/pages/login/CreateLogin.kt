@@ -1,6 +1,5 @@
 package com.example.partyplanner.ui.pages.login
 
-import android.widget.NumberPicker.OnValueChangeListener
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -14,16 +13,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.partyplanner.R
 import com.example.partyplanner.ui.elements.FadeBackground
 
 @Composable
-fun CreateLoginPage(viewModel: LoginViewModel){
+fun CreateLoginScreen(viewModel: CreateUserViewModel){
 
     val state = viewModel.uiState.value
 
@@ -51,11 +48,14 @@ fun CreateLoginPage(viewModel: LoginViewModel){
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            RepeatPassword(viewModel::onPasswordChange, state.password)
+            RepeatPassword(viewModel::onRepeatedPassword, state.repeatedpassword)
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            Button(onClick = { /*TODO*/ }) {
+            Button(onClick = { /*TODO*/ },
+            modifier = Modifier.fillMaxWidth().padding(10.dp),
+            shape = RoundedCornerShape(10)
+            ) {
                 Text (text = "Opret bruger")
             }
 
@@ -153,9 +153,9 @@ fun NewPassword(onValueChange: (String) -> Unit, password: String){
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RepeatPassword(onValueChange: (String) -> Unit, repeatPassword: String){
+fun RepeatPassword(onValueChange2: (String) -> Unit, repeatPassword: String){
 
-    val showPassword = remember { mutableStateOf(false) }
+    val showPassword2 = remember { mutableStateOf(false) }
 
     OutlinedTextField(
         modifier = Modifier
@@ -163,10 +163,10 @@ fun RepeatPassword(onValueChange: (String) -> Unit, repeatPassword: String){
             .padding(10.dp)
             .clip(RoundedCornerShape(10)),
         value = repeatPassword,
-        onValueChange = onValueChange,
+        onValueChange = onValueChange2,
         shape = RoundedCornerShape(10),
 
-        visualTransformation = if (showPassword.value) {
+        visualTransformation = if (showPassword2.value) {
             VisualTransformation.None
         } else {
             PasswordVisualTransformation()
@@ -178,13 +178,13 @@ fun RepeatPassword(onValueChange: (String) -> Unit, repeatPassword: String){
         )
         },
         trailingIcon = {
-            if (showPassword.value) {
-                IconButton(onClick = {showPassword.value = false}) {
+            if (showPassword2.value) {
+                IconButton(onClick = {showPassword2.value = false}) {
                     Icon(imageVector = Icons.Filled.Visibility,
                         contentDescription = stringResource(R.string.hide_password)
                     ) }
             } else {
-                IconButton(onClick = {showPassword.value = true}) {
+                IconButton(onClick = {showPassword2.value = true}) {
                     Icon(imageVector = Icons.Filled.VisibilityOff,
                         contentDescription = stringResource(R.string.show_password)
                     ) }

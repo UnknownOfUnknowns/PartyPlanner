@@ -10,11 +10,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.partyplanner.data.wish.WishServiceImpl
 import com.example.partyplanner.ui.pages.wishlist.WishListViewModel
+import com.example.partyplanner.ui.pages.wishlist.WishUiState
 import com.example.partyplanner.ui.theme.Background
 import com.google.firebase.firestore.FirebaseFirestore
 
 @Composable
-fun WishListGuestPage(viewModel: WishListViewModel) {
+fun WishListGuestPage(viewModel: WishListViewModel, navigateToProduct: (WishUiState) -> Unit) {
     val uiState = viewModel.uiState.collectAsState()
     Box(
         modifier = Modifier
@@ -24,17 +25,10 @@ fun WishListGuestPage(viewModel: WishListViewModel) {
         Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
             NameCardWishList(name = uiState.value.wishListName, modifier = Modifier.size(width = 350.dp, height = 120.dp ))
             Spacer(modifier = Modifier.height(17.dp))
-            WishList(uiState.value.wishes, showTopBar = true, onImageClick = {})
+            WishList(uiState.value.wishes, showTopBar = true, onImageClick = { navigateToProduct(it) })
         }
         ShareFAB(modifier = Modifier
             .align(Alignment.BottomEnd), onClick = {})
-
     }
-
 }
 
-@Composable
-@Preview(showBackground = true)
-fun WishListGuestPreview() {
-    WishListGuestPage(viewModel = WishListViewModel(WishServiceImpl(firestore = FirebaseFirestore.getInstance(),"7v3WIdoU8FmJFnb3fvA7")))
-}
