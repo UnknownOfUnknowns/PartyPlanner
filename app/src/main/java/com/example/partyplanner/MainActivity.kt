@@ -109,27 +109,32 @@ fun PartyPlannerApp(){
             composable(route = "${WishProductGuest.route}/{$wishId}/{$partyId}") { backStack ->
                 val party = backStack.arguments?.getString(partyId) ?: ""
                 val wish = backStack.arguments?.getString(wishId) ?: ""
-                
+
                 val wishViewModel = WishViewModel(repository = WishServiceImpl(FirebaseFirestore.getInstance(), party), wish)
                 WishProductGuestPage(viewModel = wishViewModel)
             }
-            
-            
+
+
             hostPartyGraph(navigationController)
+
             composable(route = PartiesOverviewPage.route) {
                 PartyListAndCreate(
-                    NewPartyViewModel(PartyServiceImpl(loginService)),
+                    NewPartyViewModel(PartyServiceImpl()),
                     onAddButton = {
                         navigationController.navigateSingleTopTo(NewPartyPage.route)
                     },
-                    onEdit = {
-                        println(it)
-                        navigationController.navigateSingleTopTo("${Guestlist.route}/${it.id}")
+                    onEdit = { party, hostTab ->
+                         if(hostTab) {
+                             navigationController.navigateSingleTopTo("${Guestlist.route}/${party.id}")
+                         } else{
+                             navigationController.navigateSingleTopTo("${GuestMenuPagee.route}/${party.id}")
+                         }
+
                     }
                 )
             }
 
-            val partyViewModel = NewPartyViewModel(PartyServiceImpl(loginService))
+            val partyViewModel = NewPartyViewModel(PartyServiceImpl())
 
             composable(route = NewPartyPage.route) {
 
@@ -162,8 +167,10 @@ fun PartyPlannerApp(){
 
 
 
-            composable(route = GuestMenuPagee.route){
-                GuestMenuPage(GuestMenuViewModel())
+            composable(route = "${GuestMenuPagee.route}/{partyId}"){ backStack ->
+                val party = backStack.arguments?.getString("partyId") ?: ""
+
+                GuestMenuPage(GuestMenuViewModel(PartyServiceImpl(), party), {})
             }
 
 
