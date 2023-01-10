@@ -29,7 +29,6 @@ import com.example.partyplanner.ui.pages.partiesList.NewPartyViewModel
 import com.example.partyplanner.ui.state.PartyCoreInfoUiState
 import com.example.partyplanner.ui.state.PartyType
 import com.example.partyplanner.ui.theme.Background
-import com.google.firebase.Timestamp
 import java.util.*
 
 
@@ -241,13 +240,13 @@ fun SetPartyDataOnCreation(
 
 
 @Composable
-fun showDatePicker(date : Timestamp, setDate : (Date) -> Unit){
+fun showDatePicker(date : Date, setDate : (Date) -> Unit){
 
 
 
 
     val calendar = Calendar.getInstance()
-    calendar.time = date.toDate()
+    calendar.time = date
     val year = calendar.get(Calendar.YEAR)
     val month = calendar.get(Calendar.MONTH)
     val day = calendar.get(Calendar.DAY_OF_MONTH)
@@ -290,11 +289,11 @@ fun showDatePicker(date : Timestamp, setDate : (Date) -> Unit){
 }
 
 @Composable
-fun ShowTimePicker(date : Timestamp, setDate : (Date) -> Unit) {
+fun ShowTimePicker(date : Date, setDate : (Date) -> Unit) {
     val mContext = LocalContext.current
 
     val mCalendar = Calendar.getInstance()
-    mCalendar.time = date.toDate()
+    mCalendar.time = date
     val mHour = mCalendar[Calendar.HOUR_OF_DAY]
     val mMinute = mCalendar[Calendar.MINUTE]
 
