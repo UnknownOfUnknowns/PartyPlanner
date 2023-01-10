@@ -17,6 +17,7 @@ import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
@@ -42,9 +43,9 @@ import com.example.partyplanner.ui.theme.Background
 import com.example.partyplanner.ui.theme.Primary
 import com.example.partyplanner.ui.theme.SecondaryContainer
 import com.google.firebase.firestore.FirebaseFirestore
-
+// Her skal der indsættes routing ved onImageClick hentil WishProductPage
 @Composable
-fun WishListPage(viewModel: WishListViewModel){
+fun WishListPage(viewModel: WishListViewModel, navigateToProduct: () -> Unit){
     val uiState = viewModel.uiState.collectAsState()
     Box(
         modifier = Modifier
@@ -54,7 +55,7 @@ fun WishListPage(viewModel: WishListViewModel){
         Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = CenterHorizontally) {
             NameCardWishList(name = uiState.value.wishListName, modifier = Modifier.size(width = 350.dp, height = 120.dp ))
             Spacer(modifier = Modifier.height(17.dp))
-            WishList(uiState.value.wishes)
+            WishList(uiState.value.wishes, onImageClick = { navigateToProduct() })
         }
         if(uiState.value.addWish){
             AddWishDialog(
@@ -261,9 +262,14 @@ fun WishTopBar(isReserved : Boolean, price : Int){
 
 }
 @Composable
-fun Wish(modifier: Modifier = Modifier, wishUiState: WishUiState, showTopBar: Boolean = false) {
+fun Wish(modifier: Modifier = Modifier,
+         wishUiState: WishUiState,
+         showTopBar: Boolean = false,
+         onImageClick: () -> Unit,
+
+) {
     Card(
-        modifier = modifier,
+        modifier = modifier.clickable {onImageClick()},
         shape = RoundedCornerShape(10),
         colors = CardDefaults.cardColors(Primary),
         border = BorderStroke(1.dp, Color.Black)
@@ -308,9 +314,9 @@ fun Wish(modifier: Modifier = Modifier, wishUiState: WishUiState, showTopBar: Bo
     }
 }
 
-
+//Her skal alle ønskerne måske laves clickable så de kan føre til næste side
 @Composable
-fun WishList(wishes : List<WishUiState>, showTopBar: Boolean = false) {
+fun WishList(wishes : List<WishUiState>, showTopBar: Boolean = false, onImageClick: () -> Unit) {
     Card(
         modifier = Modifier.padding(start = 11.dp, end = 11.dp, bottom = 30.dp),
         shape = RoundedCornerShape(15.dp),
@@ -327,7 +333,9 @@ fun WishList(wishes : List<WishUiState>, showTopBar: Boolean = false) {
                     .size(width = 150.dp, height = 150.dp)
                     .padding(8.dp),
                     wishUiState = wish,
-                    showTopBar = showTopBar)
+                    showTopBar = showTopBar,
+                    onImageClick = { onImageClick() }
+                )
 
             }
         }
@@ -364,7 +372,7 @@ fun WishListPreview() {
     ) {
         //NameCardWishList(modifier = Modifier.size(width = 350.dp, height = 120.dp ), "Hans")
         //Spacer(modifier = Modifier.height(30.dp))
-        WishListPage(viewModel = WishListViewModel(WishServiceImpl(firestore = FirebaseFirestore.getInstance(),"7v3WIdoU8FmJFnb3fvA7")))
+        WishListPage(viewModel = WishListViewModel(WishServiceImpl(firestore = FirebaseFirestore.getInstance(),"7v3WIdoU8FmJFnb3fvA7")), navigateToProduct = { })
        //Wish(wishUiState = WishUiState(image = R.drawable._nske2, wishName = "Ting"))
     }
 }

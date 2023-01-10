@@ -51,7 +51,7 @@ fun NavGraphBuilder.hostPartyGraph(navController : NavController) {
                 destinations = hostPartyScreens,
                 navigate = { dest -> navigatePage(dest,id) }
             ) {
-                WishListPage(wishViewModel)
+                WishListPage(wishViewModel, navigateToProduct = {})
             }
 
         }
