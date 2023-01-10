@@ -12,6 +12,7 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.tasks.await
+import java.util.*
 
 class PartyServiceImpl : PartyService {
     override val hostParties: Flow<List<Party>>
@@ -93,7 +94,14 @@ class PartyServiceImpl : PartyService {
 
     companion object InviteDescriptionGenerator {
         fun createInviteDescription(party : Party) : String {
-            return "Du er hermed inviteret til ${party.name}\nFesten afholdes på ${party.address} ${party.zip} ${party.city} den ${party.date.toDate().toString()}"
+            val date = party.date.toDate()
+            return "Du er hermed inviteret til ${party.name}\nFesten afholdes på ${party.address} ${party.zip} ${party.city} den ${formatDate(date)}"
+        }
+
+        private fun formatDate(date : Date) : String{
+            val calendar = Calendar.getInstance()
+            calendar.time = date
+            return "${calendar[Calendar.DAY_OF_MONTH]}/${calendar[Calendar.MONTH]+1}/${calendar[Calendar.YEAR]}"
         }
     }
 
