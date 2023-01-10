@@ -62,25 +62,26 @@ fun StartPartyCreation(onNextButtonClick: () -> Unit, viewModel: NewPartyViewMod
             Spacer(modifier = Modifier.height(20.dp))
 
 
-            TextField(value = uiState.value.partyHost, onValueChange = {viewModel.changeHostName(it)},
+            OutlinedTextField(
+                modifier = Modifier.fillMaxWidth().padding(10.dp),
+                shape = RoundedCornerShape(10),
+                value = uiState.value.partyHost, onValueChange = {viewModel.changeHostName(it)},
                 label = { Text(text = stringResource(R.string.whoHostsTheParty))}
                 )
 
-            Button(onClick = onNextButtonClick) {
+            Spacer(modifier = Modifier.height(20.dp))
+
+            Button(
+                onClick = onNextButtonClick,
+                modifier = Modifier.fillMaxWidth().padding(10.dp),
+                shape = RoundedCornerShape(10)
+            ) {
                 Text("Næste")
             }
         }
 
     }
 
-}
-
-
-@Composable
-fun NextButton() {
-    Button(onClick = { /*TODO*/ }) {
-        Text("Næste")
-    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -126,8 +127,9 @@ fun ChoosePartyDropDown(selectedOption : PartyType, onChangePartyType: (String) 
         expanded = expanded,
         onExpandedChange = {expanded = !expanded},
     ) {
-        TextField(
-            modifier = Modifier.menuAnchor(),
+        OutlinedTextField(
+            modifier = Modifier.menuAnchor().fillMaxWidth().padding(10.dp),
+            shape = RoundedCornerShape(10),
             readOnly = true,
             value = selectedOptionText,
             onValueChange = {},
@@ -231,6 +233,8 @@ fun SetPartyDataOnCreation(
 
             Button(
                 onClick = onNextButtonClick,
+                modifier = Modifier.fillMaxWidth().padding(10.dp),
+                shape = RoundedCornerShape(10)
             ) {
                 Text("Opret begivenhed")
             }
