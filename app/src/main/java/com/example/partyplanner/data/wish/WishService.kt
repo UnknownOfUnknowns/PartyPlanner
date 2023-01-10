@@ -13,4 +13,6 @@ interface WishService {
     suspend fun deleteWish(wish: Wish, onResult: (Throwable?) -> Unit)
 
     suspend fun getWishListName() : String
+
+    suspend fun getWish(id : String, onResult: (Wish?) -> Unit)
 }

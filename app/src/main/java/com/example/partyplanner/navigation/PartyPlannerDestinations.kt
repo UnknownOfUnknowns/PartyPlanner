@@ -56,7 +56,20 @@ object WishListGuestPage : PartyPlannerDestination {
         get() = TODO("Not yet implemented")
 
 }
+object WishProductGuest : PartyPlannerDestination {
+    override val route: String = "wishProductGuest"
+    override val name: String
+        get() = TODO("Not yet implemented")
+    override val icon: ImageVector
+        get() = TODO("Not yet implemented")
 
+}
+object WishProduct : PartyPlannerDestination {
+    override val route: String = "wishProductPage"
+    override val name: String = "Ønske"
+    override val icon: ImageVector = Icons.Filled.CardGiftcard
+
+}
 object Guestlist : PartyPlannerDestination {
     override val route = "Guestlist"
     override val name: String = "Gæster"

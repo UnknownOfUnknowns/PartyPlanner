@@ -31,6 +31,7 @@ import com.example.partyplanner.ui.pages.login.LoginViewModel
 import com.example.partyplanner.ui.pages.login.SignInScreen
 import com.example.partyplanner.ui.pages.partiesList.NewPartyViewModel
 import com.example.partyplanner.ui.pages.wishlist.WishListViewModel
+import com.example.partyplanner.ui.pages.wishlist.WishViewModel
 import com.example.partyplanner.ui.theme.PartyPlannerTheme
 import com.google.firebase.firestore.FirebaseFirestore
 import hostPartyGraph
@@ -75,6 +76,8 @@ fun PartyPlannerApp(){
             }
         val navigationController = rememberNavController()
         val loginService = AccountServiceImpl()
+        val partyId = "partyId"
+        val wishId = "wishId"
         NavHost(
             navController = navigationController,
             startDestination = LoginPage.route,
@@ -100,14 +103,18 @@ fun PartyPlannerApp(){
             composable(route = WishListGuestPage.route) {
                 val wishViewModel = WishListViewModel(WishServiceImpl(firestore = FirebaseFirestore.getInstance(),"7v3WIdoU8FmJFnb3fvA7"))
 
-                WishListGuestPage(wishViewModel)
+                WishListGuestPage(wishViewModel, navigateToProduct = { navigationController.navigate("${WishProductGuest.route}/{${it.id}/$id")})
             }
 
-            composable(route = WishPage.route) {
-                val wishViewModel = WishListViewModel(WishServiceImpl(firestore = FirebaseFirestore.getInstance(),"7v3WIdoU8FmJFnb3fvA7"))
-
-                WishListPage(wishViewModel, navigateToProduct = {})
+            composable(route = "${WishProductGuest.route}/{$wishId}/{$partyId}") { backStack ->
+                val party = backStack.arguments?.getString(partyId) ?: ""
+                val wish = backStack.arguments?.getString(wishId) ?: ""
+                
+                val wishViewModel = WishViewModel(repository = WishServiceImpl(FirebaseFirestore.getInstance(), party), wish)
+                WishProductGuestPage(viewModel = wishViewModel)
             }
+            
+            
             hostPartyGraph(navigationController)
             composable(route = PartiesOverviewPage.route) {
                 PartyListAndCreate(
