@@ -1,6 +1,6 @@
 package com.example.partyplanner.ui.state
 
-import com.google.firebase.Timestamp
+import java.util.*
 
 data class PartiesUiState(
     val parties: List<PartyUiState> = listOf(),
@@ -24,7 +24,7 @@ data class PartyCoreInfoUiState(
     val address: String = "",
     val zip: String = "",
     val city: String = "",
-    val date: Timestamp = Timestamp.now(),
+    val date: Date = Date(System.currentTimeMillis()),
     val partyType: PartyType = PartyType.NONE,
     val partyHost: String = ""
 )
