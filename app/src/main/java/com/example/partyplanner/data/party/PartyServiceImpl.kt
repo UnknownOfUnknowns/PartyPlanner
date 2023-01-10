@@ -1,20 +1,19 @@
 package com.example.partyplanner.data.party
 
-import com.example.partyplanner.data.GUESTS_COLLECTION
-import com.example.partyplanner.data.HOST_VARIABLE
-import com.example.partyplanner.data.PARTIES_COLLECTION
-import com.example.partyplanner.data.WISH_LIST_NAME_VARIABLE
-import com.example.partyplanner.data.account.AccountService
+import com.example.partyplanner.data.*
+import com.example.partyplanner.ui.state.AttendanceState
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.snapshots
+import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.firestore.ktx.toObjects
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.tasks.await
 
-class PartyServiceImpl(private val account : AccountService) : PartyService {
+class PartyServiceImpl : PartyService {
     override val hostParties: Flow<List<Party>>
         get() = partiesCollection()
             .whereEqualTo(HOST_VARIABLE, Firebase.auth.uid)
@@ -51,11 +50,51 @@ class PartyServiceImpl(private val account : AccountService) : PartyService {
         }
     }
 
+    override suspend fun changeAttendanceState(partyId: String, newState : AttendanceState, onResult: (Throwable?) -> Unit) {
+        guestsCollection()
+            .whereEqualTo("partyRef", partyId)
+            .whereEqualTo("guestId", Firebase.auth.uid).get().addOnSuccessListener { snapshot ->
+                if(snapshot.size() > 0) {
+                    snapshot.forEach {
+                        guestsCollection().document(it.id).update("attendanceState", newState).addOnSuccessListener {
+                            onResult(null)
+                        }
+                    }
+                }
+            }
+    }
+
+    override suspend fun getGuestPartyInfo(partyId: String, onResult: (GuestPartyInfo) -> Unit){
+        val guest = guestsCollection().whereEqualTo("partyRef", partyId)
+            .whereEqualTo("guestId", Firebase.auth.uid).get().await().toObjects<Guest>()
+        val attendanceState = guest.getOrNull(0)?.attendanceState ?: AttendanceState.AWAITING
+        partiesCollection().document(partyId).get().addOnSuccessListener {
+
+            val partyObject = it.toObject<Party>()
+            var resultObject = it.toObject<GuestPartyInfo>() ?: GuestPartyInfo()
+            if (partyObject != null) {
+                resultObject = resultObject.copy(eventDescription = createInviteDescription(partyObject), attendanceState = attendanceState)
+            }
+            onResult(resultObject)
+        }.addOnFailureListener {
+            onResult(GuestPartyInfo())
+        }
+
+    }
+
+
     private fun partiesCollection() : CollectionReference =
         Firebase.firestore.collection(PARTIES_COLLECTION)
 
 
     private fun guestsCollection () : CollectionReference =
         Firebase.firestore.collection(GUESTS_COLLECTION)
+
+
+    companion object InviteDescriptionGenerator {
+        fun createInviteDescription(party : Party) : String {
+            return "Du er hermed inviteret til ${party.name}\nFesten afholdes på ${party.address} ${party.zip} ${party.city} den ${party.date.toDate().toString()}"
+        }
+    }
 
 }

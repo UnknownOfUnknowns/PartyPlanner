@@ -6,7 +6,6 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -20,11 +19,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.partyplanner.data.party.Party
 import com.example.partyplanner.ui.pages.partiesList.NewPartyViewModel
-import com.example.partyplanner.ui.theme.*
+import com.example.partyplanner.ui.theme.Background
+import com.example.partyplanner.ui.theme.OnPrimary
+import com.example.partyplanner.ui.theme.OnPrimaryContainer
 
 
 @Composable
-fun PartyListAndCreate(viewModel: NewPartyViewModel, onAddButton: () -> Unit, onEdit: (Party) -> Unit) {
+fun PartyListAndCreate(viewModel: NewPartyViewModel, onAddButton: () -> Unit, onEdit: (Party, Boolean) -> Unit) {
     val hostParties by viewModel.parties.collectAsState(initial = listOf())
     val guestParties by viewModel.guestParties.collectAsState(initial = listOf())
     var tabIndex by remember { mutableStateOf(0) }
@@ -42,7 +43,7 @@ fun PartyListAndCreate(viewModel: NewPartyViewModel, onAddButton: () -> Unit, on
                     val partyIndex = parties.indexOf(party)
                     val alpha : Double = (partyIndex+6)*(1.0/(parties.size+5))
                     PartyCard(partyInfo = party,
-                        onClick = {onEdit(party)},
+                        onClick = {onEdit(party, tabIndex == 0)},
                         backgroundColor = Color(30/256f, 0f, 93/256f, alpha.toFloat()))
                 }
 

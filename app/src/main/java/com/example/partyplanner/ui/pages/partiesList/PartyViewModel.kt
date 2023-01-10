@@ -7,6 +7,8 @@ import com.example.partyplanner.data.party.PartyService
 import com.example.partyplanner.data.party.getFromUiState
 import com.example.partyplanner.ui.state.PartyCoreInfoUiState
 import com.example.partyplanner.ui.state.PartyType
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -23,7 +25,7 @@ class NewPartyViewModel(private val repository : PartyService) : ViewModel() {
     fun createParty() {
         viewModelScope.launch {
             var party = Party().getFromUiState(_coreInfoUiState.value)
-            party = party.copy(host = "7zfOGdHuy4Xo3abJzVhUnJhFC8P2")
+            party = party.copy(host = Firebase.auth.uid ?: "")
             repository.addParty(party) {
 
             }

@@ -1,5 +1,6 @@
 package com.example.partyplanner.data.party
 
+import com.example.partyplanner.ui.state.AttendanceState
 import com.example.partyplanner.ui.state.PartyCoreInfoUiState
 import com.example.partyplanner.ui.state.PartyType
 import com.google.firebase.Timestamp
@@ -34,4 +35,11 @@ fun Party.getFromUiState(state: PartyCoreInfoUiState) : Party = Party(
     date = Timestamp(state.date),
     partyType = state.partyType,
     city = state.city
+)
+
+
+data class GuestPartyInfo(
+    val attendanceState: AttendanceState = AttendanceState.AWAITING,
+    val name: String = "",
+    val eventDescription: String = ""
 )

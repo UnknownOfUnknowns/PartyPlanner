@@ -19,9 +19,7 @@ class WishServiceImpl(private val firestore: FirebaseFirestore,
     override val wishes: Flow<List<Wish>>
         get() = wishCollection()
             .snapshots().
-            map {
-                    snapshot ->
-                println("dd")
+            map { snapshot ->
                 snapshot.toObjects()
             }
 

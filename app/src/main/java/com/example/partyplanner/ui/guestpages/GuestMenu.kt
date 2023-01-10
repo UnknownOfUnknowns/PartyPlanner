@@ -5,25 +5,28 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Toc
-import androidx.compose.material3.*
-import androidx.compose.material3.AlertDialogDefaults.shape
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ElevatedButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.partyplanner.data.party.GuestPartyInfo
 import com.example.partyplanner.ui.elements.FadeBackground
 import com.example.partyplanner.ui.state.AttendanceState
 import com.example.partyplanner.ui.theme.*
 
 
 @Composable
-fun GuestMenuPage(viewModel: GuestMenuViewModel) {
+fun GuestMenuPage(viewModel: GuestMenuViewModel, navigateToWishList : () -> Unit) {
 
-    val uiState = viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsState(initial = GuestPartyInfo())
 
     FadeBackground() {
         Column(
@@ -32,16 +35,16 @@ fun GuestMenuPage(viewModel: GuestMenuViewModel) {
         ) {
             Spacer (modifier = Modifier.height(20.dp))
 
-            Text(text = uiState.value.eventName, fontSize = 25.sp)
+            Text(text = uiState.name, fontSize = 25.sp)
 
             Spacer (modifier = Modifier.height(20.dp))
 
-            InviteArea(uiState.value.attendingState, uiState.value.eventDescription,
+            InviteArea(uiState.attendanceState, uiState.eventDescription,
                 updateAttendanceState = {viewModel.updateAttendanceState(it)})
 
             Spacer (modifier = Modifier.height(15.dp))
 
-            WishListButton(onWishListPress = viewModel::navigateToWishList)
+            WishListButton(onWishListPress = navigateToWishList)
         }
     }
 }
@@ -174,8 +177,3 @@ fun WishListButton(onWishListPress : () -> Unit){
     }
 }
 
-@Preview
-@Composable
-fun GuestMenuPreview() {
-    GuestMenuPage(viewModel = GuestMenuViewModel())
-}

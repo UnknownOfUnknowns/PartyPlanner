@@ -93,26 +93,26 @@ fun PartyPlannerApp(){
                 WishListGuestPage(wishViewModel)
             }
 
-            composable(route = WishPage.route) {
-                val wishViewModel = WishListViewModel(WishServiceImpl(firestore = FirebaseFirestore.getInstance(),"7v3WIdoU8FmJFnb3fvA7"))
-
-                WishListPage(wishViewModel, navigateToProduct = {})
-            }
             hostPartyGraph(navigationController)
+
             composable(route = PartiesOverviewPage.route) {
                 PartyListAndCreate(
-                    NewPartyViewModel(PartyServiceImpl(loginService)),
+                    NewPartyViewModel(PartyServiceImpl()),
                     onAddButton = {
                         navigationController.navigateSingleTopTo(NewPartyPage.route)
                     },
-                    onEdit = {
-                        println(it)
-                        navigationController.navigateSingleTopTo("${Guestlist.route}/${it.id}")
+                    onEdit = { party, hostTab ->
+                         if(hostTab) {
+                             navigationController.navigateSingleTopTo("${Guestlist.route}/${party.id}")
+                         } else{
+                             navigationController.navigateSingleTopTo("${GuestMenuPagee.route}/${party.id}")
+                         }
+
                     }
                 )
             }
 
-            val partyViewModel = NewPartyViewModel(PartyServiceImpl(loginService))
+            val partyViewModel = NewPartyViewModel(PartyServiceImpl())
 
             composable(route = NewPartyPage.route) {
 
@@ -145,8 +145,10 @@ fun PartyPlannerApp(){
 
 
 
-            composable(route = GuestMenuPagee.route){
-                GuestMenuPage(GuestMenuViewModel())
+            composable(route = "${GuestMenuPagee.route}/{partyId}"){ backStack ->
+                val party = backStack.arguments?.getString("partyId") ?: ""
+
+                GuestMenuPage(GuestMenuViewModel(PartyServiceImpl(), party), {})
             }
 
 
