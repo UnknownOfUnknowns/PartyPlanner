@@ -231,15 +231,16 @@ fun AddBudgetDialog(
                 modifier = Modifier
                     .align(CenterHorizontally)
                     .padding(vertical = 10.dp),
-                fontSize = 30.sp
-                )
+                fontSize = 30.sp)
+
                 OutlinedTextField(value = budgetElementUiState.budgetName, onValueChange = onNameChange,
                 modifier = Modifier
                     .align(CenterHorizontally)
                     .padding(vertical = 10.dp),
                 label = { Text(text = "Indtast navn på udgiftsposten")},
                 colors = TextFieldDefaults.outlinedTextFieldColors(containerColor = Color.White),
-                shape = RoundedCornerShape(10)
+                shape = RoundedCornerShape(10),
+                singleLine = true
                 )
                 OutlinedTextField(
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),

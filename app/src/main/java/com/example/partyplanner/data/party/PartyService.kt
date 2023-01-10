@@ -9,6 +9,8 @@ interface PartyService {
 
     val guestParties : Flow<List<Party>>
 
+    suspend fun get()
+
     suspend fun update(party: Party)
 
     suspend fun addParty(party: Party, onResult: (Throwable?) -> Unit)

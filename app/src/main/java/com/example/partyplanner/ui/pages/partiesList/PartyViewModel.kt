@@ -19,9 +19,14 @@ import java.util.*
 class NewPartyViewModel(private val repository : PartyService) : ViewModel() {
     val parties = repository.hostParties
     val guestParties = repository.guestParties
+
     private val _coreInfoUiState = MutableStateFlow(PartyCoreInfoUiState())
     val uiState: StateFlow<PartyCoreInfoUiState> = _coreInfoUiState.asStateFlow()
-
+init {
+    viewModelScope.launch {
+        repository.get()
+    }
+}
     fun createParty() {
         viewModelScope.launch {
             var party = Party().getFromUiState(_coreInfoUiState.value)

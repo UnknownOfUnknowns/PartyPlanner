@@ -7,7 +7,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -54,8 +56,10 @@ fun CreateLoginScreen(viewModel: CreateUserViewModel){
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            Button(onClick = { /*TODO*/ },
-            modifier = Modifier.fillMaxWidth().padding(10.dp),
+            Button(onClick = viewModel::createNewUser,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp),
             shape = RoundedCornerShape(10)
             ) {
                 Text (text = "Opret bruger")
@@ -63,8 +67,20 @@ fun CreateLoginScreen(viewModel: CreateUserViewModel){
 
         }
     }
+    if(state.error) {
+        TextFieldNotFilledDialog(onDismiss = viewModel::toggleError)
+    }
 }
 
+@Composable
+fun TextFieldNotFilledDialog(onDismiss : () -> Unit) {
+    AlertDialog(onDismissRequest = onDismiss,
+        title = { Text(text = "Udfyld felterne", fontSize = 20.sp)},
+        text = { Text(text = "Det udfylder Seier")},
+        confirmButton = { Button(onClick = onDismiss) {
+            Text(text = "Ok")
+        }})
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

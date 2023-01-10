@@ -25,9 +25,6 @@ class LoginViewModel(
         uiState.value = uiState.value.copy(password = newValue)
     }
 
-    fun onFullNameChange(newValue : String){
-        uiState.value = uiState.value.copy(fullname = newValue)
-    }
 
     fun login() {
         loginService.authenticate("hans@bilstrupandersen.dk", "123123") {

@@ -100,10 +100,14 @@ fun PartyPlannerApp(){
                 CreateLoginScreen(viewModel = createUserViewModel)
             }
 
-            composable(route = WishListGuestPage.route) {
-                val wishViewModel = WishListViewModel(WishServiceImpl(firestore = FirebaseFirestore.getInstance(),"7v3WIdoU8FmJFnb3fvA7"))
+            composable(route = "${WishListGuestPage.route}/{$partyId}") { backStack ->
+                val party = backStack.arguments?.getString(partyId) ?: ""
+                val wishViewModel = WishListViewModel(WishServiceImpl(firestore = FirebaseFirestore.getInstance(),party))
 
-                WishListGuestPage(wishViewModel, navigateToProduct = { navigationController.navigate("${WishProductGuest.route}/{${it.id}/$id")})
+                WishListGuestPage(wishViewModel, navigateToProduct = {
+                    println(it)
+                    navigationController.navigate("${WishProductGuest.route}/${it.id}/$party")
+                })
             }
 
             composable(route = "${WishProductGuest.route}/{$wishId}/{$partyId}") { backStack ->
@@ -170,7 +174,11 @@ fun PartyPlannerApp(){
             composable(route = "${GuestMenuPagee.route}/{partyId}"){ backStack ->
                 val party = backStack.arguments?.getString("partyId") ?: ""
 
-                GuestMenuPage(GuestMenuViewModel(PartyServiceImpl(), party), {})
+                GuestMenuPage(GuestMenuViewModel(PartyServiceImpl(), party)) {
+                    navigationController.navigate(
+                        "${WishListGuestPage.route}/$party"
+                    )
+                }
             }
 
 

@@ -34,9 +34,18 @@ class PartyServiceImpl : PartyService {
 
 
 
-
     override suspend fun update(party: Party) {
         TODO("Not yet implemented")
+    }
+
+
+    override suspend fun get() {
+        Firebase.firestore.collectionGroup("guests").get().addOnSuccessListener { tt ->
+            println(tt)
+            tt.forEach {
+                println(it)
+            }
+        }
     }
 
     override suspend fun addParty(party: Party, onResult: (Throwable?) -> Unit) {

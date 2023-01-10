@@ -1,9 +1,6 @@
 package com.example.partyplanner.ui.elements
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -116,7 +113,8 @@ fun AddWishDialog(
                     colors = TextFieldDefaults.outlinedTextFieldColors(
                         containerColor = Color.White
                     ),
-                    shape = RoundedCornerShape(10)
+                    shape = RoundedCornerShape(10),
+                    singleLine = true
                 )
                 OutlinedTextField(
                     value = wishUiState.link, onValueChange = onLinkChange,
@@ -127,7 +125,8 @@ fun AddWishDialog(
                     colors = TextFieldDefaults.outlinedTextFieldColors(
                         containerColor = Color.White
                     ),
-                    shape = RoundedCornerShape(10)
+                    shape = RoundedCornerShape(10),
+                    singleLine = true
                 )
                 OutlinedTextField(
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
@@ -149,13 +148,16 @@ fun AddWishDialog(
                 OutlinedTextField(
                     modifier = Modifier
                         .padding(vertical = 10.dp)
-                        .align(CenterHorizontally),
+                        .align(CenterHorizontally)
+                        .verticalScroll(rememberScrollState()),
                     value = wishUiState.description,
                     onValueChange = onDescriptionChange,
                     label = { Text(text = "Tilføj en beskrivelse") },
                     colors = TextFieldDefaults.outlinedTextFieldColors(containerColor = Color.White),
                     minLines = 3,
-                    shape = RoundedCornerShape(10)
+                    maxLines = 3,
+                    shape = RoundedCornerShape(10),
+
                 )
 
 
@@ -179,7 +181,7 @@ fun AddWishDialog(
                 } else {
                     painterResource(id = R.drawable.no_image_placeholder_svg)
                 }
-                Image(painter = painter, contentDescription = null)
+                Image(painter = painter, contentDescription = null, Modifier.size(100.dp))
                 // Opret skal add wish, og føre tilbage til wishpage
                 // Afbryg skal føre tilbage til wishpage(Dissmiss-Request)
                 Row() {

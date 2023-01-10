@@ -6,12 +6,25 @@ class CreateUserViewModel(
     private val onCreateNewUser : () -> Unit
 ) {
 
-    var uiState = mutableStateOf(LoginUiState())
+    var uiState = mutableStateOf(SignUpUiState())
         private set
 
 
     fun createNewUser() {
+        val state = uiState.value
+        if(state.password != state.repeatedpassword ||
+            state.email.isEmpty() ||
+            state.fullname.isEmpty() ||
+            state.password.length < 8 ||
+            state.repeatedpassword.length < 8)  {
+            toggleError()
+            return
+        }
         onCreateNewUser()
+    }
+
+    fun toggleError() {
+        uiState.value = uiState.value.copy(error = !uiState.value.error)
     }
 
     fun onUsernameChange(newValue : String) {
