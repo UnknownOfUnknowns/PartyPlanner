@@ -96,7 +96,7 @@ fun PartyPlannerApp(){
             composable(route = WishPage.route) {
                 val wishViewModel = WishListViewModel(WishServiceImpl(firestore = FirebaseFirestore.getInstance(),"7v3WIdoU8FmJFnb3fvA7"))
 
-                WishListPage(wishViewModel)
+                WishListPage(wishViewModel, navigateToProduct = {})
             }
             hostPartyGraph(navigationController)
             composable(route = PartiesOverviewPage.route) {

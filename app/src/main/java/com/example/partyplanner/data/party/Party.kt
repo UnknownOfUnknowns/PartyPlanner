@@ -4,8 +4,6 @@ import com.example.partyplanner.ui.state.PartyCoreInfoUiState
 import com.example.partyplanner.ui.state.PartyType
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentId
-import java.time.LocalDateTime
-import java.util.*
 
 data class Party (
     @DocumentId val id : String = "",
@@ -20,11 +18,11 @@ data class Party (
     val partyType: PartyType = PartyType.NONE
 )
 
-fun Party.ToUiState() : PartyCoreInfoUiState = PartyCoreInfoUiState(
+fun Party.toUiState() : PartyCoreInfoUiState = PartyCoreInfoUiState(
     name = name,
     address = address,
     zip = zip,
-    date = date ,
+    date = date.toDate() ,
     partyType = partyType,
     city = city,
 )
@@ -33,7 +31,7 @@ fun Party.getFromUiState(state: PartyCoreInfoUiState) : Party = Party(
     name = state.name,
     address = state.address,
     zip = state.zip,
-    date = state.date,
+    date = Timestamp(state.date),
     partyType = state.partyType,
     city = state.city
 )

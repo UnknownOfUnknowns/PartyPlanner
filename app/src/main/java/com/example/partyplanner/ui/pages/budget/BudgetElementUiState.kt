@@ -4,7 +4,7 @@ package com.example.partyplanner.ui.pages.budget
 data class BudgetElementUiState(
     val budgetName: String = "",
     val budgetPrice: Int = 0,
-    val budgetNote: String = "en lang historie fra de varme lande som ingen husker",
+    val budgetNote: String = "",
 
 
 )
@@ -22,7 +22,8 @@ data class BudgetListUiState(
     val addTotalBudgetStatus: Boolean = false,
     val setBudgetNote : Boolean = false,
     val budgetMax: Int = 0,
-    val newBudgetMax : Int = 0
-
+    val newBudgetMax : Int = 0,
+    val budgetSpent : Int = 0,
+    val budgetLeft : Int = 0
 )
 
