@@ -1,5 +1,6 @@
 package com.example.partyplanner.ui.pages.login
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -12,6 +13,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -81,13 +83,21 @@ fun SignInScreen(viewModel: LoginViewModel){
 @Composable
 fun Username(onValueChange: (String) -> Unit, username: String){
 
+    val context = LocalContext.current
+
     OutlinedTextField(
         modifier = Modifier
             .fillMaxWidth()
             .padding(10.dp)
             .clip(RoundedCornerShape(10)),
         value = username,
-        onValueChange = onValueChange,
+        onValueChange = {
+            if(it.length <= 40) {
+                onValueChange(it)
+            } else {
+                Toast.makeText(context, "Maksimum 40 tegn", Toast.LENGTH_SHORT).show()
+            }
+        },
         shape = RoundedCornerShape(10),
         colors = TextFieldDefaults.textFieldColors(),
         label = { Text("Indast brugernavn",
@@ -103,6 +113,8 @@ fun Username(onValueChange: (String) -> Unit, username: String){
 @Composable
 fun Password(onValueChange: (String) -> Unit, password: String){
 
+    val context = LocalContext.current
+
     val showPassword = remember { mutableStateOf(false) }
 
     OutlinedTextField(
@@ -111,7 +123,13 @@ fun Password(onValueChange: (String) -> Unit, password: String){
             .padding(10.dp)
             .clip(RoundedCornerShape(10)),
         value = password,
-        onValueChange = onValueChange,
+        onValueChange = {
+            if(it.length <= 40) {
+                onValueChange(it)
+            } else {
+                Toast.makeText(context, "Maksimum 40 tegn i kodeordet", Toast.LENGTH_SHORT).show()
+            }
+        },
         shape = RoundedCornerShape(10),
 
         visualTransformation = if (showPassword.value) {

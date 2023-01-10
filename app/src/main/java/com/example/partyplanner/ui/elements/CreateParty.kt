@@ -2,6 +2,7 @@ package com.example.partyplanner.ui.elements
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Alarm
 import androidx.compose.material.icons.filled.DateRange
@@ -22,6 +24,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.partyplanner.R
@@ -63,7 +67,9 @@ fun StartPartyCreation(onNextButtonClick: () -> Unit, viewModel: NewPartyViewMod
 
 
             OutlinedTextField(
-                modifier = Modifier.fillMaxWidth().padding(10.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp),
                 shape = RoundedCornerShape(10),
                 value = uiState.value.partyHost, onValueChange = {viewModel.changeHostName(it)},
                 label = { Text(text = stringResource(R.string.whoHostsTheParty))}
@@ -73,7 +79,9 @@ fun StartPartyCreation(onNextButtonClick: () -> Unit, viewModel: NewPartyViewMod
 
             Button(
                 onClick = onNextButtonClick,
-                modifier = Modifier.fillMaxWidth().padding(10.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp),
                 shape = RoundedCornerShape(10)
             ) {
                 Text("Næste")
@@ -128,7 +136,10 @@ fun ChoosePartyDropDown(selectedOption : PartyType, onChangePartyType: (String) 
         onExpandedChange = {expanded = !expanded},
     ) {
         OutlinedTextField(
-            modifier = Modifier.menuAnchor().fillMaxWidth().padding(10.dp),
+            modifier = Modifier
+                .menuAnchor()
+                .fillMaxWidth()
+                .padding(10.dp),
             shape = RoundedCornerShape(10),
             readOnly = true,
             value = selectedOptionText,
@@ -165,8 +176,10 @@ fun SetPartyDataOnCreation(
     setAddress: (String) -> Unit,
     setZip: (String) -> Unit,
     setCity: (String) -> Unit,
-    setDate: (Date) -> Unit
+    setDate: (Date) -> Unit,
 ) {
+
+    val context = LocalContext.current
 
     FadeBackground() {
 
@@ -180,10 +193,17 @@ fun SetPartyDataOnCreation(
 
 
             OutlinedTextField(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
                     .padding(10.dp),
                 value = party.name,
-                onValueChange = setName,
+                onValueChange = {
+                    if(it.length <= 50) {
+                        setName(it)
+                    } else {
+                        Toast.makeText(context, "Maksimum 50 tegn", Toast.LENGTH_SHORT).show()
+                    }
+                },
                 label = { Text("Vælg titel på begivenheden") },
                 singleLine = true
             )
@@ -199,19 +219,36 @@ fun SetPartyDataOnCreation(
             Spacer(modifier = Modifier.height(10.dp))
 
             OutlinedTextField(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
                     .padding(10.dp),
                 value = party.address,
-                onValueChange = setAddress,
+                onValueChange = {
+                    if(it.length <= 50) {
+                        setAddress(it)
+                    } else {
+                        Toast.makeText(context, "Maksimum 50 tegn", Toast.LENGTH_SHORT).show()
+                    }
+                },
                 label = { Text("Adresse på begivenheden") },
                 singleLine = true
             )
 
             Spacer(modifier = Modifier.height(10.dp))
-            Row (Modifier.padding(start = 10.dp, end = 10.dp).fillMaxWidth()) {
+            Row (
+                Modifier
+                    .padding(start = 10.dp, end = 10.dp)
+                    .fillMaxWidth()) {
                 OutlinedTextField(
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     value = party.zip,
-                    onValueChange = setZip,
+                    onValueChange = {
+                        if(it.length <= 4) {
+                            setZip(it)
+                        } else {
+                            Toast.makeText(context, "Maksimum 4 tal", Toast.LENGTH_SHORT).show()
+                        }
+                    },
                     label = { Text("Post nr") },
                     singleLine = true,
                     maxLines =4,
@@ -222,7 +259,13 @@ fun SetPartyDataOnCreation(
 
                 OutlinedTextField(
                     value = party.city,
-                    onValueChange = setCity,
+                    onValueChange = {
+                        if(it.length <= 25) {
+                            setCity(it)
+                        } else {
+                            Toast.makeText(context, "Maksimum 25 tegn", Toast.LENGTH_SHORT).show()
+                        }
+                    },
                     label = { Text("By") },
                     singleLine = true,
                     modifier = Modifier.weight(0.7f)
@@ -233,7 +276,9 @@ fun SetPartyDataOnCreation(
 
             Button(
                 onClick = onNextButtonClick,
-                modifier = Modifier.fillMaxWidth().padding(10.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp),
                 shape = RoundedCornerShape(10)
             ) {
                 Text("Opret begivenhed")
@@ -268,14 +313,15 @@ fun showDatePicker(date : Date, setDate : (Date) -> Unit){
     )
 
         Box(
-            modifier = Modifier.
-                fillMaxWidth()
-                .clickable{datePickerDialog.show()}
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { datePickerDialog.show() }
                 .padding(10.dp)
-                .border(width = 1.dp,
-                shape = RoundedCornerShape(10),
-                color = Color.Gray,
-            ),
+                .border(
+                    width = 1.dp,
+                    shape = RoundedCornerShape(10),
+                    color = Color.Gray,
+                ),
         ){
 
             Row(
@@ -312,11 +358,12 @@ fun ShowTimePicker(date : Date, setDate : (Date) -> Unit) {
     )
 
         Box(
-            modifier = Modifier.
-            fillMaxWidth()
-                .clickable{mTimePickerDialog.show()}
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { mTimePickerDialog.show() }
                 .padding(10.dp)
-                .border(width = 1.dp,
+                .border(
+                    width = 1.dp,
                     shape = RoundedCornerShape(10),
                     color = Color.Gray,
                 ),
