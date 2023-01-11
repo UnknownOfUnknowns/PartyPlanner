@@ -41,4 +41,12 @@ class AccountServiceImpl : AccountService {
         Firebase.auth.currentUser!!.linkWithCredential(credential)
             .addOnCompleteListener { onResult(it.exception) }
     }
+
+    override fun addNewUser(email: String, password: String, onResult: (Throwable?) -> Unit) {
+        Firebase.auth.createUserWithEmailAndPassword(email,password).addOnSuccessListener {
+            onResult(null)
+        }.addOnFailureListener {
+            onResult(Exception())
+        }
+    }
 }

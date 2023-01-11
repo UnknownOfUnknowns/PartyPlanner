@@ -62,10 +62,10 @@ class WishListViewModel (private val repository : WishService,
 
         }
     }
-    fun changeDescription(newDescript: String) {
+    fun changeDescription(newDescription: String) {
         _internalState.update { currentState ->
             currentState.copy(
-                newWish = currentState.newWish.copy(description = newDescript)
+                newWish = currentState.newWish.copy(description = newDescription)
             )
         }
     }

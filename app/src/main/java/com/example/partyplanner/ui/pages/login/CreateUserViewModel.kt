@@ -1,8 +1,10 @@
 package com.example.partyplanner.ui.pages.login
 
 import androidx.compose.runtime.mutableStateOf
+import com.example.partyplanner.data.account.AccountService
 
 class CreateUserViewModel(
+    private val accountService : AccountService,
     private val onCreateNewUser : () -> Unit
 ) {
 
@@ -22,11 +24,21 @@ class CreateUserViewModel(
             toggleError()
             return
         }
-        onCreateNewUser()
+        accountService.addNewUser(state.email, state.password) {
+            if(it == null) {
+                onCreateNewUser()
+            } else {
+                toggleSignUpError()
+            }
+        }
     }
 
     fun toggleError() {
         uiState.value = uiState.value.copy(error = !uiState.value.error)
+    }
+
+    fun toggleSignUpError() {
+        uiState.value = uiState.value.copy(error = !uiState.value.signUpError)
     }
 
     fun onUsernameChange(newValue : String) {

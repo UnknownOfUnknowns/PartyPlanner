@@ -70,6 +70,10 @@ fun CreateLoginScreen(viewModel: CreateUserViewModel){
     if(state.error) {
         TextFieldNotFilledDialog(onDismiss = viewModel::toggleError)
     }
+
+    if(state.signUpError) {
+        SignUpFailedDialog(onDismiss = viewModel::toggleSignUpError)
+    }
 }
 
 @Composable
@@ -81,7 +85,15 @@ fun TextFieldNotFilledDialog(onDismiss : () -> Unit) {
             Text(text = "Ok")
         }})
 }
-
+@Composable
+fun SignUpFailedDialog(onDismiss : () -> Unit) {
+    AlertDialog(onDismissRequest = onDismiss,
+        title = { Text(text = "Hov", fontSize = 20.sp)},
+        text = { Text(text = "Der skete en fejl da vi tilmeldte dig prøv igen")},
+        confirmButton = { Button(onClick = onDismiss) {
+            Text(text = "Ok")
+        }})
+}
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FullName(onValueChange: (String) -> Unit, fullName: String) {

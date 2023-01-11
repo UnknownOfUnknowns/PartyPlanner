@@ -12,5 +12,6 @@ data class SignUpUiState(
     val password : String = "",
     val repeatedpassword : String = "",
     val fullname : String = "",
-    val error : Boolean = false
+    val error : Boolean = false,
+    val signUpError : Boolean = false
 )

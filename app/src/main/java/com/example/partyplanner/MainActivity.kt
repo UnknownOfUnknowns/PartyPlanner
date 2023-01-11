@@ -93,8 +93,10 @@ fun PartyPlannerApp(){
             }
 
             composable(route = CreateLoginPage.route) {
-                val createUserViewModel = CreateUserViewModel(onCreateNewUser = {
-                    navigationController.navigateSingleTopTo(CreateLoginPage.route)
+                val createUserViewModel = CreateUserViewModel(
+                    accountService = loginService,
+                    onCreateNewUser = {
+                    navigationController.navigateSingleTopTo(PartiesOverviewPage.route)
                 })
 
                 CreateLoginScreen(viewModel = createUserViewModel)
