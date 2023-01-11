@@ -81,7 +81,7 @@ class WishListViewModel (private val repository : WishService,
     fun addWish() {
         viewModelScope.launch {
             val state = _internalState.value
-            repository.addWish(Wish().getFromUiState(state.newWish)){
+            repository.addWish(Wish().getFromUiState(state.newWish), state.newWish.newImage){
                 if(it==null) {
                     _internalState.update { currentState ->
                         currentState.copy(newWish = WishUiState(), addWish = false)

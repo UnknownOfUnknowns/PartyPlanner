@@ -1,6 +1,5 @@
 package com.example.partyplanner.data.wish
 
-import android.graphics.Bitmap
 import com.example.partyplanner.ui.pages.wishlist.WishUiState
 import com.google.firebase.firestore.DocumentId
 
@@ -11,8 +10,7 @@ data class Wish(
     val price: Int = 0,
     val description : String = "",
     val link : String = "",
-    val isReserved : Boolean = false,
-    val newImage : Bitmap? = null
+    val isReserved : Boolean = false
 )
 
 fun Wish.toUiState() : WishUiState = WishUiState(
@@ -22,8 +20,7 @@ fun Wish.toUiState() : WishUiState = WishUiState(
     description = description,
     link = link,
     isReserved = isReserved,
-    imageLink = image,
-    newImage = newImage
+    imageLink = image
 )
 
 
@@ -34,6 +31,5 @@ fun Wish.getFromUiState(state: WishUiState) : Wish = Wish(
     description = state.description,
     link = state.link,
     isReserved = state.isReserved,
-    image = state.imageLink,
-    newImage = state.newImage
+    image = state.imageLink
 )

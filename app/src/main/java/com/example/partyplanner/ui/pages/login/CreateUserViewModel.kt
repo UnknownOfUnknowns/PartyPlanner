@@ -12,6 +12,8 @@ class CreateUserViewModel(
 
     fun createNewUser() {
         val state = uiState.value
+        // state.repeatedpassword.length < 8 is kept even though it is unnessecary since leaving it out
+        // could confuse the unaware reader
         if(state.password != state.repeatedpassword ||
             state.email.isEmpty() ||
             state.fullname.isEmpty() ||

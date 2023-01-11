@@ -1,8 +1,12 @@
 package com.example.partyplanner.data.wish
 
+import android.graphics.Bitmap
 import com.example.partyplanner.data.PARTIES_COLLECTION
 import com.example.partyplanner.data.WISH_COLLECTION
+import com.example.partyplanner.data.WISH_IMAGE_PATH
 import com.example.partyplanner.data.WISH_LIST_NAME_VARIABLE
+import com.example.partyplanner.data.imageLoader.ImageService
+import com.example.partyplanner.data.imageLoader.ImageServiceImpl
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentId
 import com.google.firebase.firestore.DocumentReference
@@ -15,7 +19,8 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.tasks.await
 
 class WishServiceImpl(private val firestore: FirebaseFirestore,
-                      @DocumentId private val partyId : String) : WishService {
+                      @DocumentId private val partyId : String,
+                        private val imageService : ImageService = ImageServiceImpl()) : WishService {
     override val wishes: Flow<List<Wish>>
         get() = wishCollection()
             .snapshots().
@@ -32,15 +37,18 @@ class WishServiceImpl(private val firestore: FirebaseFirestore,
         return listOf(Wish())
     }
 
-    override suspend fun addWish(wish: Wish, onResult: (Throwable?) -> Unit) {
-        wishCollection()
-            .add(wish)
-            .addOnSuccessListener { ref ->
-                if(wish.newImage != null) {
-
-                }
+    override suspend fun addWish(wish: Wish, image : Bitmap?, onResult: (Throwable?) -> Unit) {
+        var imageUrl = ""
+        if (image != null) {
+            imageService.saveImage(image, path = WISH_IMAGE_PATH) {
+                imageUrl = it ?: ""
+                wishCollection()
+                    .add(wish.copy(image = imageUrl))
+                    .addOnSuccessListener { onResult(null)}
+                    .addOnFailureListener { onResult(Exception()) }
             }
-            .addOnFailureListener { onResult(Exception()) }
+        }
+
     }
 
     override suspend fun deleteWish(wish: Wish, onResult: (Throwable?) -> Unit) {
