@@ -47,6 +47,11 @@ class WishServiceImpl(private val firestore: FirebaseFirestore,
                     .addOnSuccessListener { onResult(null)}
                     .addOnFailureListener { onResult(Exception()) }
             }
+        } else {
+            wishCollection()
+                .add(wish.copy(image = imageUrl))
+                .addOnSuccessListener { onResult(null)}
+                .addOnFailureListener { onResult(Exception()) }
         }
 
     }
