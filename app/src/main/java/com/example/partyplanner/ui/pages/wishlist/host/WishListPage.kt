@@ -89,7 +89,7 @@ fun GenericOutlineTextField(
     shape: Shape = RoundedCornerShape(10),
     isSingleline: Boolean = false,
     minLines: Int = 1,
-    maxLines: Int = 3,
+    maxLines: Int = 1,
 ) {
     OutlinedTextField(
         keyboardOptions = keyOption,
@@ -163,7 +163,8 @@ fun AddWishDialog(
                     value = wishUiState.description,
                     onValueChange = onDescriptionChange,
                     labelText = stringResource(id = R.string.addDesricption),
-                    minLines = 3
+                    minLines = 3,
+                    maxLines = 3
                 )
 
                 Row(modifier = Modifier
