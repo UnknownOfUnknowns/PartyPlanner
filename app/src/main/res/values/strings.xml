@@ -44,4 +44,5 @@
     <string name="BudgetForPartyTextField">Budget for festen</string>
     <string name="BudgetAddExpensePostText">Tilføj en udgiftspost</string>
     <string name="BudgetChooseNameForExpensePost">Indtast navn på udgiftsposten</string>
+    <string name="priceofwish">Pris på ønsket</string>
 </resources>

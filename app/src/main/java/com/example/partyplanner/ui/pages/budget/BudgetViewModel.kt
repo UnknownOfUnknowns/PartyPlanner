@@ -60,22 +60,23 @@ class BudgetViewModel (private val repository : BudgetService) : ViewModel() {
         }
     }
 
-    fun startNoteUpdate(budget: BudgetElementUiState) {
+    fun startUpdate(budget: BudgetElementUiState) {
         _internalState.update {
             it.copy(
                 setBudgetNote = true,
                 changeNoteState = ChangeNoteUiState(
                     element = budget,
-                    newValue = budget.budgetNote
+                    newValue = budget.budgetNote,
+                    newPrice = budget.budgetPrice
                 )
             )
         }
     }
-    fun endNoteUpdate(updateInDatabase : Boolean) {
+    fun endUpdate(updateInDatabase : Boolean) {
         val changeState = _internalState.value.changeNoteState
         if(updateInDatabase){
             viewModelScope.launch {
-                repository.setNewNote(changeState.newValue, Budget().getFromUiState(changeState.element)) {
+                repository.update(changeState.newValue, changeState.newPrice, Budget().getFromUiState(changeState.element)) {
 
                 }
             }
@@ -89,6 +90,12 @@ class BudgetViewModel (private val repository : BudgetService) : ViewModel() {
     fun updateNoteValue(newValue : String) {
         _internalState.update {
             it.copy(changeNoteState = it.changeNoteState.copy(newValue = newValue))
+        }
+    }
+
+    fun updatePrice(newPrice : Int) {
+        _internalState.update {
+            it.copy(changeNoteState = it.changeNoteState.copy(newPrice = newPrice))
         }
     }
 

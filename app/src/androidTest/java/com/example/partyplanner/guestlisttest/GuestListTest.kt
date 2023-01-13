@@ -4,13 +4,16 @@ import android.content.Context
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.test.core.app.ApplicationProvider
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.partyplanner.R
 import com.example.partyplanner.ui.pages.guestlist.GuestListPage
 import com.example.partyplanner.ui.pages.guestlist.GuestListViewModel
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 
+@RunWith(AndroidJUnit4::class)
 class GuestListTest {
     @get:Rule
     val composeTestRule = createComposeRule()

@@ -11,7 +11,8 @@ data class BudgetElementUiState(
 
 data class ChangeNoteUiState(
     val element : BudgetElementUiState = BudgetElementUiState(),
-    val newValue : String = ""
+    val newValue : String = "",
+    val newPrice : Int = 0,
 )
 
 data class BudgetListUiState(

@@ -46,10 +46,15 @@ class BudgetServiceImpl(private val firestore: FirebaseFirestore, @DocumentId pr
 
     }
 
-    override suspend fun setNewNote(newNote : String, budget: Budget, onResult: (Throwable?) -> Unit) {
+    override suspend fun update(newNote : String, newPrice : Int, budget: Budget, onResult: (Throwable?) -> Unit) {
         budgetCollection().whereEqualTo(BUDGET_NAME, budget.budgetName).get().addOnSuccessListener {
             it.forEach { doc ->
-                budgetDocument(doc.id).update(BUDGET_NOTE, newNote)
+                budgetDocument(doc.id).update(
+                    mapOf(
+                        BUDGET_NOTE to newNote,
+                        BUDGET_PRICE to newPrice
+                    )
+                )
                     .addOnSuccessListener {
                         onResult(null)
                     }

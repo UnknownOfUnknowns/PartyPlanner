@@ -71,15 +71,17 @@ fun BudgetPage(viewModel: BudgetViewModel) {
 
             Spacer(modifier = Modifier.height(10.dp))
             IndividualBudgetList(budgets = uiState.value.budgetElements,
-                onChangeNote = {viewModel.startNoteUpdate(it)}
+                onChangeNote = {viewModel.startUpdate(it)}
             )
         }
 
         if(uiState.value.setBudgetNote) {
-            SetNoteDialog(onDismiss = { viewModel.endNoteUpdate(updateInDatabase = false) },
-                value = uiState.value.changeNoteState.newValue,
+            SetNoteDialog(onDismiss = { viewModel.endUpdate(updateInDatabase = false) },
+                note = uiState.value.changeNoteState.newValue,
                 onNoteChange = {viewModel.updateNoteValue(it)},
-                onSubmit = {viewModel.endNoteUpdate(updateInDatabase = true)}
+                onSubmit = {viewModel.endUpdate(updateInDatabase = true)},
+                price = uiState.value.changeNoteState.newPrice,
+                onPriceChange = {viewModel.updatePrice(it)}
             )
         }
 
@@ -110,8 +112,10 @@ fun BudgetPage(viewModel: BudgetViewModel) {
 @Composable
 fun SetNoteDialog(
     onDismiss: () -> Unit,
-    value : String,
+    note: String,
     onNoteChange: (String) -> Unit,
+    price : Int,
+    onPriceChange: (Int) -> Unit,
     onSubmit : () -> Unit
 ) {
     Dialog(onDismissRequest = onDismiss) {
@@ -131,7 +135,23 @@ fun SetNoteDialog(
                         .padding(vertical = 10.dp),
                     fontSize = 30.sp
                 )
-                OutlinedTextField(value = value, onValueChange = onNoteChange,
+
+                OutlinedTextField(
+                    value = price.toString(),
+                    onValueChange = {
+                        if (it.isDigitsOnly()) {
+                            onPriceChange(it.toInt())
+                        }
+                    },
+                    modifier = Modifier
+                        .align(CenterHorizontally)
+                        .padding(vertical = 10.dp),
+                    label = { Text(text = stringResource(id = R.string.priceofwish))},
+                    colors = TextFieldDefaults.outlinedTextFieldColors(containerColor = Color.White),
+                    shape = RoundedCornerShape(10)
+                )
+
+                OutlinedTextField(value = note, onValueChange = onNoteChange,
                     modifier = Modifier
                         .align(CenterHorizontally)
                         .padding(vertical = 10.dp),
@@ -139,6 +159,8 @@ fun SetNoteDialog(
                     colors = TextFieldDefaults.outlinedTextFieldColors(containerColor = Color.White),
                     shape = RoundedCornerShape(10)
                 )
+
+
                 Row() {
                     TextButton(onClick = onDismiss) {
                         Text(text = stringResource(R.string.BudgetCancelButtonText))
@@ -209,6 +231,9 @@ fun SetMaxBudgetDialog(
     }
 }
 
+
+
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddBudgetDialog(
@@ -230,34 +255,34 @@ fun AddBudgetDialog(
                     .padding(horizontal = 10.dp)
             ) {
                 Text(text = stringResource(R.string.BudgetAddExpensePostText),
-                modifier = Modifier
-                    .align(CenterHorizontally)
-                    .padding(vertical = 10.dp),
-                fontSize = 30.sp)
+                    modifier = Modifier
+                        .align(CenterHorizontally)
+                        .padding(vertical = 10.dp),
+                    fontSize = 30.sp)
 
                 OutlinedTextField(value = budgetElementUiState.budgetName, onValueChange = onNameChange,
-                modifier = Modifier
-                    .align(CenterHorizontally)
-                    .padding(vertical = 10.dp),
-                label = { Text(text = stringResource(R.string.BudgetChooseNameForExpensePost))},
-                colors = TextFieldDefaults.outlinedTextFieldColors(containerColor = Color.White),
-                shape = RoundedCornerShape(10),
-                singleLine = true
+                    modifier = Modifier
+                        .align(CenterHorizontally)
+                        .padding(vertical = 10.dp),
+                    label = { Text(text = stringResource(R.string.BudgetChooseNameForExpensePost))},
+                    colors = TextFieldDefaults.outlinedTextFieldColors(containerColor = Color.White),
+                    shape = RoundedCornerShape(10),
+                    singleLine = true
                 )
                 OutlinedTextField(
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     value = budgetElementUiState.budgetPrice.toString(),
                     onValueChange = {
                         if (it.isDigitsOnly()) {
-                         onPriceChange(it.toInt())
+                            onPriceChange(it.toInt())
                         }
                     },
                     modifier = Modifier
                         .align(CenterHorizontally)
                         .padding(vertical = 10.dp),
-                    label = { Text(text = "Pris på ønsket") },
+                    label = { Text(text = stringResource(R.string.priceofwish)) },
                     colors = TextFieldDefaults.outlinedTextFieldColors(
-                    containerColor = Color.White
+                        containerColor = Color.White
                     ),
                     shape = RoundedCornerShape(10)
                 )
@@ -367,7 +392,7 @@ fun BudgetInformationIndividual(budgetElementUiState: BudgetElementUiState,
         if (expanded) {
             Text(text = "Beskrivelse:", fontWeight = FontWeight.Bold)
             Text(text = budgetElementUiState.budgetNote)
-            Button(onClick = {onChangeNote(budgetElementUiState)}) {
+            OutlinedButton(onClick = {onChangeNote(budgetElementUiState)}) {
                 Text(text = "Ændr beskrivelse")
             }
         }
