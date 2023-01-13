@@ -255,7 +255,7 @@ fun AddBudgetDialog(
                     modifier = Modifier
                         .align(CenterHorizontally)
                         .padding(vertical = 10.dp),
-                    label = { Text(text = "Pris på ønsket") },
+                    label = { Text(text = "Pris på budget posten") },
                     colors = TextFieldDefaults.outlinedTextFieldColors(
                     containerColor = Color.White
                     ),

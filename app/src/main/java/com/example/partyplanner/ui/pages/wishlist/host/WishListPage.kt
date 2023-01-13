@@ -18,10 +18,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -39,6 +41,7 @@ import com.example.partyplanner.ui.theme.Background
 import com.example.partyplanner.ui.theme.Primary
 import com.example.partyplanner.ui.theme.SecondaryContainer
 import com.google.firebase.firestore.FirebaseFirestore
+
 // Her skal der indsættes routing ved onImageClick hentil WishProductPage
 @Composable
 fun WishListPage(viewModel: WishListViewModel, navigateToProduct: (WishUiState) -> Unit){
@@ -76,6 +79,35 @@ fun WishListPage(viewModel: WishListViewModel, navigateToProduct: (WishUiState) 
 }
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
+fun GenericOutlineTextField(
+    modifier: Modifier,
+    keyOption: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+    value: String,
+    onValueChange: (String) -> Unit,
+    labelText: String,
+    color: Color = Color.White,
+    shape: Shape = RoundedCornerShape(10),
+    isSingleline: Boolean = false,
+    minLines: Int = 1,
+    maxLines: Int = 3,
+) {
+    OutlinedTextField(
+        keyboardOptions = keyOption,
+        value = value, onValueChange = onValueChange,
+        modifier = modifier,
+        label = { Text(text = labelText) },
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            containerColor = color
+        ),
+        shape = shape,
+        singleLine = isSingleline,
+        minLines = minLines,
+        maxLines = maxLines
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
 fun AddWishDialog(
     onDismiss: () -> Unit,
     onAddWish: () -> Unit,
@@ -97,70 +129,42 @@ fun AddWishDialog(
                 modifier = Modifier
                     .padding(horizontal = 10.dp)
             ) {
+                val stdModifier = Modifier
+                    .align(CenterHorizontally)
+                    .padding(vertical = 10.dp)
                 Text(
                     text = "Tilføj Ønske",
-                    modifier = Modifier
-                        .align(CenterHorizontally)
-                        .padding(vertical = 10.dp),
+                    modifier = stdModifier,
                     fontSize = 30.sp
                 )
-                OutlinedTextField(
-                    value = wishUiState.wishName, onValueChange = onWishNameChange,
-                    modifier = Modifier
-                        .align(CenterHorizontally)
-                        .padding(vertical = 10.dp),
-                    label = { Text(text = "Indtast navn på ønske") },
-                    colors = TextFieldDefaults.outlinedTextFieldColors(
-                        containerColor = Color.White
-                    ),
-                    shape = RoundedCornerShape(10),
-                    singleLine = true
+                GenericOutlineTextField(modifier = stdModifier,
+                    value = wishUiState.wishName,
+                    onValueChange = onWishNameChange,
+                    labelText = stringResource(id = R.string.wishName)
                 )
-                OutlinedTextField(
-                    value = wishUiState.link, onValueChange = onLinkChange,
-                    modifier = Modifier
-                        .align(CenterHorizontally)
-                        .padding(vertical = 10.dp),
-                    label = { Text(text = "Evt. Link til ønsket") },
-                    colors = TextFieldDefaults.outlinedTextFieldColors(
-                        containerColor = Color.White
-                    ),
-                    shape = RoundedCornerShape(10),
-                    singleLine = true
-                )
-                OutlinedTextField(
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                GenericOutlineTextField(modifier = stdModifier,
+                    value = wishUiState.link,
+                    onValueChange = onLinkChange,
+                    labelText = stringResource(id = R.string.wishLink))
+
+                GenericOutlineTextField(modifier = stdModifier,
+                    keyOption = KeyboardOptions(keyboardType = KeyboardType.Number),
                     value = wishUiState.price.toString(),
                     onValueChange = {
                         if (it.isDigitsOnly()) {
                             onPriceChange(it.toInt())
                         }
                     },
-                    modifier = Modifier
-                        .align(CenterHorizontally)
-                        .padding(vertical = 10.dp),
-                    label = { Text(text = "Pris på ønsket") },
-                    colors = TextFieldDefaults.outlinedTextFieldColors(
-                        containerColor = Color.White
-                    ),
-                    shape = RoundedCornerShape(10)
-                )
-                OutlinedTextField(
-                    modifier = Modifier
-                        .padding(vertical = 10.dp)
-                        .align(CenterHorizontally)
+                    labelText = stringResource(id = R.string.wishPrice))
+
+                GenericOutlineTextField(
+                    modifier = stdModifier
                         .verticalScroll(rememberScrollState()),
                     value = wishUiState.description,
                     onValueChange = onDescriptionChange,
-                    label = { Text(text = "Tilføj en beskrivelse") },
-                    colors = TextFieldDefaults.outlinedTextFieldColors(containerColor = Color.White),
-                    minLines = 3,
-                    maxLines = 3,
-                    shape = RoundedCornerShape(10),
-
+                    labelText = stringResource(id = R.string.addDesricption),
+                    minLines = 3
                 )
-
-
 
                 Row(modifier = Modifier
                     .fillMaxWidth()
@@ -228,7 +232,7 @@ fun NameCardWishList(modifier: Modifier = Modifier, name: String) {
             modifier = Modifier
                 .fillMaxSize(),
             verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = CenterHorizontally
         ) {
             Text(text = name,
                 color = Color.White,
@@ -254,7 +258,7 @@ fun WishTopBar(isReserved : Boolean, price : Int){
         Text(
             text = text,
             modifier = Modifier
-                .align(Alignment.CenterHorizontally),
+                .align(CenterHorizontally),
             color = Color.White,
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold
