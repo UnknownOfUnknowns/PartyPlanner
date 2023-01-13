@@ -4,8 +4,7 @@
     <string name="hide_password">Hide password</string>
     <string name="show_password">Show password</string>
     <string name="defaultAddButtonDescription">Default Add Button</string>
-    <string name="ChoosePartyTypeText">Hvilken type fest vil du holde?</string>
-    <string name="deleteIconDescription">deleteIcon</string>
+   <string name="deleteIconDescription">deleteIcon</string>
     <string name="DeleteGuest">Slet gæst</string>
     <string name="CreateNewUserTitleText">Opret ny bruger</string>
     <string name="CreateNewUserTextButton">Opret bruger</string>
@@ -23,6 +22,7 @@
     <string name="CreateNewUserButtonText">Opret ny bruger</string>
     <string name="UsernameTextField">Indast brugernavn</string>
     <string name="InsertPasswordTextField">Indtast password</string>
+    <string name="ChoosePartyTypeText">Hvilken type fest vil du holde?</string>
     <string name="CreatePartyNextButtonText">Næste</string>
     <string name="CreatePartyAddHostText">Tilføj vært</string>
     <string name="ChoosePartyTypeDropDownText">Vælg begivenhed</string>
@@ -44,5 +44,9 @@
     <string name="BudgetForPartyTextField">Budget for festen</string>
     <string name="BudgetAddExpensePostText">Tilføj en udgiftspost</string>
     <string name="BudgetChooseNameForExpensePost">Indtast navn på udgiftsposten</string>
+    <string name="wishName">Indtast navn på ønske</string>
+    <string name="wishLink">Evt. Link til ønsket</string>
+    <string name="wishPrice">Pris på ønsket</string>
+    <string name="addDesricption">Tilføj en beskrivelse</string>
     <string name="priceofwish">Pris på ønsket</string>
 </resources>

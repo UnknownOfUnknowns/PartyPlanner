@@ -159,8 +159,6 @@ fun SetNoteDialog(
                     colors = TextFieldDefaults.outlinedTextFieldColors(containerColor = Color.White),
                     shape = RoundedCornerShape(10)
                 )
-
-
                 Row() {
                     TextButton(onClick = onDismiss) {
                         Text(text = stringResource(R.string.BudgetCancelButtonText))
@@ -230,9 +228,6 @@ fun SetMaxBudgetDialog(
         }
     }
 }
-
-
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -392,7 +387,7 @@ fun BudgetInformationIndividual(budgetElementUiState: BudgetElementUiState,
         if (expanded) {
             Text(text = "Beskrivelse:", fontWeight = FontWeight.Bold)
             Text(text = budgetElementUiState.budgetNote)
-            OutlinedButton(onClick = {onChangeNote(budgetElementUiState)}) {
+            Button(onClick = {onChangeNote(budgetElementUiState)}) {
                 Text(text = "Ændr beskrivelse")
             }
         }
