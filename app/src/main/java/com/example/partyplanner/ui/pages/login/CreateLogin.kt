@@ -36,7 +36,7 @@ fun CreateLoginScreen(viewModel: CreateUserViewModel){
             verticalArrangement = Arrangement.Center
         ) {
 
-            Text ( text  = "Opret ny bruger", fontSize = 30.sp)
+            Text ( text  = stringResource(R.string.CreateNewUserTitleText), fontSize = 30.sp)
 
             Spacer(modifier = Modifier.height(20.dp))
 
@@ -62,7 +62,7 @@ fun CreateLoginScreen(viewModel: CreateUserViewModel){
                 .padding(10.dp),
             shape = RoundedCornerShape(10)
             ) {
-                Text (text = "Opret bruger")
+                Text (text = stringResource(R.string.CreateNewUserTextButton))
             }
 
         }
@@ -79,19 +79,19 @@ fun CreateLoginScreen(viewModel: CreateUserViewModel){
 @Composable
 fun TextFieldNotFilledDialog(onDismiss : () -> Unit) {
     AlertDialog(onDismissRequest = onDismiss,
-        title = { Text(text = "Udfyld felterne", fontSize = 20.sp)},
-        text = { Text(text = "Det udfylder Seier")},
+        title = { Text(text = stringResource(R.string.AlertNoEmptyFieldTitleText), fontSize = 20.sp)},
+        text = { Text(text = stringResource(R.string.AlertNoEmptyFieldsAndMinPasswordText))},
         confirmButton = { Button(onClick = onDismiss) {
-            Text(text = "Ok")
+            Text(text = stringResource(R.string.ConfirmTextFromAlert))
         }})
 }
 @Composable
 fun SignUpFailedDialog(onDismiss : () -> Unit) {
     AlertDialog(onDismissRequest = onDismiss,
-        title = { Text(text = "Hov", fontSize = 20.sp)},
-        text = { Text(text = "Der skete en fejl da vi tilmeldte dig prøv igen")},
+        title = { Text(text = stringResource(R.string.AlertSignupFailTitleText), fontSize = 20.sp)},
+        text = { Text(text = stringResource(R.string.AlertSignupFailTextMessage))},
         confirmButton = { Button(onClick = onDismiss) {
-            Text(text = "Ok")
+            Text(text = stringResource(R.string.AlertSignupFailConfirm))
         }})
 }
 @OptIn(ExperimentalMaterial3Api::class)
@@ -115,7 +115,7 @@ fun FullName(onValueChange: (String) -> Unit, fullName: String) {
         },
         shape = RoundedCornerShape(10),
         colors = TextFieldDefaults.textFieldColors(),
-        label = { Text(text = "Indtast fulde navn",
+        label = { Text(text = stringResource(R.string.FullNameTextField),
             color = Color.Gray,
             fontSize = 15.sp,
         )
@@ -145,7 +145,7 @@ fun Email(onValueChange: (String) -> Unit, email: String) {
         },
         shape = RoundedCornerShape(10),
         colors = TextFieldDefaults.textFieldColors(),
-        label = { Text(text = "Indtast e-mail addresse",
+        label = { Text(text = stringResource(R.string.EmailTextField),
             color = Color.Gray,
             fontSize = 15.sp,
         )
@@ -182,7 +182,8 @@ fun NewPassword(onValueChange: (String) -> Unit, password: String){
             PasswordVisualTransformation()
         },
 
-        label = { Text("Indtast kodeord",
+        label = { Text(
+                    stringResource(R.string.NewPasswordTextField),
             color = Color.Gray,
             fontSize = 15.sp,
         )
@@ -232,7 +233,8 @@ fun RepeatPassword(onValueChange2: (String) -> Unit, repeatPassword: String){
             PasswordVisualTransformation()
         },
 
-        label = { Text("Gentag kodeord",
+        label = { Text(
+                    stringResource(R.string.RepeatPasswordTextField),
             color = Color.Gray,
             fontSize = 15.sp,
         )
