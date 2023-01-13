@@ -25,6 +25,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.partyplanner.R
@@ -84,7 +85,7 @@ fun StartPartyCreation(onNextButtonClick: () -> Unit, viewModel: NewPartyViewMod
                     .padding(10.dp),
                 shape = RoundedCornerShape(10)
             ) {
-                Text("Næste")
+                Text(stringResource(R.string.CreatePartyNextButtonText))
             }
         }
 
@@ -110,7 +111,7 @@ fun HostAdder(){
             })
         }
         OutlinedButton(onClick = {hosts.add("")}, modifier = Modifier.align(Alignment.BottomCenter)) {
-            Text(text = "Tilføj vært")    
+            Text(text = stringResource(R.string.CreatePartyAddHostText))
         }
     }
 
@@ -144,7 +145,7 @@ fun ChoosePartyDropDown(selectedOption : PartyType, onChangePartyType: (String) 
             readOnly = true,
             value = selectedOptionText,
             onValueChange = {},
-            label = { Text("Vælg begivenhed")},
+            label = { Text(stringResource(R.string.ChoosePartyTypeDropDownText))},
             trailingIcon = {ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)},
             colors = ExposedDropdownMenuDefaults.textFieldColors(),
         )
@@ -204,7 +205,7 @@ fun SetPartyDataOnCreation(
                         Toast.makeText(context, "Maksimum 50 tegn", Toast.LENGTH_SHORT).show()
                     }
                 },
-                label = { Text("Vælg titel på begivenheden") },
+                label = { Text(stringResource(R.string.ChoosePartyTitleText)) },
                 singleLine = true
             )
 
@@ -230,7 +231,7 @@ fun SetPartyDataOnCreation(
                         Toast.makeText(context, "Maksimum 50 tegn", Toast.LENGTH_SHORT).show()
                     }
                 },
-                label = { Text("Adresse på begivenheden") },
+                label = { Text(stringResource(R.string.ChooseAdressOnCreatePartyTextField)) },
                 singleLine = true
             )
 
@@ -249,7 +250,7 @@ fun SetPartyDataOnCreation(
                             Toast.makeText(context, "Maksimum 4 tal", Toast.LENGTH_SHORT).show()
                         }
                     },
-                    label = { Text("Post nr") },
+                    label = { Text(stringResource(R.string.ChooseZipCodeOnCreatePartyText)) },
                     singleLine = true,
                     maxLines =4,
                     modifier = Modifier.weight(0.3f)
@@ -266,7 +267,7 @@ fun SetPartyDataOnCreation(
                             Toast.makeText(context, "Maksimum 25 tegn", Toast.LENGTH_SHORT).show()
                         }
                     },
-                    label = { Text("By") },
+                    label = { Text(stringResource(R.string.ChooseCityOnCreatePartyText)) },
                     singleLine = true,
                     modifier = Modifier.weight(0.7f)
                 )
@@ -281,7 +282,7 @@ fun SetPartyDataOnCreation(
                     .padding(10.dp),
                 shape = RoundedCornerShape(10)
             ) {
-                Text("Opret begivenhed")
+                Text(stringResource(R.string.CreatePartyButtonText))
             }
         }
     }
@@ -290,9 +291,6 @@ fun SetPartyDataOnCreation(
 
 @Composable
 fun showDatePicker(date : Date, setDate : (Date) -> Unit){
-
-
-
 
     val calendar = Calendar.getInstance()
     calendar.time = date
@@ -333,7 +331,7 @@ fun showDatePicker(date : Date, setDate : (Date) -> Unit){
                     color = Color.DarkGray
                 )
 
-                Icon(Icons.Default.DateRange, contentDescription = "Select Date")
+                Icon(Icons.Default.DateRange, contentDescription = stringResource(R.string.DateRangeLogoDescription))
             }
         }
 }
@@ -378,7 +376,7 @@ fun ShowTimePicker(date : Date, setDate : (Date) -> Unit) {
                     color = Color.DarkGray
                 )
 
-                Icon(Icons.Default.Alarm, contentDescription = "Select Time")
+                Icon(Icons.Default.Alarm, contentDescription = stringResource(R.string.AlarmLogoDescription))
             }
         }
 }
@@ -396,10 +394,12 @@ fun CreatePartyConfirmation(){
 
         )
         {
-            CreatedCompletedText("Tillykke!", "Din begivenhed er nu oprettet")
+            CreatedCompletedText(stringResource(R.string.CongratulationsOnCreatePartyTitleText), stringResource(
+                            R.string.CongratulationsOnCreatePartyMessageText)
+                        )
                 Image(
                 painter = painterResource(id = R.drawable.ic_task_completed),
-                contentDescription = null
+                contentDescription = stringResource(R.string.CompleteLogoOnCreateParty)
             )
 
         }

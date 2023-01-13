@@ -52,7 +52,8 @@ fun SignInScreen(viewModel: LoginViewModel){
                 shape = RoundedCornerShape(10),
             ) {
 
-                Text("Log ind",
+                Text(
+                                    stringResource(R.string.LogInButtonText),
                     fontSize = 15.sp,
                     )
             }
@@ -67,7 +68,8 @@ fun SignInScreen(viewModel: LoginViewModel){
                 shape = RoundedCornerShape(10)
             ) {
 
-                Text("Opret ny bruger",
+                Text(
+                                    stringResource(R.string.CreateNewUserButtonText),
                     fontSize = 15.sp
                     )
 
@@ -100,7 +102,8 @@ fun Username(onValueChange: (String) -> Unit, username: String){
         },
         shape = RoundedCornerShape(10),
         colors = TextFieldDefaults.textFieldColors(),
-        label = { Text("Indast brugernavn",
+        label = { Text(
+                    stringResource(R.string.UsernameTextField),
             color = Color.Gray,
             fontSize = 15.sp,
             )
@@ -138,7 +141,8 @@ fun Password(onValueChange: (String) -> Unit, password: String){
             PasswordVisualTransformation()
         },
 
-        label = { Text("Indtast password",
+        label = { Text(
+                    stringResource(R.string.InsertPasswordTextField),
             color = Color.Gray,
             fontSize = 15.sp,
         )

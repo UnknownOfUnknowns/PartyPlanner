@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -24,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.core.text.isDigitsOnly
+import com.example.partyplanner.R
 import com.example.partyplanner.data.budget.BudgetServiceImpl
 import com.example.partyplanner.ui.pages.budget.BudgetElementUiState
 import com.example.partyplanner.ui.pages.budget.BudgetListUiState
@@ -123,7 +125,7 @@ fun SetNoteDialog(
                 modifier = Modifier
                     .padding(horizontal = 10.dp)
             ) {
-                Text(text = "Beskrivelse:",
+                Text(text = stringResource(R.string.BudgetDialogDescriptionText),
                     modifier = Modifier
                         .align(CenterHorizontally)
                         .padding(vertical = 10.dp),
@@ -133,16 +135,16 @@ fun SetNoteDialog(
                     modifier = Modifier
                         .align(CenterHorizontally)
                         .padding(vertical = 10.dp),
-                    label = { Text(text = "Vælg beskrivelse")},
+                    label = { Text(text = stringResource(R.string.BudgetChooseDescriptionTextField))},
                     colors = TextFieldDefaults.outlinedTextFieldColors(containerColor = Color.White),
                     shape = RoundedCornerShape(10)
                 )
                 Row() {
                     TextButton(onClick = onDismiss) {
-                        Text(text = "Afbryd")
+                        Text(text = stringResource(R.string.BudgetCancelButtonText))
                     }
                     TextButton(onClick = onSubmit) {
-                        Text(text = "Opret", fontWeight = FontWeight.ExtraBold)
+                        Text(text = stringResource(R.string.BudgetCreateButton), fontWeight = FontWeight.ExtraBold)
                     }
                 }
             }
@@ -170,7 +172,7 @@ fun SetMaxBudgetDialog(
 
             ) {
                 Text(
-                    text = "Tilføj forventet total budget",
+                    text = stringResource(R.string.BudgetAddExpectedTotalBudgetText),
                     modifier = Modifier
                         .align(CenterHorizontally)
                         .padding(vertical = 10.dp),
@@ -187,7 +189,7 @@ fun SetMaxBudgetDialog(
                     modifier = Modifier
                         .align(CenterHorizontally)
                         .padding(vertical = 10.dp),
-                    label = { Text(text = "Budget for festen") },
+                    label = { Text(text = stringResource(R.string.BudgetForPartyTextField)) },
                     colors = TextFieldDefaults.outlinedTextFieldColors(
                         containerColor = Color.White
                     ),
@@ -196,10 +198,10 @@ fun SetMaxBudgetDialog(
 
                 Row() {
                     TextButton(onClick = onDismiss) {
-                        Text(text = "Afbryd")
+                        Text(text = stringResource(R.string.BudgetCancelButtonText))
                     }
                     TextButton(onClick = onAddNewBudgetMax) {
-                        Text(text = "Opret", fontWeight = FontWeight.ExtraBold)
+                        Text(text = stringResource(R.string.BudgetCreateButton), fontWeight = FontWeight.ExtraBold)
                     }
                 }
             }
@@ -227,7 +229,7 @@ fun AddBudgetDialog(
                 modifier = Modifier
                     .padding(horizontal = 10.dp)
             ) {
-                Text(text = "Tilføj en udgiftspost",
+                Text(text = stringResource(R.string.BudgetAddExpensePostText),
                 modifier = Modifier
                     .align(CenterHorizontally)
                     .padding(vertical = 10.dp),
@@ -237,7 +239,7 @@ fun AddBudgetDialog(
                 modifier = Modifier
                     .align(CenterHorizontally)
                     .padding(vertical = 10.dp),
-                label = { Text(text = "Indtast navn på udgiftsposten")},
+                label = { Text(text = stringResource(R.string.BudgetChooseNameForExpensePost))},
                 colors = TextFieldDefaults.outlinedTextFieldColors(containerColor = Color.White),
                 shape = RoundedCornerShape(10),
                 singleLine = true
