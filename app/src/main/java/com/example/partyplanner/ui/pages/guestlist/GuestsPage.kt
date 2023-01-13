@@ -25,11 +25,14 @@ import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import com.example.partyplanner.R
 import com.example.partyplanner.data.Guest
 import com.example.partyplanner.data.GuestServiceImpl
 import com.example.partyplanner.ui.elements.DefaultFAB
@@ -124,7 +127,7 @@ fun GuestCard(onDelete : (Guest) -> Unit, guestState : Guest, modifier : Modifie
                 fontFamily = Roboto)
         }
         Icon(imageVector = Icons.Outlined.Delete,
-            contentDescription = null,
+            contentDescription = stringResource(R.string.deleteIconDescription),
             modifier = Modifier
                 .size(35.dp)
                 .padding(end = 10.dp)
@@ -288,7 +291,7 @@ fun DeleteGuestAlert(
     AlertDialog(onDismissRequest = onDismiss,
         confirmButton = {
             TextButton(onClick = onConfirm) {
-                Text(text = "Slet gæst")
+                Text(text = stringResource(R.string.DeleteGuest))
             }
         },
         dismissButton = {

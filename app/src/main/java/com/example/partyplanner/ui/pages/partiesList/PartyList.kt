@@ -14,9 +14,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.partyplanner.R
 import com.example.partyplanner.data.party.Party
 import com.example.partyplanner.ui.pages.partiesList.NewPartyViewModel
 import com.example.partyplanner.ui.theme.Background
@@ -64,7 +66,12 @@ fun DefaultFAB(modifier: Modifier = Modifier, onClick: () -> Unit) {
         shape = FloatingActionButtonDefaults.largeShape,
         containerColor = Color.Green
     ) {
-        Icon(Icons.Default.Add, null, modifier = Modifier.fillMaxSize(), tint = Color.White)
+        Icon(
+            Icons.Default.Add,
+            contentDescription = stringResource(R.string.defaultAddButtonDescription),
+            modifier = Modifier.fillMaxSize(),
+            tint = Color.White
+        )
     }
 
 }

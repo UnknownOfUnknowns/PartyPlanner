@@ -25,7 +25,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.partyplanner.R
@@ -53,9 +52,10 @@ fun StartPartyCreation(onNextButtonClick: () -> Unit, viewModel: NewPartyViewMod
 
             Spacer(modifier = Modifier.height(30.dp))
 
-            Text(text = "Hvilken type fest vil du holde?",
-            fontSize = 25.sp,
-            fontWeight = FontWeight.Bold
+            Text(
+                text = stringResource(R.string.ChoosePartyTypeText),
+                fontSize = 25.sp,
+                fontWeight = FontWeight.Bold
             )
 
             Spacer(modifier = Modifier.height(20.dp))
