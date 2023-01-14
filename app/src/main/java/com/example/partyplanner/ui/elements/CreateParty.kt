@@ -25,7 +25,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.partyplanner.R
@@ -233,7 +232,6 @@ fun SetPartyDataOnCreation(
             Spacer(modifier = Modifier.height(10.dp))
             Row (
                 Modifier
-                    .padding(start = 10.dp, end = 10.dp)
                     .fillMaxWidth()) {
                 GenericOutlineTextField(
                     keyOption = KeyboardOptions(keyboardType = KeyboardType.Number),
