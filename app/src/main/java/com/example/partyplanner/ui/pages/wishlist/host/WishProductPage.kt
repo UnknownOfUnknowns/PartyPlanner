@@ -1,5 +1,6 @@
 package com.example.partyplanner.ui.elements
 
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -14,10 +15,13 @@ import androidx.compose.ui.Alignment.Companion.BottomStart
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.partyplanner.R
 import com.example.partyplanner.ui.pages.wishlist.WishUiState
 import com.example.partyplanner.ui.pages.wishlist.WishViewModel
 import com.example.partyplanner.ui.theme.Primary
@@ -134,15 +138,13 @@ fun CardWithProduct(modifier: Modifier = Modifier,
             if(isGuest) {
                 val context = LocalContext.current
                 Column {
-                    GuestButton(buttonName = stringResource(R.string.link))
                     if(linkError) {
-                        Text(text = "Linket kunne ikke åbnes", modifier = Modifier.align(CenterHorizontally),
+                        Text(text = stringResource(R.string.linkCouldNotBeOpened), modifier = Modifier.align(CenterHorizontally),
                             color = Color.Red)
                     }
-                    GuestButton(buttonName = "Link", {onLinkClick(context)})
+                    GuestButton(buttonName = stringResource(R.string.link), {onLinkClick(context)})
                     Spacer(modifier = Modifier.height(10.dp))
-                    GuestButton(buttonName = stringResource(R.string.reserve))
-                    GuestButton(buttonName = if(wishUiState.isReserved) "Fjern reservation" else "Reservér",
+                    GuestButton(buttonName = if(wishUiState.isReserved) stringResource(R.string.undoReservation) else stringResource(R.string.reserve),
                         onReserveClick)
                 }
             }

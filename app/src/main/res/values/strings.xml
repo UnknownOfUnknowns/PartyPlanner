@@ -90,4 +90,6 @@
  <string name="link">Link</string>
  <string name="reserve">Reservér</string>
  <string name="reserved">Reserveret</string>
+    <string name="linkCouldNotBeOpened">Linket kunne ikke åbnes</string>
+ <string name="undoReservation">Fjern reservation</string>
 </resources>
