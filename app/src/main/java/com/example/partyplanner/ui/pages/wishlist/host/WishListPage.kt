@@ -167,10 +167,9 @@ fun AddWishDialog(
                 )
 
                 Row(modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 10.dp)
+                    .align(CenterHorizontally)
                 ) {
-                    Text(text = "Vælg Billede:")
+                    Text(text = stringResource(R.string.choosePicture))
                     Divider(Modifier.width(4.dp))
                     Icon(imageVector = Icons.Default.AddAPhoto,
                         contentDescription = stringResource(R.string.addPhoto),
@@ -189,10 +188,10 @@ fun AddWishDialog(
                 // Afbryg skal føre tilbage til wishpage(Dissmiss-Request)
                 Row() {
                     TextButton(onClick = onDismiss) {
-                        Text(text = "Afbryd")
+                        Text(text = stringResource(id = R.string.interrupt))
                     }
                     TextButton(onClick = onAddWish) {
-                        Text(text = "Opret", fontWeight = FontWeight.ExtraBold)
+                        Text(text = stringResource(id = R.string.create), fontWeight = FontWeight.ExtraBold)
                     }
                 }
             }
@@ -244,7 +243,7 @@ fun NameCardWishList(modifier: Modifier = Modifier, name: String) {
 @Composable
 fun WishTopBar(isReserved : Boolean, price : Int){
     val color = if (isReserved) Color.Red else MaterialTheme.colorScheme.secondary
-    val text = if (isReserved) "Reserveret" else price.toString()
+    val text = if (isReserved) stringResource(R.string.reserved) else price.toString()
 
     Card(
         modifier = Modifier

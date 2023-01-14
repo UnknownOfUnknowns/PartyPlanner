@@ -97,7 +97,7 @@ fun PartyCard(partyInfo: Party, backgroundColor : Color = Color.White, onClick: 
                 Text(partyInfo.address, color = OnPrimary)
                 Button(onClick = onClick
                 ) {
-                    Text("Rediger i begivenhed")
+                    Text(stringResource(R.string.editEvent))
                 }
             }
         }
@@ -108,8 +108,8 @@ fun PartyCard(partyInfo: Party, backgroundColor : Color = Color.White, onClick: 
 fun StatusTab(tabIndex : Int, onTap : (Int) -> Unit) {
 
     val tabData = listOf(
-        "Arrangør",
-        "Gæst"
+        stringResource(R.string.host),
+        stringResource(R.string.guest)
     )
     TabRow(selectedTabIndex = tabIndex,
         modifier = Modifier

@@ -14,10 +14,12 @@ import androidx.compose.ui.Alignment.Companion.BottomStart
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.partyplanner.R
 import com.example.partyplanner.ui.pages.wishlist.WishUiState
 import com.example.partyplanner.ui.pages.wishlist.WishViewModel
 import com.example.partyplanner.ui.theme.Primary
@@ -121,16 +123,16 @@ fun CardWithProduct(modifier: Modifier = Modifier, wishUiState: WishUiState, isG
 
             Spacer(modifier = Modifier.height(5.dp))
 
-            Text(text = "Beskrivelse:",
+            Text(text = stringResource(id = R.string.budgetDialogDescriptionText),
                 fontWeight = FontWeight.Bold
             )
 
             Text(text = wishUiState.description)
             if(isGuest) {
                 Column {
-                    GuestButton(buttonName = "Link")
+                    GuestButton(buttonName = stringResource(R.string.link))
                     Spacer(modifier = Modifier.height(10.dp))
-                    GuestButton(buttonName = "Reservér")
+                    GuestButton(buttonName = stringResource(R.string.reserve))
                 }
             }
         }

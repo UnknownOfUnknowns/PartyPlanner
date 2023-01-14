@@ -55,7 +55,7 @@ fun StartPartyCreation(onNextButtonClick: () -> Unit, viewModel: NewPartyViewMod
             Spacer(modifier = Modifier.height(30.dp))
 
             Text(
-                text = stringResource(R.string.ChoosePartyTypeText),
+                text = stringResource(R.string.choosePartyTypeText),
                 fontSize = 25.sp,
                 fontWeight = FontWeight.Bold
             )
@@ -83,7 +83,7 @@ fun StartPartyCreation(onNextButtonClick: () -> Unit, viewModel: NewPartyViewMod
                     .padding(10.dp),
                 shape = RoundedCornerShape(10)
             ) {
-                Text(stringResource(R.string.CreatePartyNextButtonText))
+                Text(stringResource(R.string.createPartyNextButtonText))
             }
         }
 
@@ -109,7 +109,7 @@ fun HostAdder(){
             })
         }
         OutlinedButton(onClick = {hosts.add("")}, modifier = Modifier.align(Alignment.BottomCenter)) {
-            Text(text = stringResource(R.string.CreatePartyAddHostText))
+            Text(text = stringResource(R.string.createPartyAddHostText))
         }
     }
 
@@ -148,7 +148,7 @@ fun ChoosePartyDropDown(selectedOption : PartyType, onChangePartyType: (String) 
             readOnly = true,
             value = selectedOptionText,
             onValueChange = {},
-            label = { Text(stringResource(R.string.ChoosePartyTypeDropDownText))},
+            label = { Text(stringResource(R.string.choosePartyTypeDropDownText))},
             trailingIcon = {ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)},
             colors = TextFieldDefaults.outlinedTextFieldColors(containerColor = Color.White),
         )
@@ -206,7 +206,7 @@ fun SetPartyDataOnCreation(
                         Toast.makeText(context, "Maksimum 50 tegn", Toast.LENGTH_SHORT).show()
                     }
                 },
-                labelText = stringResource(id = R.string.ChoosePartyTitleText),
+                labelText = stringResource(id = R.string.choosePartyTitleText),
             isSingleline = true
             )
 
@@ -229,7 +229,7 @@ fun SetPartyDataOnCreation(
                         Toast.makeText(context, "Maksimum 50 tegn", Toast.LENGTH_SHORT).show()
                     }
                 },
-                labelText = stringResource(id = R.string.ChooseAdressOnCreatePartyTextField),
+                labelText = stringResource(id = R.string.chooseAdressOnCreatePartyTextField),
             isSingleline = true
             )
 
@@ -249,7 +249,7 @@ fun SetPartyDataOnCreation(
                             Toast.makeText(context, "Maksimum 4 tal", Toast.LENGTH_SHORT).show()
                         }
                     },
-                    labelText = stringResource(id = R.string.ChooseZipCodeOnCreatePartyText),
+                    labelText = stringResource(id = R.string.chooseZipCodeOnCreatePartyText),
                     isSingleline = true
                 )
 
@@ -264,7 +264,7 @@ fun SetPartyDataOnCreation(
                             Toast.makeText(context, "Maksimum 25 tegn", Toast.LENGTH_SHORT).show()
                         }
                     },
-                    labelText = stringResource(id = R.string.ChooseCityOnCreatePartyText),
+                    labelText = stringResource(id = R.string.chooseCityOnCreatePartyText),
                 isSingleline = true
                 )
             }
@@ -278,7 +278,7 @@ fun SetPartyDataOnCreation(
                     .padding(10.dp),
                 shape = RoundedCornerShape(10)
             ) {
-                Text(stringResource(R.string.CreatePartyButtonText))
+                Text(stringResource(R.string.createPartyButtonText))
             }
         }
     }
@@ -329,7 +329,7 @@ fun showDatePicker(date : Date, setDate : (Date) -> Unit){
                     color = Color.DarkGray
                 )
 
-                Icon(Icons.Default.DateRange, contentDescription = stringResource(R.string.DateRangeLogoDescription))
+                Icon(Icons.Default.DateRange, contentDescription = stringResource(R.string.dateRangeLogoDescription))
             }
         }
 }
@@ -375,7 +375,7 @@ fun ShowTimePicker(date : Date, setDate : (Date) -> Unit) {
                     color = Color.DarkGray
                 )
 
-                Icon(Icons.Default.Alarm, contentDescription = stringResource(R.string.AlarmLogoDescription))
+                Icon(Icons.Default.Alarm, contentDescription = stringResource(R.string.alarmLogoDescription))
             }
         }
 }
@@ -393,12 +393,12 @@ fun CreatePartyConfirmation(){
 
         )
         {
-            CreatedCompletedText(stringResource(R.string.CongratulationsOnCreatePartyTitleText), stringResource(
-                            R.string.CongratulationsOnCreatePartyMessageText)
+            CreatedCompletedText(stringResource(R.string.congratulationsOnCreatePartyTitleText), stringResource(
+                            R.string.congratulationsOnCreatePartyMessageText)
                         )
                 Image(
                 painter = painterResource(id = R.drawable.ic_task_completed),
-                contentDescription = stringResource(R.string.CompleteLogoOnCreateParty)
+                contentDescription = stringResource(R.string.completeLogoOnCreateParty)
             )
 
         }

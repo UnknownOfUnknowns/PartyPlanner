@@ -21,7 +21,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.partyplanner.R
 import com.example.partyplanner.ui.elements.FadeBackground
-import okhttp3.internal.wait
 
 
 @Composable
@@ -54,7 +53,7 @@ fun SignInScreen(viewModel: LoginViewModel){
             ) {
 
                 Text(
-                                    stringResource(R.string.LogInButtonText),
+                                    stringResource(R.string.logInButtonText),
                     fontSize = 15.sp,
                     )
             }
@@ -70,7 +69,7 @@ fun SignInScreen(viewModel: LoginViewModel){
             ) {
 
                 Text(
-                                    stringResource(R.string.CreateNewUserButtonText),
+                                    stringResource(R.string.createNewUserButtonText),
                     fontSize = 15.sp
                     )
 
@@ -105,7 +104,7 @@ fun Username(onValueChange: (String) -> Unit, username: String){
         shape = RoundedCornerShape(10),
         colors = TextFieldDefaults.outlinedTextFieldColors(Color.White),
         label = { Text(
-                    stringResource(R.string.UsernameTextField),
+                    stringResource(R.string.usernameTextField),
             )
         }
 
@@ -143,7 +142,7 @@ fun Password(onValueChange: (String) -> Unit, password: String){
         },
 
         label = { Text(
-                    stringResource(R.string.InsertPasswordTextField),
+                    stringResource(R.string.insertPasswordTextField),
         )
         },
         trailingIcon = {
