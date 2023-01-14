@@ -17,21 +17,15 @@ class GuestListViewModel(private val repository: GuestService) : ViewModel() {
     ) {
         guests, invitations, toBeDeleted ->
         GuestListUiState(
-            guests = guests,
+            guests = guests.sortedBy { it.attendanceState.ordinal },
             invitationState = invitations,
             guestToBeDeleted = toBeDeleted
         )
     }.stateIn(
         scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5_000),
+        started = SharingStarted.Eagerly,
         initialValue = GuestListUiState()
     )
-
-    init {
-        viewModelScope.launch {
-            repository.getGuests()
-        }
-    }
 
 
     fun setGuestToBeDeleted(guest : Guest) {
@@ -44,7 +38,7 @@ class GuestListViewModel(private val repository: GuestService) : ViewModel() {
     fun changeSendingMethod(newMethod: SendingMethod) {
         _invitationUiState.update { currentState ->
             currentState.copy(
-                    sendingMethod = newMethod
+                sendingMethod = newMethod
             )
         }
     }
@@ -65,11 +59,11 @@ class GuestListViewModel(private val repository: GuestService) : ViewModel() {
     }
 
     fun changeInviteOn(newStatus: Boolean) {
-        _invitationUiState.update { currentState ->
-            currentState.copy(
+
+        _invitationUiState.update {
+            it.copy(
                 inviteOn = newStatus
             )
-
         }
     }
 
