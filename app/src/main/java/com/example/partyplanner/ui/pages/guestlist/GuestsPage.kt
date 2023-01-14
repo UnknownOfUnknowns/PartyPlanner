@@ -25,7 +25,6 @@ import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -60,6 +59,7 @@ fun GuestListPage(viewModel: GuestListViewModel) {
                 deleteUserDialogOn.value = true
             },uiState.value)
         }
+
         if(uiState.value.invitationState.inviteOn){
             SendInviteDialog(
                 onDismiss = { viewModel.changeInviteOn(false) },
@@ -70,7 +70,6 @@ fun GuestListPage(viewModel: GuestListViewModel) {
                 sendInvitationUiState = uiState.value.invitationState
             )
         }
-        DefaultFAB(modifier = Modifier.align(Alignment.BottomEnd), onClick = { viewModel.changeInviteOn(true) })
 
         if(deleteUserDialogOn.value) {
             DeleteGuestAlert(
@@ -80,6 +79,8 @@ fun GuestListPage(viewModel: GuestListViewModel) {
                 },
                 onDismiss = {deleteUserDialogOn.value = false})
         }
+        DefaultFAB(modifier = Modifier.align(Alignment.BottomEnd), onClick = { viewModel.changeInviteOn(true) })
+
     }
 }
 

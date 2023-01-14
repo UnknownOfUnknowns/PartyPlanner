@@ -33,7 +33,7 @@ class GuestServiceImpl(private val firestore: FirebaseFirestore, @DocumentId pri
 
     override val guests: Flow<List<Guest>>
         get() = currentCollection()
-            .whereEqualTo("partyRef", partyId).orderBy(ATTENDANCE_STATE)
+            .whereEqualTo("partyRef", partyId)
                 .snapshots()
                 .map { snapshot ->
                     println(snapshot)
