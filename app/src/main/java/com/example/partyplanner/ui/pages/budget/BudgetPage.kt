@@ -123,7 +123,7 @@ fun SetNoteDialog(
                 modifier = Modifier
                     .padding(horizontal = 10.dp)
             ) {
-                Text(text = stringResource(R.string.BudgetDialogDescriptionText),
+                Text(text = stringResource(R.string.budgetDialogDescriptionText),
                     modifier = Modifier
                         .align(CenterHorizontally)
                         .padding(vertical = 10.dp),
@@ -149,16 +149,16 @@ fun SetNoteDialog(
                     modifier = Modifier
                         .align(CenterHorizontally)
                         .padding(vertical = 10.dp),
-                    label = { Text(text = stringResource(R.string.BudgetChooseDescriptionTextField))},
+                    label = { Text(text = stringResource(R.string.budgetChooseDescriptionTextField))},
                     colors = TextFieldDefaults.outlinedTextFieldColors(containerColor = Color.White),
                     shape = RoundedCornerShape(10)
                 )
                 Row() {
                     TextButton(onClick = onDismiss) {
-                        Text(text = stringResource(R.string.BudgetCancelButtonText))
+                        Text(text = stringResource(R.string.interrupt))
                     }
                     TextButton(onClick = onSubmit) {
-                        Text(text = stringResource(R.string.BudgetCreateButton), fontWeight = FontWeight.ExtraBold)
+                        Text(text = stringResource(R.string.create), fontWeight = FontWeight.ExtraBold)
                     }
                 }
             }
@@ -186,7 +186,7 @@ fun SetMaxBudgetDialog(
 
             ) {
                 Text(
-                    text = stringResource(R.string.BudgetAddExpectedTotalBudgetText),
+                    text = stringResource(R.string.budgetAddExpectedTotalBudgetText),
                     modifier = Modifier
                         .align(CenterHorizontally)
                         .padding(vertical = 10.dp),
@@ -203,7 +203,7 @@ fun SetMaxBudgetDialog(
                     modifier = Modifier
                         .align(CenterHorizontally)
                         .padding(vertical = 10.dp),
-                    label = { Text(text = stringResource(R.string.BudgetForPartyTextField)) },
+                    label = { Text(text = stringResource(R.string.budgetForPartyTextField)) },
                     colors = TextFieldDefaults.outlinedTextFieldColors(
                         containerColor = Color.White
                     ),
@@ -212,10 +212,10 @@ fun SetMaxBudgetDialog(
 
                 Row() {
                     TextButton(onClick = onDismiss) {
-                        Text(text = stringResource(R.string.BudgetCancelButtonText))
+                        Text(text = stringResource(R.string.interrupt))
                     }
                     TextButton(onClick = onAddNewBudgetMax) {
-                        Text(text = stringResource(R.string.BudgetCreateButton), fontWeight = FontWeight.ExtraBold)
+                        Text(text = stringResource(R.string.create), fontWeight = FontWeight.ExtraBold)
                     }
                 }
             }
@@ -247,7 +247,7 @@ fun AddBudgetDialog(
                     .align(CenterHorizontally)
                     .padding(vertical = 10.dp)
 
-                Text(text = stringResource(R.string.BudgetAddExpensePostText),
+                Text(text = stringResource(R.string.budgetAddExpensePostText),
                     modifier = Modifier
                         .align(CenterHorizontally)
                         .padding(vertical = 10.dp),
@@ -256,7 +256,7 @@ fun AddBudgetDialog(
                 GenericOutlineTextField(modifier = stdModifier,
                     value = budgetElementUiState.budgetName,
                     onValueChange = onNameChange,
-                    labelText = stringResource(id = R.string.BudgetChooseNameForExpensePost),
+                    labelText = stringResource(id = R.string.budgetChooseNameForExpensePost),
                     isSingleline = true
                 )
 
@@ -376,7 +376,7 @@ fun BudgetInformationIndividual(budgetElementUiState: BudgetElementUiState,
             InfoDropDownIndividualBudget(expanded = expanded, onClick = { expanded = !expanded })
         }
         if (expanded) {
-            Text(text = stringResource(id = R.string.BudgetDialogDescriptionText), fontWeight = FontWeight.Bold)
+            Text(text = stringResource(id = R.string.budgetDialogDescriptionText), fontWeight = FontWeight.Bold)
             Text(text = budgetElementUiState.budgetNote)
             Button(onClick = {onChangeNote(budgetElementUiState)}) {
                 Text(text = stringResource(R.string.changeDesription))

@@ -37,7 +37,7 @@ fun CreateLoginScreen(viewModel: CreateUserViewModel){
             verticalArrangement = Arrangement.Center
         ) {
 
-            Text ( text  = stringResource(R.string.CreateNewUserTitleText), fontSize = 30.sp)
+            Text ( text  = stringResource(R.string.createNewUserTitleText), fontSize = 30.sp)
 
             Spacer(modifier = Modifier.height(20.dp))
 
@@ -63,7 +63,7 @@ fun CreateLoginScreen(viewModel: CreateUserViewModel){
                 .padding(10.dp),
             shape = RoundedCornerShape(10)
             ) {
-                Text (text = stringResource(R.string.CreateNewUserTextButton))
+                Text (text = stringResource(R.string.createNewUserTextButton))
             }
 
         }
@@ -80,19 +80,19 @@ fun CreateLoginScreen(viewModel: CreateUserViewModel){
 @Composable
 fun TextFieldNotFilledDialog(onDismiss : () -> Unit) {
     AlertDialog(onDismissRequest = onDismiss,
-        title = { Text(text = stringResource(R.string.AlertNoEmptyFieldTitleText), fontSize = 20.sp)},
-        text = { Text(text = stringResource(R.string.AlertNoEmptyFieldsAndMinPasswordText))},
+        title = { Text(text = stringResource(R.string.alertNoEmptyFieldTitleText), fontSize = 20.sp)},
+        text = { Text(text = stringResource(R.string.alertNoEmptyFieldsAndMinPasswordText))},
         confirmButton = { Button(onClick = onDismiss) {
-            Text(text = stringResource(R.string.ConfirmTextFromAlert))
+            Text(text = stringResource(R.string.confirmTextFromAlert))
         }})
 }
 @Composable
 fun SignUpFailedDialog(onDismiss : () -> Unit) {
     AlertDialog(onDismissRequest = onDismiss,
-        title = { Text(text = stringResource(R.string.AlertSignupFailTitleText), fontSize = 20.sp)},
-        text = { Text(text = stringResource(R.string.AlertSignupFailTextMessage))},
+        title = { Text(text = stringResource(R.string.alertSignupFailTitleText), fontSize = 20.sp)},
+        text = { Text(text = stringResource(R.string.alertSignupFailTextMessage))},
         confirmButton = { Button(onClick = onDismiss) {
-            Text(text = stringResource(R.string.AlertSignupFailConfirm))
+            Text(text = stringResource(R.string.alertSignupFailConfirm))
         }})
 }
 @OptIn(ExperimentalMaterial3Api::class)
@@ -113,7 +113,7 @@ fun FullName(onValueChange: (String) -> Unit, fullName: String) {
                 Toast.makeText(context, "Maksimum 40 tegn", Toast.LENGTH_SHORT).show()
             }
         },
-        labelText = stringResource(id = R.string.FullNameTextField)
+        labelText = stringResource(id = R.string.fullNameTextField)
     )
 }
 
@@ -135,7 +135,7 @@ fun Email(onValueChange: (String) -> Unit, email: String) {
                 Toast.makeText(context, "Maksimum 40 tegn", Toast.LENGTH_SHORT).show()
             }
         },
-        labelText = stringResource(id = R.string.EmailTextField),
+        labelText = stringResource(id = R.string.emailTextField),
         isSingleline = true
     )
 }
@@ -172,7 +172,7 @@ fun NewPassword(onValueChange: (String) -> Unit, password: String){
         },
 
         label = { Text(
-                    stringResource(R.string.NewPasswordTextField),
+                    stringResource(R.string.newPasswordTextField),
         )
         },
         trailingIcon = {
@@ -224,7 +224,7 @@ fun RepeatPassword(onValueChange2: (String) -> Unit, repeatPassword: String){
         },
 
         label = { Text(
-                    stringResource(R.string.RepeatPasswordTextField),
+                    stringResource(R.string.repeatPasswordTextField),
         )
         },
         trailingIcon = {

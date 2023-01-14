@@ -28,10 +28,10 @@ class AddBudgetElementTest {
     @Test
     fun textInputsUpdatesState() {
         composeTestRule.onNodeWithContentDescription(resources.getString(R.string.defaultAddButtonDescription)).performClick()
-        composeTestRule.onNodeWithText(resources.getString(R.string.BudgetAddExpensePostText)).assertIsDisplayed()
+        composeTestRule.onNodeWithText(resources.getString(R.string.budgetAddExpensePostText)).assertIsDisplayed()
 
-        composeTestRule.onNodeWithText(resources.getString(R.string.BudgetChooseNameForExpensePost)).performTextInput("Hello")
-        composeTestRule.onNodeWithText(resources.getString(R.string.BudgetChooseNameForExpensePost)).assert(
+        composeTestRule.onNodeWithText(resources.getString(R.string.budgetChooseNameForExpensePost)).performTextInput("Hello")
+        composeTestRule.onNodeWithText(resources.getString(R.string.budgetChooseNameForExpensePost)).assert(
             hasText("Hello")
         )
     }

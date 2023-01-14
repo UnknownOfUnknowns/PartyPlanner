@@ -241,7 +241,7 @@ fun SendInviteDialog(
                 TextField(
                     value = sendInvitationUiState.address,
                     onValueChange = onAddressChange,
-                    label = { Text(text = stringResource(R.string.Enter) + getStringFromSendingMethod(sendInvitationUiState.sendingMethod))},
+                    label = { Text(text = stringResource(R.string.Enter)+ " " + getStringFromSendingMethod(sendInvitationUiState.sendingMethod))},
                     colors = TextFieldDefaults.textFieldColors(
                         containerColor = Color.White
                     ),

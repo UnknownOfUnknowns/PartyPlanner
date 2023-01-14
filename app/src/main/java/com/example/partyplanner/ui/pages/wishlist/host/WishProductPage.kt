@@ -1,6 +1,5 @@
 package com.example.partyplanner.ui.elements
 
-import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -15,7 +14,6 @@ import androidx.compose.ui.Alignment.Companion.BottomStart
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
@@ -128,7 +126,7 @@ fun CardWithProduct(modifier: Modifier = Modifier,
 
             Spacer(modifier = Modifier.height(5.dp))
 
-            Text(text = "Beskrivelse:",
+            Text(text = stringResource(id = R.string.budgetDialogDescriptionText),
                 fontWeight = FontWeight.Bold
             )
 
@@ -136,12 +134,14 @@ fun CardWithProduct(modifier: Modifier = Modifier,
             if(isGuest) {
                 val context = LocalContext.current
                 Column {
+                    GuestButton(buttonName = stringResource(R.string.link))
                     if(linkError) {
                         Text(text = "Linket kunne ikke åbnes", modifier = Modifier.align(CenterHorizontally),
                             color = Color.Red)
                     }
                     GuestButton(buttonName = "Link", {onLinkClick(context)})
                     Spacer(modifier = Modifier.height(10.dp))
+                    GuestButton(buttonName = stringResource(R.string.reserve))
                     GuestButton(buttonName = if(wishUiState.isReserved) "Fjern reservation" else "Reservér",
                         onReserveClick)
                 }
