@@ -172,16 +172,16 @@ fun GuestOverview(modifier: Modifier = Modifier, guestListUiState: GuestListUiSt
             horizontalArrangement = Arrangement.SpaceBetween) {
             QuestOverviewWithIcon(icon = Icons.Default.Done,
                 questInCategory = guestListUiState.guests.filter { it.attendanceState == AttendanceState.ATTENDS }.size,
-                color = Color.Green, categoryName = "Deltager")
+                color = Color.Green, categoryName = stringResource(id = R.string.participating))
             QuestOverviewWithIcon(icon = Icons.Default.Close,
                 questInCategory = guestListUiState.guests.filter { it.attendanceState == AttendanceState.NOT_ATTENDING }.size
-                , color = Color.Red, categoryName = "Afbud")
+                , color = Color.Red, categoryName = stringResource(R.string.cancel))
             QuestOverviewWithIcon(icon = Icons.Default.Refresh,
                 questInCategory = guestListUiState.guests.filter { it.attendanceState == AttendanceState.AWAITING }.size
-                , color = Color.Yellow, categoryName = "Afventer")
+                , color = Color.Yellow, categoryName = stringResource(R.string.awaits))
             QuestOverviewWithIcon(icon = Icons.Default.Email,
                 questInCategory = guestListUiState.totalInvites,
-                color = Color.White, categoryName = "Invitationer")
+                color = Color.White, categoryName = stringResource(R.string.invitations))
 
         }
     }
@@ -219,10 +219,10 @@ fun SendInviteDialog(
                     .fillMaxWidth()
                     .padding(start = 10.dp, end = 10.dp)
             ) {
-                Text(text = "Inviter gæst", fontSize = 30.sp)
+                Text(text = stringResource(R.string.inviteGuest), fontSize = 30.sp)
                 TextField(value = sendInvitationUiState.guest,
                     onValueChange = onGuestChange,
-                    label = { Text(text = "Indtast gæstens navn")},
+                    label = { Text(text = stringResource(R.string.enterGuestName))},
                     colors = TextFieldDefaults.textFieldColors(
                         containerColor = Color.White
                     ),
@@ -240,7 +240,7 @@ fun SendInviteDialog(
                 TextField(
                     value = sendInvitationUiState.address,
                     onValueChange = onAddressChange,
-                    label = { Text(text = "Indtast "+ getStringFromSendingMethod(sendInvitationUiState.sendingMethod))},
+                    label = { Text(text = stringResource(R.string.Enter) + getStringFromSendingMethod(sendInvitationUiState.sendingMethod))},
                     colors = TextFieldDefaults.textFieldColors(
                         containerColor = Color.White
                     ),
@@ -256,7 +256,7 @@ fun SendInviteDialog(
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 Button(onClick = onSend, modifier = Modifier. fillMaxWidth()) {
-                    Text(text = "Send Invitation")
+                    Text(text = stringResource(R.string.sendInvitation))
 
                 }
             }
@@ -272,7 +272,7 @@ fun InviteRadioButtons(
 ){
     val sendingMethods = SendingMethod.values()
     Column(modifier = modifier) {
-        Text("Vælg forsendelsesmetode", color = Color.Gray)
+        Text(stringResource(R.string.chooseSendingMethod), color = Color.Gray)
         sendingMethods.forEach { item ->
             Row(verticalAlignment = CenterVertically) {
                 RadioButton(selected = item == activeItem, onClick = { onButtonChange(item) })
@@ -296,14 +296,14 @@ fun DeleteGuestAlert(
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text(text = "Fortryd")
+                Text(text = stringResource(R.string.regret))
             }
         },
         title = {
-            Text(text = "Du er ved at slette", fontSize = 16.sp)
+            Text(text = stringResource(R.string.aboutToDelete), fontSize = 16.sp)
         },
         text = {
-            Text(text = "Vil du slette denne gæst?")
+            Text(text = stringResource(R.string.wantToDelete))
         }
     )
 }

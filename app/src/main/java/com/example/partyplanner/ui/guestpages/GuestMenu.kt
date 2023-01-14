@@ -15,8 +15,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.partyplanner.R
 import com.example.partyplanner.data.party.GuestPartyInfo
 import com.example.partyplanner.ui.elements.FadeBackground
 import com.example.partyplanner.ui.state.AttendanceState
@@ -84,7 +86,7 @@ modifier = Modifier.fillMaxWidth()
                 BottomBarWhenAwaiting(updateAttendanceState)
             }
             AttendanceState.ATTENDS -> {
-                Text(text = "Du deltager til denne begivenhed", color = AlreadyAttendingTextColor)
+                Text(text = stringResource(R.string.guestParticipating), color = AlreadyAttendingTextColor)
                 Spacer(modifier = Modifier.height(10.dp))
 
                 BottomBarWhenAttends(
@@ -94,7 +96,7 @@ modifier = Modifier.fillMaxWidth()
             }
             AttendanceState.NOT_ATTENDING -> {
                 Text(
-                    text = "Du deltager ikke til denne begivenhed",
+                    text = stringResource(R.string.guestNotAttending),
                     color = androidx.compose.ui.graphics.Color.Red
                 )
                 Spacer(modifier = Modifier.height(10.dp))
@@ -117,7 +119,7 @@ fun BottomBarWhenAwaiting(updateAttendanceState: (AttendanceState) -> Unit){
             onClick = { updateAttendanceState(AttendanceState.ATTENDS) },
             colors = ButtonDefaults.buttonColors(AttendingColor)) {
 
-            Text("Deltager", color = OnPrimaryContainer)
+            Text(stringResource(R.string.participating), color = OnPrimaryContainer)
         }
 
         Spacer (modifier = Modifier.weight(1f))
@@ -128,7 +130,7 @@ fun BottomBarWhenAwaiting(updateAttendanceState: (AttendanceState) -> Unit){
             colors = ButtonDefaults.buttonColors(
             NotAttendingColor))
         {
-            Text("Deltager ikke", color = OnPrimaryContainer)
+            Text(stringResource(R.string.notParticipating), color = OnPrimaryContainer)
         }
     }
 }
@@ -141,7 +143,7 @@ fun BottomBarWhenAttends(modifier : Modifier = Modifier, updateAttendanceState: 
             NotAttendingColor),
         modifier = modifier
     ) {
-        Text("Meld afbud", color = OnPrimaryContainer)
+        Text(stringResource(R.string.cancelAppointment), color = OnPrimaryContainer)
 
     }
 }
@@ -154,7 +156,7 @@ fun BottomBarWhenNotAttending(modifier : Modifier = Modifier, updateAttendanceSt
         colors = ButtonDefaults.buttonColors(AttendingColor),
         modifier = modifier
     ) {
-        Text("Deltag", color = OnPrimaryContainer)
+        Text(stringResource(R.string.participate), color = OnPrimaryContainer)
 
     }
 }
@@ -167,11 +169,11 @@ fun WishListButton(onWishListPress : () -> Unit){
         colors  = ButtonDefaults.buttonColors(Primary)
     ) {
 
-        Text("Ønskeliste", color = Color.White)
+        Text(stringResource(R.string.wishList), color = Color.White)
 
         Spacer (modifier = Modifier.width(10.dp))
 
-        Icon(imageVector = Icons.Outlined.Toc, contentDescription = "WishLogo",
+        Icon(imageVector = Icons.Outlined.Toc, contentDescription = stringResource(R.string.wishLogo),
         modifier = Modifier.size(ButtonDefaults.IconSize))
 
     }

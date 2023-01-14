@@ -121,14 +121,19 @@ fun HostAdder(){
 fun ChoosePartyDropDown(selectedOption : PartyType, onChangePartyType: (String) -> Unit)
 {
 
-    val options = listOf("Fødselsdag", "Bryllup", "Konfirmation", "Dåb", "Anden begivenhed")
+    val options = listOf(stringResource(R.string.birthday),
+        stringResource(R.string.wedding),
+        stringResource(R.string.confirmation),
+        stringResource(R.string.baptism),
+        stringResource(R.string.otherEvent)
+    )
     var expanded by remember { mutableStateOf(false) }
     val selectedOptionText = when (selectedOption){
-        PartyType.BIRTHDAY -> "Fødselsdag"
-        PartyType.WEDDING -> "Bryllup"
-        PartyType.CONFIRMATION -> "Konfirmation"
-        PartyType.BAPTISM -> "Dåb"
-        else -> "Anden begivenhed"
+        PartyType.BIRTHDAY -> stringResource(R.string.birthday)
+        PartyType.WEDDING -> stringResource(R.string.wedding)
+        PartyType.CONFIRMATION -> stringResource(R.string.confirmation)
+        PartyType.BAPTISM -> stringResource(R.string.baptism)
+        else -> stringResource(R.string.otherEvent)
     }
     ExposedDropdownMenuBox(
         expanded = expanded,
@@ -319,7 +324,7 @@ fun showDatePicker(date : Date, setDate : (Date) -> Unit){
                 modifier = Modifier.padding(15.dp),
             ){
                 Text (
-                    text = "Vælg dato : " + "${day} /" + " ${month+1} -" + " ${year}",
+                    text = stringResource(R.string.pickDate) + "${day} /" + " ${month+1} -" + " ${year}",
                     modifier = Modifier.weight(1F),
                     color = Color.DarkGray
                 )
@@ -365,7 +370,7 @@ fun ShowTimePicker(date : Date, setDate : (Date) -> Unit) {
                 modifier = Modifier.padding(15.dp),
             ){
                 Text (
-                    text = "Vælg starttidspunkt :" + " ${mHour}:$mMinute",
+                    text = stringResource(R.string.pickStartTime) + " ${mHour}:$mMinute",
                     modifier = Modifier.weight(1F),
                     color = Color.DarkGray
                 )

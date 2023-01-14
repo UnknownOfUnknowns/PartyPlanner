@@ -50,12 +50,6 @@ fun BudgetPage(viewModel: BudgetViewModel) {
             .padding(horizontal = 10.dp),
             horizontalAlignment = CenterHorizontally
         ) {
-            // Her skal uistate.value.wishlistname indtastes evt fra den allerede
-            // kendte i wishlistpage (Samme ui state)
-            NameCardWishList(name = "UISTATE WISHLISTNAME",
-                modifier = Modifier
-                    .size(width = 360.dp, height = 50.dp)
-            )
             Spacer(modifier = Modifier.height(10.dp))
             BudgetInfoTopScreen(budgetListUiState = uiState.value,
                 onMaxBudgetChange = { viewModel.changeBudgetMax(true) }
@@ -146,7 +140,7 @@ fun SetNoteDialog(
                     modifier = Modifier
                         .align(CenterHorizontally)
                         .padding(vertical = 10.dp),
-                    label = { Text(text = stringResource(id = R.string.priceofwish))},
+                    label = { Text(text = stringResource(id = R.string.wishPrice))},
                     colors = TextFieldDefaults.outlinedTextFieldColors(containerColor = Color.White),
                     shape = RoundedCornerShape(10)
                 )
@@ -276,14 +270,14 @@ fun AddBudgetDialog(
                             onPriceChange(it.toInt())
                         }
                     },
-                    labelText = stringResource(id = R.string.priceofwish))
+                    labelText = stringResource(id = R.string.wishPrice))
 
                 Row() {
                     TextButton(onClick = onDismiss) {
-                        Text(text = "Afbryd")
+                        Text(text = stringResource(R.string.interrupt))
                     }
                     TextButton(onClick = onAddBudgetItem) {
-                        Text(text = "Opret", fontWeight = FontWeight.ExtraBold)
+                        Text(text = stringResource(R.string.create), fontWeight = FontWeight.ExtraBold)
                     }
                 }
             }
@@ -313,11 +307,11 @@ fun BudgetInfoTopScreen(
 
             ) {
             Spacer(modifier = Modifier.height(5.dp))
-            Text("Budget: ", color = OnSecondaryContainer)
+            Text(stringResource(R.string.budget), color = OnSecondaryContainer)
             Spacer(modifier = Modifier.height(5.dp))
-            Text("Budget brugt: ", color = OnSecondaryContainer)
+            Text(stringResource(R.string.budgetUsed), color = OnSecondaryContainer)
             Spacer(modifier = Modifier.height(5.dp))
-            Text("Resterende budget: ", color = OnSecondaryContainer)
+            Text(stringResource(R.string.remainingBudget), color = OnSecondaryContainer)
             Spacer(modifier = Modifier.height(5.dp))
 
         }
@@ -325,11 +319,11 @@ fun BudgetInfoTopScreen(
         Column() {
             // Her skal input fra de rigtige tal i budgettet ind
             Spacer(modifier = Modifier.height(5.dp))
-            Text (budgetListUiState.budgetMax.toString() +" kr", color = OnSecondaryContainer)
+            Text (budgetListUiState.budgetMax.toString() + stringResource(R.string.valuta), color = OnSecondaryContainer)
             Spacer(modifier = Modifier.height(5.dp))
-            Text (budgetListUiState.budgetSpent.toString()+ " kr", color = OnSecondaryContainer)
+            Text (budgetListUiState.budgetSpent.toString()+ stringResource(R.string.valuta), color = OnSecondaryContainer)
             Spacer(modifier = Modifier.height(5.dp))
-            Text (budgetListUiState.budgetLeft.toString()+ " kr", color = OnSecondaryContainer)
+            Text (budgetListUiState.budgetLeft.toString()+ stringResource(R.string.valuta), color = OnSecondaryContainer)
             Spacer(modifier = Modifier.height(5.dp))
         }
         //Denne knap skal lave en dialog, hvor der kan ændres budget maksimum
@@ -339,7 +333,7 @@ fun BudgetInfoTopScreen(
         ) {
             Icon(imageVector = Icons.Outlined.Settings, contentDescription = null, modifier = Modifier.size(24.dp), tint = Color.Black)
             Spacer(modifier = Modifier.width(10.dp))
-            Text("Ændr", color = Color.Black)
+            Text(stringResource(R.string.edit), color = Color.Black)
 
         }
     }
@@ -352,7 +346,7 @@ private fun InfoDropDownIndividualBudget(
 ) {
     IconButton(onClick = onClick, ) {
         Icon(imageVector = if(expanded) {Icons.Outlined.ExpandLess} else {Icons.Outlined.ArrowDropDown},
-            contentDescription = "Dropdown for budget",
+            contentDescription = stringResource(R.string.budgetDropDown),
             modifier = modifier.size(30.dp)
         )
     }
@@ -375,17 +369,17 @@ fun BudgetInformationIndividual(budgetElementUiState: BudgetElementUiState,
         Row(modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween){
             Text(
-                budgetElementUiState.budgetName + ": " + budgetElementUiState.budgetPrice.toString() + "KR",
+                budgetElementUiState.budgetName + ": " + budgetElementUiState.budgetPrice.toString() + stringResource(R.string.valuta),
                 color = OnPrimaryContainer,
                 fontSize = 25.sp
             )
             InfoDropDownIndividualBudget(expanded = expanded, onClick = { expanded = !expanded })
         }
         if (expanded) {
-            Text(text = "Beskrivelse:", fontWeight = FontWeight.Bold)
+            Text(text = stringResource(id = R.string.BudgetDialogDescriptionText), fontWeight = FontWeight.Bold)
             Text(text = budgetElementUiState.budgetNote)
             Button(onClick = {onChangeNote(budgetElementUiState)}) {
-                Text(text = "Ændr beskrivelse")
+                Text(text = stringResource(R.string.changeDesription))
             }
         }
     }
