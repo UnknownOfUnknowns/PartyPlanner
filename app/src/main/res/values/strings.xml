@@ -49,4 +49,6 @@
     <string name="wishPrice">Pris på ønsket</string>
     <string name="addDesricption">Tilføj en beskrivelse</string>
     <string name="priceofwish">Pris på ønsket</string>
+ <string name="addWish">Tilføj Ønske</string>
+ <string name="addPhoto">add photo</string>
 </resources>

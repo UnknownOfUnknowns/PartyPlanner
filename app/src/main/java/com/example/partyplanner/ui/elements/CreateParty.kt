@@ -50,7 +50,9 @@ fun StartPartyCreation(onNextButtonClick: () -> Unit, viewModel: NewPartyViewMod
 
 
         ) {
-
+            val stdModifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp)
             Spacer(modifier = Modifier.height(30.dp))
 
             Text(
@@ -66,15 +68,12 @@ fun StartPartyCreation(onNextButtonClick: () -> Unit, viewModel: NewPartyViewMod
             //For now the app can only handle one host
             Spacer(modifier = Modifier.height(20.dp))
 
+            GenericOutlineTextField(modifier = stdModifier,
+                value = uiState.value.partyHost,
+                onValueChange = {viewModel.changeHostName(it)},
+                labelText = stringResource(id = R.string.whoHostsTheParty)
+            )
 
-            OutlinedTextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(10.dp),
-                shape = RoundedCornerShape(10),
-                value = uiState.value.partyHost, onValueChange = {viewModel.changeHostName(it)},
-                label = { Text(text = stringResource(R.string.whoHostsTheParty))}
-                )
 
             Spacer(modifier = Modifier.height(20.dp))
 
@@ -147,7 +146,7 @@ fun ChoosePartyDropDown(selectedOption : PartyType, onChangePartyType: (String) 
             onValueChange = {},
             label = { Text(stringResource(R.string.ChoosePartyTypeDropDownText))},
             trailingIcon = {ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)},
-            colors = ExposedDropdownMenuDefaults.textFieldColors(),
+            colors = TextFieldDefaults.outlinedTextFieldColors(containerColor = Color.White),
         )
         ExposedDropdownMenu(
             expanded = expanded,
@@ -179,7 +178,9 @@ fun SetPartyDataOnCreation(
     setCity: (String) -> Unit,
     setDate: (Date) -> Unit,
 ) {
-
+    val stdModifier = Modifier
+        .fillMaxWidth()
+        .padding(10.dp)
     val context = LocalContext.current
 
     FadeBackground() {
@@ -192,11 +193,7 @@ fun SetPartyDataOnCreation(
 
             Spacer(modifier = Modifier.height(30.dp))
 
-
-            OutlinedTextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(10.dp),
+            GenericOutlineTextField(modifier = stdModifier,
                 value = party.name,
                 onValueChange = {
                     if(it.length <= 50) {
@@ -205,8 +202,8 @@ fun SetPartyDataOnCreation(
                         Toast.makeText(context, "Maksimum 50 tegn", Toast.LENGTH_SHORT).show()
                     }
                 },
-                label = { Text(stringResource(R.string.ChoosePartyTitleText)) },
-                singleLine = true
+                labelText = stringResource(id = R.string.ChoosePartyTitleText),
+            isSingleline = true
             )
 
             Spacer(modifier = Modifier.height(10.dp))
@@ -219,10 +216,7 @@ fun SetPartyDataOnCreation(
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            OutlinedTextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(10.dp),
+            GenericOutlineTextField(modifier = stdModifier,
                 value = party.address,
                 onValueChange = {
                     if(it.length <= 50) {
@@ -231,17 +225,19 @@ fun SetPartyDataOnCreation(
                         Toast.makeText(context, "Maksimum 50 tegn", Toast.LENGTH_SHORT).show()
                     }
                 },
-                label = { Text(stringResource(R.string.ChooseAdressOnCreatePartyTextField)) },
-                singleLine = true
+                labelText = stringResource(id = R.string.ChooseAdressOnCreatePartyTextField),
+            isSingleline = true
             )
+
 
             Spacer(modifier = Modifier.height(10.dp))
             Row (
                 Modifier
                     .padding(start = 10.dp, end = 10.dp)
                     .fillMaxWidth()) {
-                OutlinedTextField(
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                GenericOutlineTextField(
+                    keyOption = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    modifier = stdModifier.weight(0.3f),
                     value = party.zip,
                     onValueChange = {
                         if(it.length <= 4) {
@@ -250,15 +246,13 @@ fun SetPartyDataOnCreation(
                             Toast.makeText(context, "Maksimum 4 tal", Toast.LENGTH_SHORT).show()
                         }
                     },
-                    label = { Text(stringResource(R.string.ChooseZipCodeOnCreatePartyText)) },
-                    singleLine = true,
-                    maxLines =4,
-                    modifier = Modifier.weight(0.3f)
+                    labelText = stringResource(id = R.string.ChooseZipCodeOnCreatePartyText),
+                    isSingleline = true
                 )
 
-                Spacer(modifier = Modifier.width(10.dp))
-
-                OutlinedTextField(
+                GenericOutlineTextField(modifier = stdModifier
+                    .weight(0.7f)
+                    .padding(start = 10.dp),
                     value = party.city,
                     onValueChange = {
                         if(it.length <= 25) {
@@ -267,9 +261,8 @@ fun SetPartyDataOnCreation(
                             Toast.makeText(context, "Maksimum 25 tegn", Toast.LENGTH_SHORT).show()
                         }
                     },
-                    label = { Text(stringResource(R.string.ChooseCityOnCreatePartyText)) },
-                    singleLine = true,
-                    modifier = Modifier.weight(0.7f)
+                    labelText = stringResource(id = R.string.ChooseCityOnCreatePartyText),
+                isSingleline = true
                 )
             }
 
@@ -315,11 +308,13 @@ fun showDatePicker(date : Date, setDate : (Date) -> Unit){
                 .fillMaxWidth()
                 .clickable { datePickerDialog.show() }
                 .padding(10.dp)
+                .background(Color.White)
                 .border(
                     width = 1.dp,
                     shape = RoundedCornerShape(10),
                     color = Color.Gray,
                 ),
+
         ){
 
             Row(
@@ -360,6 +355,7 @@ fun ShowTimePicker(date : Date, setDate : (Date) -> Unit) {
                 .fillMaxWidth()
                 .clickable { mTimePickerDialog.show() }
                 .padding(10.dp)
+                .background(Color.White)
                 .border(
                     width = 1.dp,
                     shape = RoundedCornerShape(10),

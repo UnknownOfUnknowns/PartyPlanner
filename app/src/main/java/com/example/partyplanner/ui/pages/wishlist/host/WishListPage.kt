@@ -75,7 +75,6 @@ fun WishListPage(viewModel: WishListViewModel, navigateToProduct: (WishUiState) 
                 .align(Alignment.BottomStart), onClick = {})
         }
     }
-
 }
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -133,7 +132,7 @@ fun AddWishDialog(
                     .align(CenterHorizontally)
                     .padding(vertical = 10.dp)
                 Text(
-                    text = "Tilføj Ønske",
+                    text = stringResource(R.string.addWish),
                     modifier = stdModifier,
                     fontSize = 30.sp
                 )
@@ -171,11 +170,10 @@ fun AddWishDialog(
                     .fillMaxWidth()
                     .padding(horizontal = 10.dp)
                 ) {
-                    //Her skal billednavnet stå/importeres. 
-                    Text(text = "HER SKAL BILLEDNAVN STÅ!")
+                    Text(text = "Vælg Billede:")
                     Divider(Modifier.width(4.dp))
                     Icon(imageVector = Icons.Default.AddAPhoto,
-                        contentDescription = "add photo",
+                        contentDescription = stringResource(R.string.addPhoto),
                         modifier = Modifier.clickable {
                            onChooseImage()
                         }
@@ -199,7 +197,6 @@ fun AddWishDialog(
                 }
             }
         }
-        
     }
 }
 

@@ -249,12 +249,23 @@ fun AddBudgetDialog(
                 modifier = Modifier
                     .padding(horizontal = 10.dp)
             ) {
+                val stdModifier = Modifier
+                    .align(CenterHorizontally)
+                    .padding(vertical = 10.dp)
+
                 Text(text = stringResource(R.string.BudgetAddExpensePostText),
                     modifier = Modifier
                         .align(CenterHorizontally)
                         .padding(vertical = 10.dp),
                     fontSize = 30.sp)
 
+                GenericOutlineTextField(modifier = stdModifier,
+                    value = budgetElementUiState.budgetName,
+                    onValueChange = onNameChange,
+                    labelText = stringResource(id = R.string.BudgetChooseNameForExpensePost),
+                    isSingleline = true
+                )
+                /*
                 OutlinedTextField(value = budgetElementUiState.budgetName, onValueChange = onNameChange,
                     modifier = Modifier
                         .align(CenterHorizontally)
@@ -264,6 +275,19 @@ fun AddBudgetDialog(
                     shape = RoundedCornerShape(10),
                     singleLine = true
                 )
+                */
+
+                GenericOutlineTextField(
+                    keyOption = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    modifier = stdModifier,
+                    value = budgetElementUiState.budgetPrice.toString(),
+                    onValueChange = {
+                        if (it.isDigitsOnly()) {
+                            onPriceChange(it.toInt())
+                        }
+                    },
+                    labelText = stringResource(id = R.string.priceofwish))
+                /*
                 OutlinedTextField(
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     value = budgetElementUiState.budgetPrice.toString(),
@@ -281,6 +305,7 @@ fun AddBudgetDialog(
                     ),
                     shape = RoundedCornerShape(10)
                 )
+                */
                 Row() {
                     TextButton(onClick = onDismiss) {
                         Text(text = "Afbryd")
