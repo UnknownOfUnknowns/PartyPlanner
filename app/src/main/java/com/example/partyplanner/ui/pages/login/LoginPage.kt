@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.partyplanner.R
 import com.example.partyplanner.ui.elements.FadeBackground
+import okhttp3.internal.wait
 
 
 @Composable
@@ -100,12 +101,11 @@ fun Username(onValueChange: (String) -> Unit, username: String){
                 Toast.makeText(context, "Maksimum 40 tegn", Toast.LENGTH_SHORT).show()
             }
         },
+
         shape = RoundedCornerShape(10),
-        colors = TextFieldDefaults.textFieldColors(),
+        colors = TextFieldDefaults.outlinedTextFieldColors(Color.White),
         label = { Text(
                     stringResource(R.string.UsernameTextField),
-            color = Color.Gray,
-            fontSize = 15.sp,
             )
         }
 
@@ -133,6 +133,7 @@ fun Password(onValueChange: (String) -> Unit, password: String){
                 Toast.makeText(context, "Maksimum 40 tegn i kodeordet", Toast.LENGTH_SHORT).show()
             }
         },
+        colors = TextFieldDefaults.outlinedTextFieldColors(Color.White),
         shape = RoundedCornerShape(10),
 
         visualTransformation = if (showPassword.value) {
@@ -143,8 +144,6 @@ fun Password(onValueChange: (String) -> Unit, password: String){
 
         label = { Text(
                     stringResource(R.string.InsertPasswordTextField),
-            color = Color.Gray,
-            fontSize = 15.sp,
         )
         },
         trailingIcon = {

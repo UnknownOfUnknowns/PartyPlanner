@@ -265,17 +265,7 @@ fun AddBudgetDialog(
                     labelText = stringResource(id = R.string.BudgetChooseNameForExpensePost),
                     isSingleline = true
                 )
-                /*
-                OutlinedTextField(value = budgetElementUiState.budgetName, onValueChange = onNameChange,
-                    modifier = Modifier
-                        .align(CenterHorizontally)
-                        .padding(vertical = 10.dp),
-                    label = { Text(text = stringResource(R.string.BudgetChooseNameForExpensePost))},
-                    colors = TextFieldDefaults.outlinedTextFieldColors(containerColor = Color.White),
-                    shape = RoundedCornerShape(10),
-                    singleLine = true
-                )
-                */
+
 
                 GenericOutlineTextField(
                     keyOption = KeyboardOptions(keyboardType = KeyboardType.Number),
@@ -287,25 +277,7 @@ fun AddBudgetDialog(
                         }
                     },
                     labelText = stringResource(id = R.string.priceofwish))
-                /*
-                OutlinedTextField(
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    value = budgetElementUiState.budgetPrice.toString(),
-                    onValueChange = {
-                        if (it.isDigitsOnly()) {
-                            onPriceChange(it.toInt())
-                        }
-                    },
-                    modifier = Modifier
-                        .align(CenterHorizontally)
-                        .padding(vertical = 10.dp),
-                    label = { Text(text = stringResource(R.string.priceofwish)) },
-                    colors = TextFieldDefaults.outlinedTextFieldColors(
-                        containerColor = Color.White
-                    ),
-                    shape = RoundedCornerShape(10)
-                )
-                */
+
                 Row() {
                     TextButton(onClick = onDismiss) {
                         Text(text = "Afbryd")

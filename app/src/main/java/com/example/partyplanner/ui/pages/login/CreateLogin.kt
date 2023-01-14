@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.partyplanner.R
 import com.example.partyplanner.ui.elements.FadeBackground
+import com.example.partyplanner.ui.elements.GenericOutlineTextField
 
 @Composable
 fun CreateLoginScreen(viewModel: CreateUserViewModel){
@@ -97,14 +98,13 @@ fun SignUpFailedDialog(onDismiss : () -> Unit) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FullName(onValueChange: (String) -> Unit, fullName: String) {
-
+    val stdModifier = Modifier
+        .fillMaxWidth()
+        .padding(10.dp)
+        .clip(RoundedCornerShape(10))
     val context = LocalContext.current
 
-    OutlinedTextField(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(10.dp)
-            .clip(RoundedCornerShape(10)),
+    GenericOutlineTextField(modifier = stdModifier,
         value = fullName,
         onValueChange = {
             if(it.length <= 40) {
@@ -113,28 +113,20 @@ fun FullName(onValueChange: (String) -> Unit, fullName: String) {
                 Toast.makeText(context, "Maksimum 40 tegn", Toast.LENGTH_SHORT).show()
             }
         },
-        shape = RoundedCornerShape(10),
-        colors = TextFieldDefaults.textFieldColors(),
-        label = { Text(text = stringResource(R.string.FullNameTextField),
-            color = Color.Gray,
-            fontSize = 15.sp,
-        )
-        }
-
+        labelText = stringResource(id = R.string.FullNameTextField)
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Email(onValueChange: (String) -> Unit, email: String) {
-
+    val stdModifier = Modifier
+        .fillMaxWidth()
+        .padding(10.dp)
+        .clip(RoundedCornerShape(10))
     val context = LocalContext.current
 
-    OutlinedTextField(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(10.dp)
-            .clip(RoundedCornerShape(10)),
+    GenericOutlineTextField(modifier = stdModifier,
         value = email,
         onValueChange = {
             if(it.length <= 40) {
@@ -143,23 +135,17 @@ fun Email(onValueChange: (String) -> Unit, email: String) {
                 Toast.makeText(context, "Maksimum 40 tegn", Toast.LENGTH_SHORT).show()
             }
         },
-        shape = RoundedCornerShape(10),
-        colors = TextFieldDefaults.textFieldColors(),
-        label = { Text(text = stringResource(R.string.EmailTextField),
-            color = Color.Gray,
-            fontSize = 15.sp,
-        )
-        }
-
+        labelText = stringResource(id = R.string.EmailTextField),
+        isSingleline = true
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewPassword(onValueChange: (String) -> Unit, password: String){
-
     val showPassword = remember { mutableStateOf(false) }
     val context = LocalContext.current
+
 
     OutlinedTextField(
         modifier = Modifier
@@ -174,6 +160,9 @@ fun NewPassword(onValueChange: (String) -> Unit, password: String){
                 Toast.makeText(context, "Maksimum 30 tegn som kodeord", Toast.LENGTH_SHORT).show()
             }
         },
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            containerColor = Color.White
+        ),
         shape = RoundedCornerShape(10),
 
         visualTransformation = if (showPassword.value) {
@@ -184,8 +173,6 @@ fun NewPassword(onValueChange: (String) -> Unit, password: String){
 
         label = { Text(
                     stringResource(R.string.NewPasswordTextField),
-            color = Color.Gray,
-            fontSize = 15.sp,
         )
         },
         trailingIcon = {
@@ -225,6 +212,9 @@ fun RepeatPassword(onValueChange2: (String) -> Unit, repeatPassword: String){
                 Toast.makeText(context, "Maksimum 30 tegn som kodeord", Toast.LENGTH_SHORT).show()
             }
         },
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            containerColor = Color.White
+        ),
         shape = RoundedCornerShape(10),
 
         visualTransformation = if (showPassword2.value) {
@@ -235,8 +225,6 @@ fun RepeatPassword(onValueChange2: (String) -> Unit, repeatPassword: String){
 
         label = { Text(
                     stringResource(R.string.RepeatPasswordTextField),
-            color = Color.Gray,
-            fontSize = 15.sp,
         )
         },
         trailingIcon = {

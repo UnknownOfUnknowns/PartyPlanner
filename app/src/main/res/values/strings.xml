@@ -20,7 +20,7 @@
     <string name="RepeatPasswordTextField">Gentag kodeord</string>
     <string name="LogInButtonText">Log ind</string>
     <string name="CreateNewUserButtonText">Opret ny bruger</string>
-    <string name="UsernameTextField">Indast brugernavn</string>
+    <string name="UsernameTextField">Indtast brugernavn</string>
     <string name="InsertPasswordTextField">Indtast password</string>
     <string name="ChoosePartyTypeText">Hvilken type fest vil du holde?</string>
     <string name="CreatePartyNextButtonText">Næste</string>
