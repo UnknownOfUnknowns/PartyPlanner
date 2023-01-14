@@ -1,5 +1,6 @@
 package com.example.partyplanner.ui.elements
 
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -14,6 +15,7 @@ import androidx.compose.ui.Alignment.Companion.BottomStart
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
@@ -74,7 +76,7 @@ fun WishProductPage(viewModel: WishViewModel, isGuest: Boolean) {
                 .fillMaxWidth()
                 .height(120.dp)
                 .padding(start = 11.dp, end = 11.dp, bottom = 17.dp))
-            CardWithProduct(wishUiState = uiState.value, isGuest = isGuest, navigateToProduct = {})
+            CardWithProduct(wishUiState = uiState.value, isGuest = isGuest)
         }
         if(!isGuest) {
             DeleteFAB(
@@ -91,7 +93,12 @@ fun WishProductPage(viewModel: WishViewModel, isGuest: Boolean) {
 
 
 @Composable
-fun CardWithProduct(modifier: Modifier = Modifier, wishUiState: WishUiState, isGuest : Boolean, navigateToProduct: () -> Unit) {
+fun CardWithProduct(modifier: Modifier = Modifier,
+                    wishUiState: WishUiState,
+                    isGuest : Boolean,
+                    linkError : Boolean = false,
+                    onLinkClick : (Context) -> Unit = {},
+                    onReserveClick : () -> Unit = {}) {
     Card(
         modifier = modifier.padding(start = 11.dp, end = 11.dp, bottom = 30.dp),
         shape = RoundedCornerShape(15.dp),
@@ -111,7 +118,7 @@ fun CardWithProduct(modifier: Modifier = Modifier, wishUiState: WishUiState, isG
 
             Spacer(modifier = Modifier.height(30.dp))
 
-            Wish(wishUiState = wishUiState, modifier = Modifier.size(height = 200.dp, width = 150.dp), onImageClick = { navigateToProduct() })
+            Wish(wishUiState = wishUiState, modifier = Modifier.size(height = 200.dp, width = 150.dp))
 
             Spacer(modifier = Modifier.height(5.dp))
 
@@ -127,18 +134,24 @@ fun CardWithProduct(modifier: Modifier = Modifier, wishUiState: WishUiState, isG
 
             Text(text = wishUiState.description)
             if(isGuest) {
+                val context = LocalContext.current
                 Column {
-                    GuestButton(buttonName = "Link")
+                    if(linkError) {
+                        Text(text = "Linket kunne ikke åbnes", modifier = Modifier.align(CenterHorizontally),
+                            color = Color.Red)
+                    }
+                    GuestButton(buttonName = "Link", {onLinkClick(context)})
                     Spacer(modifier = Modifier.height(10.dp))
-                    GuestButton(buttonName = "Reservér")
+                    GuestButton(buttonName = if(wishUiState.isReserved) "Fjern reservation" else "Reservér",
+                        onReserveClick)
                 }
             }
         }
     }
 }
 @Composable
-fun GuestButton(buttonName: String) {
-    Button(onClick = {}, modifier = Modifier
+fun GuestButton(buttonName: String, onClick: () -> Unit) {
+    Button(onClick = onClick, modifier = Modifier
         .fillMaxWidth()
         .height(50.dp)
         .padding(start = 50.dp, end = 50.dp),

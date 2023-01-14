@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -13,7 +14,7 @@ import com.example.partyplanner.ui.pages.wishlist.WishViewModel
 
 @Composable
 fun WishProductGuestPage(viewModel: WishViewModel) {
-    val uiState = viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsState()
     Box(modifier = Modifier
         .fillMaxSize()
         .background(MaterialTheme.colorScheme.background)
@@ -29,9 +30,13 @@ fun WishProductGuestPage(viewModel: WishViewModel) {
                 .height(120.dp)
                 .padding(start = 11.dp, end = 11.dp, bottom = 17.dp)
             )
-            CardWithProduct(wishUiState = uiState.value, isGuest = true) {
-
-            }
+            CardWithProduct(
+                wishUiState = uiState,
+                isGuest = true,
+                onReserveClick = viewModel::reserveWish,
+                onLinkClick = viewModel::openLink,
+                linkError = viewModel.linkError.value
+            )
         }
     }
 }

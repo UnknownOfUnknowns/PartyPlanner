@@ -10,7 +10,7 @@ data class Wish(
     val price: Int = 0,
     val description : String = "",
     val link : String = "",
-    val isReserved : Boolean = false
+    val reserved : Boolean = false
 )
 
 fun Wish.toUiState() : WishUiState = WishUiState(
@@ -19,7 +19,7 @@ fun Wish.toUiState() : WishUiState = WishUiState(
     price = price,
     description = description,
     link = link,
-    isReserved = isReserved,
+    isReserved = reserved,
     imageLink = image
 )
 
@@ -30,6 +30,6 @@ fun Wish.getFromUiState(state: WishUiState) : Wish = Wish(
     price = state.price,
     description = state.description,
     link = state.link,
-    isReserved = state.isReserved,
+    reserved = state.isReserved,
     image = state.imageLink
 )

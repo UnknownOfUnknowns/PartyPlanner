@@ -79,7 +79,7 @@ fun WishListPage(viewModel: WishListViewModel, navigateToProduct: (WishUiState) 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GenericOutlineTextField(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     keyOption: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
     value: String,
     onValueChange: (String) -> Unit,
@@ -268,7 +268,7 @@ fun WishTopBar(isReserved : Boolean, price : Int){
 fun Wish(modifier: Modifier = Modifier,
          wishUiState: WishUiState,
          showTopBar: Boolean = false,
-         onImageClick: (WishUiState) -> Unit,
+         onImageClick: (WishUiState) -> Unit = {},
 
 ) {
     Card(

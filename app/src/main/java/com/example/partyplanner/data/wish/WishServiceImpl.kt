@@ -1,10 +1,7 @@
 package com.example.partyplanner.data.wish
 
 import android.graphics.Bitmap
-import com.example.partyplanner.data.PARTIES_COLLECTION
-import com.example.partyplanner.data.WISH_COLLECTION
-import com.example.partyplanner.data.WISH_IMAGE_PATH
-import com.example.partyplanner.data.WISH_LIST_NAME_VARIABLE
+import com.example.partyplanner.data.*
 import com.example.partyplanner.data.imageLoader.ImageService
 import com.example.partyplanner.data.imageLoader.ImageServiceImpl
 import com.google.firebase.firestore.CollectionReference
@@ -71,6 +68,16 @@ class WishServiceImpl(private val firestore: FirebaseFirestore,
         }.addOnFailureListener {
             onResult(null)
         }
+    }
+
+    override suspend fun changeReservationState(wish: Wish, onResult: (Throwable?) -> Unit) {
+        wishCollection().document(wish.id).update(IS_WISH_RESERVED, !wish.reserved)
+            .addOnSuccessListener {
+                onResult(null)
+            }
+            .addOnFailureListener{
+                onResult(Exception())
+            }
     }
 
     private fun wishCollection() : CollectionReference =

@@ -16,4 +16,6 @@ interface WishService {
     suspend fun getWishListName() : String
 
     suspend fun getWish(id : String, onResult: (Wish?) -> Unit)
+
+    suspend fun changeReservationState(wish: Wish, onResult: (Throwable?) -> Unit)
 }

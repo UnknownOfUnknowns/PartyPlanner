@@ -15,4 +15,10 @@ const val WISH_IMAGE_PATH  ="wishImages"
 
 const val ATTENDANCE_STATE = "attendanceState"
 
+const val GUEST_ID = "guestId"
+const val PARTY_REFERENCE = "partyRef"
+
+const val IS_WISH_RESERVED = "reserved"
+
+const val GUESTS_FIELD = "guests"
 const val FIREBASE_STORAGE_URL = "gs://partyplanner-86609.appspot.com"

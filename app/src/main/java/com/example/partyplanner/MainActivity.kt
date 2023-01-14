@@ -157,7 +157,7 @@ fun PartyPlannerApp(){
 
                 SetPartyDataOnCreation(onNextButtonClick = {
                     partyViewModel.createParty()
-                    navigationController.navigateSingleTopTo(ConfirmationPage.route)
+                    navigationController.navigateSingleTopTo(PartiesOverviewPage.route)
                     },
                     party = state,
                     setAddress = {partyViewModel.updateAddress(it)},
