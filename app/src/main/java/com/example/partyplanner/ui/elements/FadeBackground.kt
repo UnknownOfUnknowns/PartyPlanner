@@ -9,7 +9,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -20,8 +20,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.partyplanner.R
@@ -32,6 +34,8 @@ import com.example.partyplanner.ui.theme.Background
 fun FadeBackground(content: @Composable() ( () -> Unit) = {}) {
     val firstFadeColor = Color(0xFF5E1DE8)
     val secondFadeColor = Color(0xFFACA0C6)
+
+    var canvasSize by remember { mutableStateOf(IntSize.Zero) }
     Column(modifier = Modifier.fillMaxSize()) {
         Box(modifier =
         Modifier
@@ -40,6 +44,9 @@ fun FadeBackground(content: @Composable() ( () -> Unit) = {}) {
         ){
             Canvas(modifier = Modifier
                 .fillMaxSize()
+                .onSizeChanged {
+                    canvasSize = it
+                }
             ) {
                 drawRect(
                     brush = Brush.linearGradient(
@@ -50,19 +57,19 @@ fun FadeBackground(content: @Composable() ( () -> Unit) = {}) {
                     )
                 )
                 drawIntoCanvas {
-                    val textPadding = 30.dp.toPx()
+                    val textPadding = 70.dp.toPx()
                     val arcHeight = 300.dp.toPx()
-                    val arcWidth = 300.dp.toPx()
+                    val arcWidth = canvasSize.width.toFloat()
                     val path = Path().apply {
                         addArc(0f, textPadding, arcWidth, arcHeight, 180f, 180f)
                     }
                     it.nativeCanvas.drawTextOnPath(
-                        "Hello Geek! This is Curved Text.",
+                        "Party Planner",
                         path,
                         0f,
                         0f,
                         Paint().apply {
-                            textSize = 20.sp.toPx()
+                            textSize = 40.sp.toPx()
                             textAlign = Paint.Align.CENTER
                         }
                     )
