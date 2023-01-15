@@ -92,4 +92,6 @@
  <string name="reserved">Reserveret</string>
     <string name="linkCouldNotBeOpened">Linket kunne ikke åbnes</string>
  <string name="undoReservation">Fjern reservation</string>
+    <string name="delete">Slet</string>
+    <string name="warning">Advarsel</string>
 </resources>

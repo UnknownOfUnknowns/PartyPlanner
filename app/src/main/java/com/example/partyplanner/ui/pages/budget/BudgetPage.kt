@@ -65,7 +65,14 @@ fun BudgetPage(viewModel: BudgetViewModel) {
 
             Spacer(modifier = Modifier.height(10.dp))
             IndividualBudgetList(budgets = uiState.value.budgetElements,
-                onChangeNote = {viewModel.startUpdate(it)}
+                onChangeNote = {viewModel.startUpdate(it)},
+                onDelete = {viewModel.toggleDelete(it)}
+            )
+        }
+        if(uiState.value.budgetToBeDeleted != null) {
+            DeleteDialog(text = "Vil du slette denne omkostning",
+                onDismiss = {viewModel.toggleDelete()},
+                onDelete = {viewModel.deleteWish()}
             )
         }
 
@@ -290,10 +297,7 @@ fun AddBudgetDialog(
 fun BudgetInfoTopScreen(
     budgetListUiState: BudgetListUiState,
     onMaxBudgetChange: () -> Unit,
-
-
 ){
-
     Row(
         modifier = Modifier
             .background(PrimaryContainer, shape = RoundedCornerShape(10.dp))
@@ -302,10 +306,7 @@ fun BudgetInfoTopScreen(
             .padding(start = 10.dp, end = 10.dp),
         horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically,
     ) {
-
-        Column(
-
-            ) {
+        Column{
             Spacer(modifier = Modifier.height(5.dp))
             Text(stringResource(R.string.budget), color = OnSecondaryContainer)
             Spacer(modifier = Modifier.height(5.dp))
@@ -354,7 +355,8 @@ private fun InfoDropDownIndividualBudget(
 
 @Composable
 fun BudgetInformationIndividual(budgetElementUiState: BudgetElementUiState,
-                                onChangeNote : (BudgetElementUiState) -> Unit
+                                onChangeNote : (BudgetElementUiState) -> Unit,
+                                onDelete : (BudgetElementUiState) -> Unit
 ){
     var expanded by remember { mutableStateOf(false) }
 
@@ -378,8 +380,13 @@ fun BudgetInformationIndividual(budgetElementUiState: BudgetElementUiState,
         if (expanded) {
             Text(text = stringResource(id = R.string.budgetDialogDescriptionText), fontWeight = FontWeight.Bold)
             Text(text = budgetElementUiState.budgetNote)
-            Button(onClick = {onChangeNote(budgetElementUiState)}) {
-                Text(text = stringResource(R.string.changeDesription))
+            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                Button(onClick = {onChangeNote(budgetElementUiState)}) {
+                    Text(text = stringResource(R.string.changeDesription))
+                }
+                TextButton(onClick = {onDelete(budgetElementUiState)}) {
+                    Text(text = stringResource(R.string.delete))
+                }
             }
         }
     }
@@ -407,7 +414,9 @@ fun ExpandedTextField(
 
 // Her er Items tilføjet til at kunne gøre igennem listen af forskellige budgets
 @Composable
-fun IndividualBudgetList(budgets : List<BudgetElementUiState>, onChangeNote: (BudgetElementUiState) -> Unit){
+fun IndividualBudgetList(budgets : List<BudgetElementUiState>,
+                         onChangeNote: (BudgetElementUiState) -> Unit,
+                         onDelete: (BudgetElementUiState) -> Unit){
     LazyColumn(
         modifier = Modifier
             .background(Background, shape = RoundedCornerShape(10.dp))
@@ -417,7 +426,7 @@ fun IndividualBudgetList(budgets : List<BudgetElementUiState>, onChangeNote: (Bu
 
     ){
         items(budgets) { budgetInformationIndividual ->
-            BudgetInformationIndividual(budgetElementUiState = budgetInformationIndividual, onChangeNote)
+            BudgetInformationIndividual(budgetElementUiState = budgetInformationIndividual, onChangeNote, onDelete)
         }
 
     }

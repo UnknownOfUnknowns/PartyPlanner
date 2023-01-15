@@ -46,6 +46,14 @@ class BudgetServiceImpl(private val firestore: FirebaseFirestore, @DocumentId pr
 
     }
 
+    override suspend fun deleteBudget(budget: Budget, onResult: (Throwable?) -> Unit) {
+        budgetCollection().document(budget.id).delete().addOnSuccessListener {
+            onResult(null)
+        }.addOnFailureListener {
+            onResult(Exception())
+        }
+    }
+
     override suspend fun update(newNote : String, newPrice : Int, budget: Budget, onResult: (Throwable?) -> Unit) {
         budgetCollection().whereEqualTo(BUDGET_NAME, budget.budgetName).get().addOnSuccessListener {
             it.forEach { doc ->

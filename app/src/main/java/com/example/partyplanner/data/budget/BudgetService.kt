@@ -11,5 +11,7 @@ interface BudgetService {
 
     suspend fun getBudgetMax(onResult: (Int) -> Unit)
 
+    suspend fun deleteBudget(budget: Budget, onResult: (Throwable?) -> Unit)
+
     suspend fun update(newNote : String, newPrice : Int, budget: Budget, onResult: (Throwable?) -> Unit)
 }

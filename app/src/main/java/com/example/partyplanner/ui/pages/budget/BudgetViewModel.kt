@@ -60,6 +60,25 @@ class BudgetViewModel (private val repository : BudgetService) : ViewModel() {
         }
     }
 
+    fun deleteWish() {
+        viewModelScope.launch {
+            val budget = _internalState.value.budgetToBeDeleted
+            if(budget != null) {
+                repository.deleteBudget(Budget().getFromUiState(budget)) {
+
+                }
+                toggleDelete()
+            }
+        }
+    }
+
+    fun toggleDelete(budget: BudgetElementUiState? = null) {
+        val newDeleteBudget = if(_internalState.value.budgetToBeDeleted == null) budget else null
+        _internalState.update {
+            it.copy(budgetToBeDeleted = newDeleteBudget)
+        }
+    }
+
     fun startUpdate(budget: BudgetElementUiState) {
         _internalState.update {
             it.copy(

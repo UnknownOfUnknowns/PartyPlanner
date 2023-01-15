@@ -11,6 +11,7 @@ data class Budget(
 )
 
 fun Budget.toUiState() : BudgetElementUiState = BudgetElementUiState(
+    id = id,
     budgetName = budgetName,
     budgetPrice = budgetPrice,
     budgetNote = budgetNote,
@@ -18,6 +19,7 @@ fun Budget.toUiState() : BudgetElementUiState = BudgetElementUiState(
 
 
 fun Budget.getFromUiState(state: BudgetElementUiState) : Budget = Budget(
+    id = state.id,
     budgetName = state.budgetName,
     budgetPrice = state.budgetPrice,
     budgetNote = state.budgetNote

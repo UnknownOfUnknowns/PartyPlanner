@@ -51,6 +51,7 @@ fun WishProductPage(viewModel: WishViewModel, isGuest: Boolean) {
         }
         if(showDeleteDialog) {
             DeleteDialog(
+                text = "Vil du slette dette ønske?",
                 onDismiss = {showDeleteDialog = false},
                 onDelete = {showDeleteDialog = false; viewModel.deleteWish()}
             )
@@ -69,15 +70,15 @@ fun WishProductPage(viewModel: WishViewModel, isGuest: Boolean) {
 }
 
 @Composable
-fun DeleteDialog(onDismiss: () -> Unit, onDelete : () -> Unit) {
+fun DeleteDialog(text : String, onDismiss: () -> Unit, onDelete : () -> Unit) {
     Dialog(onDismissRequest = onDismiss) {
         Card(modifier = Modifier,
             shape = RoundedCornerShape(10),
             colors = CardDefaults.cardColors(Background)) {
             Column(Modifier.padding(15.dp),
                 horizontalAlignment = CenterHorizontally) {
-                Text(text = "Slet", fontSize = 20.sp)
-                Text(text = "Vil du slette dette ønske?")
+                Text(text = stringResource(R.string.warning), fontSize = 20.sp)
+                Text(text = text)
                 Row {
                     TextButton(onClick = onDismiss) {
                         Text(text = "Afbryd")
