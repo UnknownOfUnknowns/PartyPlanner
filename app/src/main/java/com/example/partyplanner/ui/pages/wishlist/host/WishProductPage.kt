@@ -8,8 +8,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment.Companion.BottomEnd
 import androidx.compose.ui.Alignment.Companion.BottomStart
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
@@ -21,50 +20,20 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import com.example.partyplanner.R
 import com.example.partyplanner.ui.pages.wishlist.WishUiState
 import com.example.partyplanner.ui.pages.wishlist.WishViewModel
+import com.example.partyplanner.ui.theme.Background
 import com.example.partyplanner.ui.theme.Primary
 
-/*
-@Composable
-fun WishDescription(wishUiState: WishUiState, showButton: Boolean = false) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize(),
-        horizontalAlignment = CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Text(text = wishUiState.wishName + "  " + "(" + wishUiState.price + "kr)",
-            fontWeight = FontWeight.Bold,
-            fontSize = 30.sp,
-            textDecoration = TextDecoration.Underline
-        )
-        Spacer(modifier = Modifier.height(30.dp))
-        Wish(wishUiState = wishUiState)
-        Spacer(modifier = Modifier.height(5.dp))
-        Text(text = wishUiState.link,
-            fontWeight = FontWeight.Bold,
-        )
-        Spacer(modifier = Modifier.height(5.dp))
-        Text(text = "Beskrivelse:",
-            fontWeight = FontWeight.Bold
-        )
-        Text(text = wishUiState.description)
-        if(showButton) {
-            Button(onClick = {}, modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight()
-                .padding(start = 50.dp, end = 50.dp)
-            ) {
-                Text(text = "LINK")
-            }
-        }
-    }
-}*/
 @Composable
 fun WishProductPage(viewModel: WishViewModel, isGuest: Boolean) {
     val uiState = viewModel.uiState.collectAsState()
+
+    var showDeleteDialog by remember {
+        mutableStateOf(false)
+    }
     Box(modifier = Modifier
         .fillMaxSize()
         .background(MaterialTheme.colorScheme.background)
@@ -80,9 +49,15 @@ fun WishProductPage(viewModel: WishViewModel, isGuest: Boolean) {
                 .padding(start = 11.dp, end = 11.dp, bottom = 17.dp))
             CardWithProduct(wishUiState = uiState.value, isGuest = isGuest)
         }
+        if(showDeleteDialog) {
+            DeleteDialog(
+                onDismiss = {showDeleteDialog = false},
+                onDelete = {showDeleteDialog = false; viewModel.deleteWish()}
+            )
+        }
         if(!isGuest) {
             DeleteFAB(
-                onClick = {}, modifier = Modifier
+                onClick = {showDeleteDialog = true}, modifier = Modifier
                     .align(BottomStart)
             )
             EditFAB(
@@ -93,6 +68,30 @@ fun WishProductPage(viewModel: WishViewModel, isGuest: Boolean) {
     }
 }
 
+@Composable
+fun DeleteDialog(onDismiss: () -> Unit, onDelete : () -> Unit) {
+    Dialog(onDismissRequest = onDismiss) {
+        Card(modifier = Modifier,
+            shape = RoundedCornerShape(10),
+            colors = CardDefaults.cardColors(Background)) {
+            Column(Modifier.padding(15.dp),
+                horizontalAlignment = CenterHorizontally) {
+                Text(text = "Slet", fontSize = 20.sp)
+                Text(text = "Vil du slette dette ønske?")
+                Row {
+                    TextButton(onClick = onDismiss) {
+                        Text(text = "Afbryd")
+                    }
+                    TextButton(onClick = onDelete) {
+                        Text(text = "Ja", fontWeight = FontWeight.Bold)
+                    }
+                }
+
+            }
+        }
+        
+    }
+}
 
 @Composable
 fun CardWithProduct(modifier: Modifier = Modifier,

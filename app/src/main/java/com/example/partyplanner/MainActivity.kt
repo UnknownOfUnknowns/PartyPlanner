@@ -23,8 +23,6 @@ import com.example.partyplanner.data.wish.WishServiceImpl
 import com.example.partyplanner.domain.ImagePicker
 import com.example.partyplanner.navigation.*
 import com.example.partyplanner.ui.elements.*
-import com.example.partyplanner.ui.guestpages.GuestMenuPage
-import com.example.partyplanner.ui.guestpages.GuestMenuViewModel
 import com.example.partyplanner.ui.pages.login.CreateLoginScreen
 import com.example.partyplanner.ui.pages.login.CreateUserViewModel
 import com.example.partyplanner.ui.pages.login.LoginViewModel
@@ -34,6 +32,7 @@ import com.example.partyplanner.ui.pages.wishlist.WishListViewModel
 import com.example.partyplanner.ui.pages.wishlist.WishViewModel
 import com.example.partyplanner.ui.theme.PartyPlannerTheme
 import com.google.firebase.firestore.FirebaseFirestore
+import guestGraph
 import hostPartyGraph
 
 class MainActivity : ComponentActivity() {
@@ -116,12 +115,13 @@ fun PartyPlannerApp(){
                 val party = backStack.arguments?.getString(partyId) ?: ""
                 val wish = backStack.arguments?.getString(wishId) ?: ""
 
-                val wishViewModel = WishViewModel(repository = WishServiceImpl(FirebaseFirestore.getInstance(), party), wish)
+                val wishViewModel = WishViewModel(repository = WishServiceImpl(FirebaseFirestore.getInstance(), party), wishId = wish)
                 WishProductGuestPage(viewModel = wishViewModel)
             }
 
 
             hostPartyGraph(navigationController)
+            guestGraph(navigationController)
 
             composable(route = PartiesOverviewPage.route) {
                 PartyListAndCreate(
@@ -170,19 +170,6 @@ fun PartyPlannerApp(){
             composable(route = ConfirmationPage.route){
                 CreatePartyConfirmation()
             }
-
-
-
-            composable(route = "${GuestMenuPagee.route}/{partyId}"){ backStack ->
-                val party = backStack.arguments?.getString("partyId") ?: ""
-
-                GuestMenuPage(GuestMenuViewModel(PartyServiceImpl(), party)) {
-                    navigationController.navigate(
-                        "${WishListGuestPage.route}/$party"
-                    )
-                }
-            }
-
 
         }
     }

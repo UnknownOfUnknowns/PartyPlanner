@@ -51,17 +51,16 @@ object ConfirmationPage : PartyPlannerDestination {
 object WishListGuestPage : PartyPlannerDestination {
     override val route: String = "wishListGuest"
     override val name: String
-        get() = TODO("Not yet implemented")
+        get() = "Ønsker"
     override val icon: ImageVector
-        get() = TODO("Not yet implemented")
+        get() = Icons.Filled.GifBox
 
 }
 object WishProductGuest : PartyPlannerDestination {
     override val route: String = "wishProductGuest"
     override val name: String
-        get() = TODO("Not yet implemented")
-    override val icon: ImageVector
-        get() = TODO("Not yet implemented")
+        get() = "Ønske"
+    override val icon: ImageVector = Icons.Filled.GifBox
 
 }
 object WishProduct : PartyPlannerDestination {
@@ -99,9 +98,9 @@ object BudgetPage : PartyPlannerDestination {
 object GuestMenuPagee : PartyPlannerDestination {
     override val route = "GuestMenu"
     override val name: String
-        get() = TODO("Not yet implemented")
+        get() = "Gæste menu"
     override val icon: ImageVector
-        get() = TODO("Not yet implemented")
+        get() = Icons.Default.Person
 }
 
 object TablePlannerPage : PartyPlannerDestination {
@@ -120,3 +119,4 @@ val partyPlannerScreens = listOf(StartPage, NewPartyPage)
 
 
 val hostPartyScreens = listOf(Guestlist, WishPage, BudgetPage, TablePlannerPage)
+val guestPartyScreens = listOf(GuestMenuPagee, WishListGuestPage)

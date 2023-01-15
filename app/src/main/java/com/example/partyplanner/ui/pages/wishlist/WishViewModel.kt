@@ -15,7 +15,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class WishViewModel(private val repository : WishService, private val wishId : String) : ViewModel() {
+class WishViewModel(private val repository : WishService,
+                    private val navigateOnWishDeleted : () -> Unit = {},
+                    private val wishId : String) : ViewModel() {
     private val _uiState = MutableStateFlow(WishUiState())
     val uiState = _uiState.asStateFlow()
     val wishListName = mutableStateOf("")
@@ -41,6 +43,15 @@ class WishViewModel(private val repository : WishService, private val wishId : S
         }
     }
 
+    fun deleteWish() {
+        viewModelScope.launch {
+            repository.deleteWish(Wish().getFromUiState(_uiState.value)) {
+                if(it == null) {
+                    navigateOnWishDeleted()
+                }
+            }
+        }
+    }
 
     fun reserveWish() {
         viewModelScope.launch {

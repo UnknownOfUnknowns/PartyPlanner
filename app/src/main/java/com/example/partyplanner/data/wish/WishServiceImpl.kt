@@ -54,7 +54,11 @@ class WishServiceImpl(private val firestore: FirebaseFirestore,
     }
 
     override suspend fun deleteWish(wish: Wish, onResult: (Throwable?) -> Unit) {
-        TODO("Not Yet implemented")
+        wishCollection().document(wish.id).delete().addOnSuccessListener {
+            onResult(null)
+        }.addOnFailureListener {
+            onResult(Exception())
+        }
     }
 
     override suspend fun getWishListName() : String{

@@ -16,6 +16,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.example.partyplanner.data.GuestServiceImpl
 import com.example.partyplanner.data.budget.BudgetServiceImpl
+import com.example.partyplanner.data.party.PartyServiceImpl
 import com.example.partyplanner.data.wish.WishServiceImpl
 import com.example.partyplanner.navigation.*
 import com.example.partyplanner.ui.elements.BudgetPage
@@ -23,6 +24,8 @@ import com.example.partyplanner.ui.elements.WishListPage
 import com.example.partyplanner.ui.elements.WishProductPage
 import com.example.partyplanner.ui.elements.tableplannerpages.CreateTable
 import com.example.partyplanner.ui.elements.tableplannerpages.TablePlannerViewModel
+import com.example.partyplanner.ui.guestpages.GuestMenuPage
+import com.example.partyplanner.ui.guestpages.GuestMenuViewModel
 import com.example.partyplanner.ui.pages.budget.BudgetViewModel
 import com.example.partyplanner.ui.pages.guestlist.GuestListPage
 import com.example.partyplanner.ui.pages.guestlist.GuestListViewModel
@@ -32,10 +35,10 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
-
+val partyId = "partyId"
+val wishId = "wishId"
 fun NavGraphBuilder.hostPartyGraph(navController : NavController) {
-    val partyId = "partyId"
-    val wishId = "wishId"
+
     navigation(startDestination = "${Guestlist.route}/{$partyId}", route = "host") {
         val navigatePage : (PartyPlannerDestination, String) -> Unit = { dest, id ->
             if(dest.route == PartiesOverviewPage.route) {
@@ -62,7 +65,12 @@ fun NavGraphBuilder.hostPartyGraph(navController : NavController) {
             val party = backStack.arguments?.getString(partyId) ?: ""
             val wish = backStack.arguments?.getString(wishId) ?: ""
 
-            val viewModel = WishViewModel(repository = WishServiceImpl(FirebaseFirestore.getInstance(), party), wish)
+            val viewModel = WishViewModel(
+                repository = WishServiceImpl(FirebaseFirestore.getInstance(), party),
+                navigateOnWishDeleted = {
+                    navigatePage(WishPage, party)
+                },
+                wishId = wish)
             WishProductPage(viewModel = viewModel, isGuest = false)
 
         }
@@ -98,6 +106,31 @@ fun NavGraphBuilder.hostPartyGraph(navController : NavController) {
         }
 
 
+    }
+}
+
+fun NavGraphBuilder.guestGraph(navController: NavController) {
+    navigation(route= "guest", startDestination = "${Guestlist.route}/{$partyId}") {
+        val navigatePage : (PartyPlannerDestination, String) -> Unit = { dest, id ->
+            if(dest.route == PartiesOverviewPage.route) {
+                navController.navigate(PartiesOverviewPage.route)
+            } else {
+                navController.navigate("${dest.route}/$id")
+            }
+        }
+        composable(route = "${GuestMenuPagee.route}/{partyId}"){ backStack ->
+            val party = backStack.arguments?.getString("partyId") ?: ""
+
+            NavigationOverlay(currentDestination = guestPartyScreens.find { it.route == navController.currentDestination?.route?.substringBefore("/") } ?: GuestMenuPagee,
+                destinations = guestPartyScreens,
+                navigate = { dest -> navigatePage(dest,party) }) {
+                GuestMenuPage(GuestMenuViewModel(PartyServiceImpl(), party)) {
+                    navController.navigate(
+                        "${WishListGuestPage.route}/$party"
+                    )
+                }
+            }
+        }
     }
 }
 
