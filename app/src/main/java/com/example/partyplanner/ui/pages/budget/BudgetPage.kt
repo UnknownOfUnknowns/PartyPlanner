@@ -138,9 +138,11 @@ fun SetNoteDialog(
                 )
 
                 OutlinedTextField(
-                    value = price.toString(),
+                    value = if(price == 0) "" else price.toString(),
                     onValueChange = {
-                        if (it.isDigitsOnly()) {
+                        if(it.isEmpty()) {
+                            onPriceChange(0)
+                        } else if (it.isDigitsOnly()) {
                             onPriceChange(it.toInt())
                         }
                     },
