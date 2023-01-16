@@ -147,7 +147,7 @@ fun GuestCard(onDelete : (Guest) -> Unit, guestState : Guest, modifier : Modifie
 
 
 @Composable
-fun QuestOverviewWithIcon(icon: ImageVector, questInCategory: Int, color: Color, categoryName: String) {
+fun GuestCountWithIcon(icon: ImageVector, questInCategory: Int, color: Color, categoryName: String) {
     Column(
         horizontalAlignment = CenterHorizontally
     ) {
@@ -172,16 +172,16 @@ fun GuestOverview(modifier: Modifier = Modifier, guestListUiState: GuestListUiSt
             .padding(start = 10.dp, end = 10.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween) {
-            QuestOverviewWithIcon(icon = Icons.Default.Done,
+            GuestCountWithIcon(icon = Icons.Default.Done,
                 questInCategory = guestListUiState.guests.filter { it.attendanceState == AttendanceState.ATTENDS }.size,
                 color = Color.Green, categoryName = stringResource(id = R.string.participating))
-            QuestOverviewWithIcon(icon = Icons.Default.Close,
+            GuestCountWithIcon(icon = Icons.Default.Close,
                 questInCategory = guestListUiState.guests.filter { it.attendanceState == AttendanceState.NOT_ATTENDING }.size
                 , color = Color.Red, categoryName = stringResource(R.string.cancel))
-            QuestOverviewWithIcon(icon = Icons.Default.Refresh,
+            GuestCountWithIcon(icon = Icons.Default.Refresh,
                 questInCategory = guestListUiState.guests.filter { it.attendanceState == AttendanceState.AWAITING }.size
                 , color = Color.Yellow, categoryName = stringResource(R.string.awaits))
-            QuestOverviewWithIcon(icon = Icons.Default.Email,
+            GuestCountWithIcon(icon = Icons.Default.Email,
                 questInCategory = guestListUiState.totalInvites,
                 color = Color.White, categoryName = stringResource(R.string.invitations))
 

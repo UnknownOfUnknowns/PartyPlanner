@@ -92,6 +92,21 @@ class PartyServiceImpl : PartyService {
         }
 
     }
+    private fun deleteGuestsFromParty(id : String) {
+        guestsCollection().whereEqualTo(PARTY_REFERENCE, id).get().addOnSuccessListener { snapshot ->
+            snapshot.forEach {
+                guestsCollection().document(it.id).delete()
+            }
+        }
+    }
+    override suspend fun deleteParty(party: Party, onResult: (Throwable?) -> Unit) {
+        partiesCollection().document(party.id).delete().addOnSuccessListener {
+            onResult(null)
+            deleteGuestsFromParty(party.id)
+        }.addOnFailureListener{
+            onResult(Exception())
+        }
+    }
 
     override suspend fun relateGuestToParty(
         guestDocumentId: String,

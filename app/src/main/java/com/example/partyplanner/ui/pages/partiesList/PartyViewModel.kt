@@ -21,6 +21,7 @@ class NewPartyViewModel(private val repository : PartyService) : ViewModel() {
     val parties = repository.hostParties
     val guestParties = repository.guestParties
     val openInviteDialogOn = mutableStateOf(false)
+    val partyToBeDeleted = mutableStateOf<Party?>(null)
     val guestId = mutableStateOf("")
     private val _coreInfoUiState = MutableStateFlow(PartyCoreInfoUiState())
     val uiState: StateFlow<PartyCoreInfoUiState> = _coreInfoUiState.asStateFlow()
@@ -39,6 +40,17 @@ init {
         }
     }
 
+    fun confirmDeletion() {
+        viewModelScope.launch {
+            val deletionParty = partyToBeDeleted.value
+            if(deletionParty != null)
+                repository.deleteParty(deletionParty) {
+                    if(it == null){
+                        toggleDelete(null)
+                    }
+                }
+        }
+    }
 
     fun updateGuestId(newId : String) {
         guestId.value = newId
@@ -53,7 +65,9 @@ init {
             }
         }
     }
-
+    fun toggleDelete(newPartyToBeDeleted : Party?) {
+        partyToBeDeleted.value = newPartyToBeDeleted
+    }
     fun toggleInviteOn() {
         openInviteDialogOn.value = !openInviteDialogOn.value
         guestId.value = ""

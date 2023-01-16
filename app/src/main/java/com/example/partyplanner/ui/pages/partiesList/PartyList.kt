@@ -2,6 +2,7 @@ package com.example.partyplanner.ui.elements
 
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -9,6 +10,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.PersonAdd
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -49,13 +51,20 @@ fun PartyListAndCreate(viewModel: NewPartyViewModel, onAddButton: () -> Unit, on
                     val alpha : Double = (partyIndex+6)*(1.0/(parties.size+5))
                     PartyCard(partyInfo = party,
                         onClick = {onEdit(party, tabIndex == 0)},
-                        backgroundColor = Color(30/256f, 0f, 93/256f, alpha.toFloat()))
+                        backgroundColor = Color(30/256f, 0f, 93/256f, alpha.toFloat()),
+                        onDelete = {viewModel.toggleDelete(it)}
+                    )
                 }
 
             }
 
         }
-
+        if(viewModel.partyToBeDeleted.value != null) {
+            DeleteDialog(
+                text = "Er du sikker på at du vil slette festen: ${viewModel.partyToBeDeleted.value?.name}",
+                onDismiss = {viewModel.toggleDelete(null)},
+                onDelete = {viewModel.confirmDeletion()})
+        }
         if(viewModel.openInviteDialogOn.value) {
             InviteDialog(
                         onDismiss = {viewModel.toggleInviteOn()},
@@ -136,7 +145,7 @@ fun DefaultFAB(modifier: Modifier = Modifier, onClick: () -> Unit) {
 }
 
 @Composable
-fun PartyCard(partyInfo: Party, backgroundColor : Color = Color.White, onClick: () -> Unit) {
+fun PartyCard(partyInfo: Party, backgroundColor : Color = Color.White, onClick: () -> Unit, onDelete: (Party) -> Unit) {
     Spacer(modifier = Modifier.height(20.dp))
     Card(
         modifier = Modifier
@@ -148,7 +157,20 @@ fun PartyCard(partyInfo: Party, backgroundColor : Color = Color.White, onClick: 
             Modifier
                 .fillMaxSize()
                 .background(backgroundColor)) {
-            Text(partyInfo.name, fontSize = 25.sp, fontWeight = FontWeight.Bold, color = OnPrimary)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(partyInfo.name, fontSize = 25.sp, fontWeight = FontWeight.Bold, color = OnPrimary)
+                Icon(
+                    modifier = Modifier
+                        .clickable { onDelete(partyInfo) }
+                        .padding(top = 7.dp, end = 7.dp),
+                    tint = Color.Red,
+                    imageVector = Icons.Default.Close,
+                    contentDescription = stringResource(id = R.string.deleteIconDescription)
+                )
+            }
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
