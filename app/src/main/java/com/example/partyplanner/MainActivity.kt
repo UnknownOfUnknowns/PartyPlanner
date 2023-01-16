@@ -28,7 +28,6 @@ import com.example.partyplanner.ui.pages.login.CreateUserViewModel
 import com.example.partyplanner.ui.pages.login.LoginViewModel
 import com.example.partyplanner.ui.pages.login.SignInScreen
 import com.example.partyplanner.ui.pages.partiesList.NewPartyViewModel
-import com.example.partyplanner.ui.pages.wishlist.WishListViewModel
 import com.example.partyplanner.ui.pages.wishlist.WishViewModel
 import com.example.partyplanner.ui.theme.PartyPlannerTheme
 import com.google.firebase.firestore.FirebaseFirestore

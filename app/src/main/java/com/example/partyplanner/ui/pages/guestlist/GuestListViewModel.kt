@@ -67,10 +67,6 @@ class GuestListViewModel(private val repository: GuestService) : ViewModel() {
         }
     }
 
-    fun sendInvitation() {
-        viewModelScope.launch {
-        }
-    }
 
     fun deleteGuest() {
         viewModelScope.launch {

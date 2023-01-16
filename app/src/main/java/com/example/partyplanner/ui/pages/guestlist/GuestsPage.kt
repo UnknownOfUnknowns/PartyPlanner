@@ -276,11 +276,14 @@ fun InviteRadioButtons(
         Text(stringResource(R.string.chooseSendingMethod), color = Color.Gray)
         sendingMethods.forEach { item ->
             Row(verticalAlignment = CenterVertically) {
-                RadioButton(selected = item == activeItem, onClick = { onButtonChange(item) })
+                //IMPORTANT for now only the email method is enabled this decision has been made with the PO
+                val enabled = item == SendingMethod.EMAIL
+                RadioButton(selected = item == activeItem, enabled = enabled, onClick = { onButtonChange(item) })
                 Text(text = getStringFromSendingMethod(item))
             }
 
         }
+        Text(text = "Der sendes automatisk en invitation til den indtastede addresse")
     }
 }
 
