@@ -23,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
@@ -218,20 +219,24 @@ fun SendInviteDialog(
                 horizontalAlignment = CenterHorizontally,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 10.dp, end = 10.dp)
+                    .padding(10.dp)
             ) {
-                Text(text = stringResource(R.string.inviteGuest), fontSize = 30.sp)
+                Text(text = stringResource(R.string.inviteGuest), fontSize = 25.sp, modifier = Modifier.padding(10.dp))
                 TextField(value = sendInvitationUiState.guest,
                     onValueChange = onGuestChange,
                     label = { Text(text = stringResource(R.string.enterGuestName))},
                     colors = TextFieldDefaults.textFieldColors(
                         containerColor = Color.White
                     ),
-                    modifier = Modifier.padding(vertical = 10.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(10.dp)
+                        .clip(RoundedCornerShape(10)),
+                    shape = RoundedCornerShape(10),
                     singleLine = true
                 )
 
-                Divider(modifier = Modifier.fillMaxWidth())
+                Divider(modifier = Modifier.fillMaxWidth().padding(10.dp))
 
                 InviteRadioButtons(
                     onButtonChange = onMethodChange,
@@ -245,6 +250,10 @@ fun SendInviteDialog(
                     colors = TextFieldDefaults.textFieldColors(
                         containerColor = Color.White
                     ),
+                    modifier = Modifier.fillMaxWidth()
+                        .padding(10.dp)
+                        .clip(RoundedCornerShape(10)),
+                        shape = RoundedCornerShape(10),
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(
                         keyboardType = when(sendInvitationUiState.sendingMethod) {
@@ -255,8 +264,12 @@ fun SendInviteDialog(
                     ),
 
                 )
-                Spacer(modifier = Modifier.height(10.dp))
-                Button(onClick = onSend, modifier = Modifier. fillMaxWidth()) {
+
+                Button(onClick = onSend, modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp)
+                    .clip(RoundedCornerShape(10)),
+                shape = RoundedCornerShape(10)) {
                     Text(text = stringResource(R.string.sendInvitation))
 
                 }
@@ -273,7 +286,7 @@ fun InviteRadioButtons(
 ){
     val sendingMethods = SendingMethod.values()
     Column(modifier = modifier) {
-        Text(stringResource(R.string.chooseSendingMethod), color = Color.Gray)
+        Text(stringResource(R.string.chooseSendingMethod), color = Color.Gray, modifier = Modifier.padding(start = 5.dp, top = 5.dp, bottom = 5.dp))
         sendingMethods.forEach { item ->
             Row(verticalAlignment = CenterVertically) {
                 //IMPORTANT for now only the email method is enabled this decision has been made with the PO
@@ -283,7 +296,7 @@ fun InviteRadioButtons(
             }
 
         }
-        Text(text = "Der sendes automatisk en invitation til den indtastede addresse")
+        Text(text = "Invitationen vil sendes til den indtastede email", modifier = Modifier.padding(10.dp))
     }
 }
 

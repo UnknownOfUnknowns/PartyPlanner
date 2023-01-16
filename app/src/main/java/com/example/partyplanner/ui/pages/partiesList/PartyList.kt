@@ -84,7 +84,7 @@ fun InviteDialog(onDismiss : () -> Unit,
     Dialog(onDismissRequest = onDismiss) {
         Card(modifier = Modifier
             .padding(all = 10.dp),
-            shape = RoundedCornerShape(10),
+            shape = RoundedCornerShape(5),
             colors = CardDefaults.cardColors(Background)
         ) {
             Column(
