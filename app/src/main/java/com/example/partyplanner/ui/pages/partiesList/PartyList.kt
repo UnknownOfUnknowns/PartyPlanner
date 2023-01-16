@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.PersonAdd
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -18,6 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import com.example.partyplanner.R
 import com.example.partyplanner.data.party.Party
 import com.example.partyplanner.ui.pages.partiesList.NewPartyViewModel
@@ -53,10 +55,58 @@ fun PartyListAndCreate(viewModel: NewPartyViewModel, onAddButton: () -> Unit, on
 
         }
 
+        if(viewModel.openInviteDialogOn.value) {
+            InviteDialog(
+                        onDismiss = {viewModel.toggleInviteOn()},
+                        onIdChange = {viewModel.updateGuestId(it)},
+                        idValue = viewModel.guestId.value,
+                        onAddButton = {viewModel.connectUserToParty()})
+        }
+        Button(onClick = viewModel::toggleInviteOn,
+            Modifier
+                .align(Alignment.BottomCenter)
+                .padding(bottom = 10.dp)) {
+            Icon(imageVector = Icons.Default.PersonAdd, contentDescription = "Add user icon")
+            Text(text = "Åbn Invitation")
+        }
         DefaultFAB(modifier = Modifier.align(Alignment.BottomEnd), onClick = onAddButton)
     }
 
 }
+
+
+@Composable
+fun InviteDialog(onDismiss : () -> Unit,
+                 onIdChange : (String) -> Unit,
+                 idValue : String,
+                 onAddButton : () -> Unit) {
+    Dialog(onDismissRequest = onDismiss) {
+        Card(modifier = Modifier
+            .padding(all = 15.dp),
+            shape = RoundedCornerShape(10),
+            colors = CardDefaults.cardColors(Background)
+        ) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(text = "Tilmeld", fontSize = 30.sp)
+                Text(text = "Indtast ID fra din mail for at kunne se festen")
+
+                GenericOutlineTextField(
+                    value = idValue,
+                    onValueChange = onIdChange,
+                    labelText = "Party ID"
+                )
+
+                Button(onClick = onAddButton) {
+                    Text(text = "Se festen")
+                }
+            }
+        }
+    }
+}
+
+
 @Composable
 fun DefaultFAB(modifier: Modifier = Modifier, onClick: () -> Unit) {
     FloatingActionButton(onClick = onClick,

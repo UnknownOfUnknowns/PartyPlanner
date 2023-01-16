@@ -1,5 +1,6 @@
 package com.example.partyplanner.ui.pages.partiesList
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.partyplanner.data.party.Party
@@ -19,7 +20,8 @@ import java.util.*
 class NewPartyViewModel(private val repository : PartyService) : ViewModel() {
     val parties = repository.hostParties
     val guestParties = repository.guestParties
-
+    val openInviteDialogOn = mutableStateOf(false)
+    val guestId = mutableStateOf("")
     private val _coreInfoUiState = MutableStateFlow(PartyCoreInfoUiState())
     val uiState: StateFlow<PartyCoreInfoUiState> = _coreInfoUiState.asStateFlow()
 init {
@@ -35,6 +37,26 @@ init {
 
             }
         }
+    }
+
+
+    fun updateGuestId(newId : String) {
+        guestId.value = newId
+    }
+
+    fun connectUserToParty() {
+        viewModelScope.launch {
+            repository.relateGuestToParty(guestId.value) {
+                if(it== null) {
+                    toggleInviteOn()
+                }
+            }
+        }
+    }
+
+    fun toggleInviteOn() {
+        openInviteDialogOn.value = !openInviteDialogOn.value
+        guestId.value = ""
     }
 
     fun updatePartyType(newPartyType: String){

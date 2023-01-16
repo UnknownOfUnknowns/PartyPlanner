@@ -19,4 +19,7 @@ interface PartyService {
 
     suspend fun getGuestPartyInfo(partyId: String, onResult: (GuestPartyInfo) -> Unit)
 
+
+    suspend fun relateGuestToParty(guestDocumentId: String, onResult: (Throwable?) -> Unit)
+
 }

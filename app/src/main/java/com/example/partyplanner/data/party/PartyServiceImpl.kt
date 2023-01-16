@@ -4,6 +4,7 @@ import com.example.partyplanner.data.*
 import com.example.partyplanner.ui.state.AttendanceState
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.snapshots
 import com.google.firebase.firestore.ktx.toObject
@@ -92,6 +93,27 @@ class PartyServiceImpl : PartyService {
 
     }
 
+    override suspend fun relateGuestToParty(
+        guestDocumentId: String,
+        onResult: (Throwable?) -> Unit
+    ) {
+        val guestDocument = guestsCollection().document(guestDocumentId)
+        guestDocument.update(GUEST_ID, Firebase.auth.uid)
+        guestDocument.get().addOnSuccessListener {
+            val party = it.data?.get(PARTY_REFERENCE)
+            if(party != null && party is String){
+                Firebase.firestore.collection(PARTIES_COLLECTION).document(party).update(GUESTS_FIELD, FieldValue.arrayUnion(Firebase.auth.uid))
+                    .addOnSuccessListener {
+                        onResult(null)
+                    }
+                    .addOnFailureListener{
+                        onResult(Exception())
+                    }
+            } else {
+                onResult(Exception())
+            }
+        }
+    }
 
     private fun partiesCollection() : CollectionReference =
         Firebase.firestore.collection(PARTIES_COLLECTION)
