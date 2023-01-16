@@ -51,11 +51,10 @@ fun WishListPage(viewModel: WishListViewModel, navigateToProduct: (WishUiState) 
             .fillMaxSize()
             .background(Background)
     ) {
-        Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = CenterHorizontally) {
-            NameCardWishList(name = uiState.value.wishListName, modifier = Modifier.size(width = 350.dp, height = 120.dp ))
-            Spacer(modifier = Modifier.height(17.dp))
-            WishList(uiState.value.wishes, onImageClick = { navigateToProduct(it) })
-        }
+
+            WishList(uiState.value.wishes, onImageClick = { navigateToProduct(it) },
+                modifier = Modifier.fillMaxSize().padding(10.dp))
+
         if(uiState.value.addWish){
             AddWishDialog(
                 onDismiss = { viewModel.changeWishOn(false) },
@@ -318,9 +317,9 @@ fun Wish(modifier: Modifier = Modifier,
 
 //Her skal alle ønskerne måske laves clickable så de kan føre til næste side
 @Composable
-fun WishList(wishes : List<WishUiState>, showTopBar: Boolean = false, onImageClick: (WishUiState) -> Unit) {
+fun WishList(wishes : List<WishUiState>, showTopBar: Boolean = false, onImageClick: (WishUiState) -> Unit, modifier: Modifier = Modifier) {
     Card(
-        modifier = Modifier.padding(start = 11.dp, end = 11.dp, bottom = 30.dp),
+        modifier = modifier,
         shape = RoundedCornerShape(15.dp),
         colors = CardDefaults.cardColors(SecondaryContainer)
     ) {

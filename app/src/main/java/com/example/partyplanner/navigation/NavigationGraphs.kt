@@ -6,7 +6,9 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -171,9 +173,15 @@ fun NavigationOverlay(currentDestination : PartyPlannerDestination,
         Column(modifier = Modifier.padding(it)){
             TabRow(selectedTabIndex = destinations.indexOf(currentDestination)) {
                 destinations.forEach{ destination ->
-                    Tab(selected = currentDestination == destination,
+                    val selected = currentDestination == destination
+                    Tab(selected = selected,
                         onClick = { navigate(destination) }) {
-                        Text(text = destination.name, modifier= Modifier.padding(bottom = 3.dp))
+                        Text(text = destination.name, modifier= Modifier.padding(5.dp),fontSize = 15.sp, fontWeight = if (selected) {
+                            FontWeight.Bold
+                        }
+                        else {
+                            FontWeight.Normal
+                        })
                     }
                 }
             }
@@ -181,32 +189,3 @@ fun NavigationOverlay(currentDestination : PartyPlannerDestination,
         }
     }
 }
-
-
-
-/*
-ModalNavigationDrawer(
-                drawerState = drawerState,
-                drawerContent = {
-                    ModalDrawerSheet {
-                        Spacer(Modifier.height(12.dp))
-                        allDestinations.forEach{ destination ->
-                            NavigationDrawerItem(
-                                label = { Text(destination.name) },
-                                selected = destination == currentDestination,
-                                onClick = {
-                                    scope.launch {
-                                        drawerState.close()
-                                    }
-                                    navigate(destination)
-                                  },
-                                icon = {Icon(destination.icon, contentDescription = null)},
-                                modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
-                            )
-                        }
-                    }
-
-                },
-                content = content
-            )
-* */
