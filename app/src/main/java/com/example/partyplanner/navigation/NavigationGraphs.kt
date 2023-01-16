@@ -20,6 +20,7 @@ import com.example.partyplanner.data.party.PartyServiceImpl
 import com.example.partyplanner.data.wish.WishServiceImpl
 import com.example.partyplanner.navigation.*
 import com.example.partyplanner.ui.elements.BudgetPage
+import com.example.partyplanner.ui.elements.WishListGuestPage
 import com.example.partyplanner.ui.elements.WishListPage
 import com.example.partyplanner.ui.elements.WishProductPage
 import com.example.partyplanner.ui.elements.tableplannerpages.CreateTable
@@ -129,6 +130,20 @@ fun NavGraphBuilder.guestGraph(navController: NavController) {
                         "${WishListGuestPage.route}/$party"
                     )
                 }
+            }
+        }
+
+        composable(route = "${WishListGuestPage.route}/{$partyId}") { backStack ->
+            val party = backStack.arguments?.getString(partyId) ?: ""
+            val wishViewModel = WishListViewModel(WishServiceImpl(firestore = FirebaseFirestore.getInstance(),party))
+
+            NavigationOverlay(currentDestination = guestPartyScreens.find { it.route == navController.currentDestination?.route?.substringBefore("/") } ?: GuestMenuPagee,
+                destinations = guestPartyScreens,
+                navigate = { dest -> navigatePage(dest,party) }) {
+
+                WishListGuestPage(wishViewModel, navigateToProduct = {
+                    navController.navigate("${WishProductGuest.route}/${it.id}/$party")
+                })
             }
         }
     }
