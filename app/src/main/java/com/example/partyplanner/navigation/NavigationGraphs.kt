@@ -1,13 +1,10 @@
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -35,7 +32,6 @@ import com.example.partyplanner.ui.pages.wishlist.WishViewModel
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.launch
 val partyId = "partyId"
 val wishId = "wishId"
 fun NavGraphBuilder.hostPartyGraph(navController : NavController) {
@@ -156,8 +152,6 @@ fun NavigationOverlay(currentDestination : PartyPlannerDestination,
                       destinations : List<PartyPlannerDestination>,
                       navigate : (PartyPlannerDestination) -> Unit,
                       content : @Composable () -> Unit) {
-    val drawerState = rememberDrawerState(DrawerValue.Closed)
-    val scope = rememberCoroutineScope()
     val allDestinations  = mutableListOf<PartyPlannerDestination>(PartiesOverviewPage)
     destinations.forEach {
         allDestinations.add(it)
@@ -167,19 +161,31 @@ fun NavigationOverlay(currentDestination : PartyPlannerDestination,
             title = { Text(text = currentDestination.name)},
             navigationIcon = {
                 IconButton(onClick = {
-                    if(drawerState.isClosed) {
-                        scope.launch { drawerState.open() }
-                    } else {
-                        scope.launch { drawerState.close() }
-                    }
+                    navigate(PartiesOverviewPage)
                 }) {
-                    Icon(Icons.Filled.Menu, contentDescription = null)
+                    Icon(Icons.Filled.ArrowBack, contentDescription = null)
                 }
             }
         )
     }) {
-        Box(modifier = Modifier.padding(it)){
-            ModalNavigationDrawer(
+        Column(modifier = Modifier.padding(it)){
+            TabRow(selectedTabIndex = destinations.indexOf(currentDestination)) {
+                destinations.forEach{ destination ->
+                    Tab(selected = currentDestination == destination,
+                        onClick = { navigate(destination) }) {
+                        Text(text = destination.name, modifier= Modifier.padding(bottom = 3.dp))
+                    }
+                }
+            }
+            content()
+        }
+    }
+}
+
+
+
+/*
+ModalNavigationDrawer(
                 drawerState = drawerState,
                 drawerContent = {
                     ModalDrawerSheet {
@@ -203,7 +209,4 @@ fun NavigationOverlay(currentDestination : PartyPlannerDestination,
                 },
                 content = content
             )
-
-        }
-    }
-}
+* */
