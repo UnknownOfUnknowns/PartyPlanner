@@ -101,15 +101,7 @@ fun PartyPlannerApp(){
                 CreateLoginScreen(viewModel = createUserViewModel)
             }
 
-            composable(route = "${WishListGuestPage.route}/{$partyId}") { backStack ->
-                val party = backStack.arguments?.getString(partyId) ?: ""
-                val wishViewModel = WishListViewModel(WishServiceImpl(firestore = FirebaseFirestore.getInstance(),party))
 
-                WishListGuestPage(wishViewModel, navigateToProduct = {
-                    println(it)
-                    navigationController.navigate("${WishProductGuest.route}/${it.id}/$party")
-                })
-            }
 
             composable(route = "${WishProductGuest.route}/{$wishId}/{$partyId}") { backStack ->
                 val party = backStack.arguments?.getString(partyId) ?: ""
