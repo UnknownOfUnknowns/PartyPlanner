@@ -14,6 +14,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -82,30 +83,38 @@ fun InviteDialog(onDismiss : () -> Unit,
                  onAddButton : () -> Unit) {
     Dialog(onDismissRequest = onDismiss) {
         Card(modifier = Modifier
-            .padding(all = 15.dp),
+            .padding(all = 10.dp),
             shape = RoundedCornerShape(10),
             colors = CardDefaults.cardColors(Background)
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(text = "Tilmeld", fontSize = 30.sp)
-                Text(text = "Indtast ID fra din mail for at kunne se festen")
+                Text(text = "Tilmeld", fontSize = 20.sp, modifier = Modifier.padding (10.dp))
+                Text(text = "Indtast ID fra din mail", modifier = Modifier.padding(10.dp))
 
                 GenericOutlineTextField(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(10.dp)
+                        .clip(RoundedCornerShape(10)),
+                    shape = RoundedCornerShape(10),
                     value = idValue,
                     onValueChange = onIdChange,
                     labelText = "Party ID"
                 )
 
-                Button(onClick = onAddButton) {
+                Button(onClick = onAddButton, modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 15.dp, start = 10.dp, end = 10.dp, bottom = 15.dp)
+                    .clip(RoundedCornerShape(10)),
+                shape = RoundedCornerShape(10)) {
                     Text(text = "Se festen")
                 }
             }
         }
     }
 }
-
 
 @Composable
 fun DefaultFAB(modifier: Modifier = Modifier, onClick: () -> Unit) {
