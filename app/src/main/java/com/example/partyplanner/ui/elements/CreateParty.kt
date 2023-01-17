@@ -195,8 +195,6 @@ fun SetPartyDataOnCreation(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
 
-            Spacer(modifier = Modifier.height(30.dp))
-
             GenericOutlineTextField(modifier = stdModifier,
                 value = party.name,
                 onValueChange = {
@@ -210,7 +208,6 @@ fun SetPartyDataOnCreation(
             isSingleline = true
             )
 
-            Spacer(modifier = Modifier.height(10.dp))
 
             showDatePicker(party.date, setDate)
 
@@ -218,7 +215,6 @@ fun SetPartyDataOnCreation(
 
             ShowTimePicker(party.date, setDate)
 
-            Spacer(modifier = Modifier.height(10.dp))
 
             GenericOutlineTextField(modifier = stdModifier,
                 value = party.address,
@@ -233,8 +229,6 @@ fun SetPartyDataOnCreation(
             isSingleline = true
             )
 
-
-            Spacer(modifier = Modifier.height(10.dp))
             Row (
                 Modifier
                     .fillMaxWidth()) {
@@ -268,8 +262,6 @@ fun SetPartyDataOnCreation(
                 isSingleline = true
                 )
             }
-
-            Spacer(modifier = Modifier.height(25.dp))
 
             Button(
                 onClick = onNextButtonClick,

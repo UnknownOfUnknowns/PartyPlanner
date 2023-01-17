@@ -147,8 +147,11 @@ fun AddWishDialog(
 
                 GenericOutlineTextField(modifier = stdModifier,
                     keyOption = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    value = wishUiState.price.toString(),
+                    value = if(wishUiState.price != 0) wishUiState.price.toString() else "",
                     onValueChange = {
+                        if(it.isEmpty()) {
+                            onPriceChange(0)
+                        }
                         if (it.isDigitsOnly()) {
                             onPriceChange(it.toInt())
                         }

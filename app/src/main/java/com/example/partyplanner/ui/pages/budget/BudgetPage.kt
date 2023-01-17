@@ -273,8 +273,11 @@ fun AddBudgetDialog(
                 GenericOutlineTextField(
                     keyOption = KeyboardOptions(keyboardType = KeyboardType.Number),
                     modifier = stdModifier,
-                    value = budgetElementUiState.budgetPrice.toString(),
+                    value = if(budgetElementUiState.budgetPrice != 0) budgetElementUiState.budgetPrice.toString() else "",
                     onValueChange = {
+                        if(it.isEmpty()) {
+                            onPriceChange(0)
+                        }
                         if (it.isDigitsOnly()) {
                             onPriceChange(it.toInt())
                         }
