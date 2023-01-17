@@ -56,7 +56,8 @@ class WishViewModel(private val repository : WishService,
     fun reserveWish() {
         viewModelScope.launch {
             repository.changeReservationState(Wish().getFromUiState(_uiState.value)) {
-
+                if(it == null)
+                    fetchWish()
             }
         }
     }
