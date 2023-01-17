@@ -277,8 +277,7 @@ fun AddBudgetDialog(
                     onValueChange = {
                         if(it.isEmpty()) {
                             onPriceChange(0)
-                        }
-                        if (it.isDigitsOnly()) {
+                        } else if (it.isDigitsOnly()) {
                             onPriceChange(it.toInt())
                         }
                     },
