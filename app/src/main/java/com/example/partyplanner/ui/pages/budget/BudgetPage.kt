@@ -260,7 +260,7 @@ fun AddBudgetDialog(
                     modifier = Modifier
                         .align(CenterHorizontally)
                         .padding(vertical = 10.dp),
-                    fontSize = 30.sp)
+                    fontSize = 25.sp)
 
                 GenericOutlineTextField(modifier = stdModifier,
                     value = budgetElementUiState.budgetName,
