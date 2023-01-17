@@ -39,23 +39,17 @@ fun CreateLoginScreen(viewModel: CreateUserViewModel){
 
             Text ( text  = stringResource(R.string.createNewUserTitleText), fontSize = 30.sp)
 
-            Spacer(modifier = Modifier.height(20.dp))
 
             FullName(viewModel::onFullNameChange, state.fullname)
 
-            Spacer(modifier = Modifier.height(20.dp))
 
             Email(viewModel::onUsernameChange, state.email)
 
-            Spacer(modifier = Modifier.height(20.dp))
 
             NewPassword(viewModel::onPasswordChange, state.password)
 
-            Spacer(modifier = Modifier.height(20.dp))
 
             RepeatPassword(viewModel::onRepeatedPassword, state.repeatedpassword)
-
-            Spacer(modifier = Modifier.height(20.dp))
 
             Button(onClick = viewModel::createNewUser,
             modifier = Modifier
