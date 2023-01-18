@@ -102,7 +102,7 @@ fun Username(onValueChange: (String) -> Unit, username: String){
         },
 
         shape = RoundedCornerShape(10),
-        colors = TextFieldDefaults.outlinedTextFieldColors(Color.White),
+        colors = TextFieldDefaults.outlinedTextFieldColors(Color.Black),
         label = { Text(
                     stringResource(R.string.usernameTextField),
             )
@@ -132,7 +132,7 @@ fun Password(onValueChange: (String) -> Unit, password: String){
                 Toast.makeText(context, "Maksimum 40 tegn i kodeordet", Toast.LENGTH_SHORT).show()
             }
         },
-        colors = TextFieldDefaults.outlinedTextFieldColors(Color.White),
+        colors = TextFieldDefaults.outlinedTextFieldColors(Color.Black),
         shape = RoundedCornerShape(10),
 
         visualTransformation = if (showPassword.value) {
