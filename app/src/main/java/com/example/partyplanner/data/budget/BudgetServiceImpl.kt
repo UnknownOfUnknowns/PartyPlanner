@@ -14,7 +14,11 @@ class BudgetServiceImpl(private val firestore: FirebaseFirestore, @DocumentId pr
     override val budgets: Flow<List<Budget>>
         get() = budgetCollection()
             .snapshots().map { snapshot ->
-                snapshot.toObjects()
+                try {
+                    snapshot.toObjects()
+                } catch (e : Exception) {
+                    listOf()
+                }
             }
 
     override suspend fun addBudgetItem(budget: Budget, onResult: (Throwable?) -> Unit) {

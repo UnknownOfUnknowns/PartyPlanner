@@ -26,7 +26,7 @@ import com.example.partyplanner.ui.theme.*
 
 
 @Composable
-fun GuestMenuPage(viewModel: GuestMenuViewModel, navigateToWishList : () -> Unit) {
+fun GuestMenuPage(viewModel: GuestMenuViewModel) {
 
     val uiState by viewModel.uiState.collectAsState(initial = GuestPartyInfo())
 
@@ -46,7 +46,6 @@ fun GuestMenuPage(viewModel: GuestMenuViewModel, navigateToWishList : () -> Unit
 
             Spacer (modifier = Modifier.height(15.dp))
 
-            WishListButton(onWishListPress = navigateToWishList)
         }
     }
 }

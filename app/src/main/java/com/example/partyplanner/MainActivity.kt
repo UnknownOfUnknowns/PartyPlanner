@@ -124,7 +124,7 @@ fun PartyPlannerApp(){
                          if(hostTab) {
                              navigationController.navigateSingleTopTo("${Guestlist.route}/${party.id}")
                          } else{
-                             navigationController.navigateSingleTopTo("${GuestMenuPagee.route}/${party.id}")
+                             navigationController.navigateSingleTopTo("${GuestMenuInvitePage.route}/${party.id}")
                          }
 
                     }

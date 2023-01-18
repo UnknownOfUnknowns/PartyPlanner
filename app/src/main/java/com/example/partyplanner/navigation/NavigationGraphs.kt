@@ -117,17 +117,13 @@ fun NavGraphBuilder.guestGraph(navController: NavController) {
                 navController.navigate("${dest.route}/$id")
             }
         }
-        composable(route = "${GuestMenuPagee.route}/{partyId}"){ backStack ->
+        composable(route = "${GuestMenuInvitePage.route}/{partyId}"){ backStack ->
             val party = backStack.arguments?.getString("partyId") ?: ""
 
-            NavigationOverlay(currentDestination = guestPartyScreens.find { it.route == navController.currentDestination?.route?.substringBefore("/") } ?: GuestMenuPagee,
+            NavigationOverlay(currentDestination = guestPartyScreens.find { it.route == navController.currentDestination?.route?.substringBefore("/") } ?: GuestMenuInvitePage,
                 destinations = guestPartyScreens,
                 navigate = { dest -> navigatePage(dest,party) }) {
-                GuestMenuPage(GuestMenuViewModel(PartyServiceImpl(), party)) {
-                    navController.navigate(
-                        "${WishListGuestPage.route}/$party"
-                    )
-                }
+                GuestMenuPage(GuestMenuViewModel(PartyServiceImpl(), party))
             }
         }
 
@@ -135,7 +131,7 @@ fun NavGraphBuilder.guestGraph(navController: NavController) {
             val party = backStack.arguments?.getString(partyId) ?: ""
             val wishViewModel = WishListViewModel(WishServiceImpl(firestore = FirebaseFirestore.getInstance(),party))
 
-            NavigationOverlay(currentDestination = guestPartyScreens.find { it.route == navController.currentDestination?.route?.substringBefore("/") } ?: GuestMenuPagee,
+            NavigationOverlay(currentDestination = guestPartyScreens.find { it.route == navController.currentDestination?.route?.substringBefore("/") } ?: GuestMenuInvitePage,
                 destinations = guestPartyScreens,
                 navigate = { dest -> navigatePage(dest,party) }) {
 

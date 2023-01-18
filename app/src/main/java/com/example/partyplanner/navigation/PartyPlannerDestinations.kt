@@ -95,7 +95,7 @@ object BudgetPage : PartyPlannerDestination {
 
 }
 
-object GuestMenuPagee : PartyPlannerDestination {
+object GuestMenuInvitePage : PartyPlannerDestination {
     override val route = "GuestMenu"
     override val name: String
         get() = "Gæste menu"
@@ -119,4 +119,4 @@ val partyPlannerScreens = listOf(StartPage, NewPartyPage)
 
 
 val hostPartyScreens = listOf(Guestlist, WishPage, BudgetPage, TablePlannerPage)
-val guestPartyScreens = listOf(GuestMenuPagee, WishListGuestPage)
+val guestPartyScreens = listOf(GuestMenuInvitePage, WishListGuestPage)

@@ -27,7 +27,7 @@ class LoginViewModel(
 
 
     fun login() {
-        loginService.authenticate("hans@bilstrupandersen.dk", "123123") {
+        loginService.authenticate(uiState.value.email, uiState.value.password) {
             var errorValue =""
             when (it) {
                 null -> {

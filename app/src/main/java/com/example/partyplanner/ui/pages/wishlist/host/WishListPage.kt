@@ -70,8 +70,6 @@ fun WishListPage(viewModel: WishListViewModel, navigateToProduct: (WishUiState) 
         if(!uiState.value.addWish) {
             DefaultFAB(modifier = Modifier
                 .align(Alignment.BottomEnd), onClick = { viewModel.changeWishOn(true) })
-            ShareFAB(modifier = Modifier
-                .align(Alignment.BottomStart), onClick = {})
         }
     }
 }

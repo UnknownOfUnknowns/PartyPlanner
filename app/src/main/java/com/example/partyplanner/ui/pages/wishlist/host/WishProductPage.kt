@@ -9,7 +9,6 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment.Companion.BottomEnd
 import androidx.compose.ui.Alignment.Companion.BottomStart
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
@@ -60,10 +59,6 @@ fun WishProductPage(viewModel: WishViewModel, isGuest: Boolean) {
             DeleteFAB(
                 onClick = {showDeleteDialog = true}, modifier = Modifier
                     .align(BottomStart)
-            )
-            EditFAB(
-                onClick = {}, modifier = Modifier
-                    .align(BottomEnd)
             )
         }
     }
