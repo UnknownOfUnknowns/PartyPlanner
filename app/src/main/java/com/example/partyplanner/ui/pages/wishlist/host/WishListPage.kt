@@ -291,7 +291,7 @@ fun Wish(modifier: Modifier = Modifier,
                             .fillMaxWidth()
                             .weight(0.8f),
                         contentScale = ContentScale.Crop,
-                        placeholder = painterResource(id = R.drawable.coffee_machine))
+                        placeholder = painterResource(id = R.drawable.no_image_placeholder_svg))
 
                 } else {
                     Image(

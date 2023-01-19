@@ -7,7 +7,7 @@ import kotlinx.serialization.json.Json
 object MailRequestFactory {
 
     fun createMailRequest(guest: Guest): String {
-        val content = ContentItem(STANDARD_TYPE, "Hej ${guest.name}\nDu inviteres hermed til fest. Åbn PartyPlanner appen og " +
+        val content = ContentItem(STANDARD_TYPE, "Hej ${guest.name}\nDu inviteres hermed til fest. Åbn PartyPlanner appen og login, naviger dernæst til gæste-tabben og " +
                 "indtast nedenstående kode når du har trykket på knappen \"Åbn invitation\"\nKode: ${guest.id}")
         val receiver = AddressAndName(guest.contactAddress)
         val sender = AddressAndName("scsolutionsapp@gmail.com")

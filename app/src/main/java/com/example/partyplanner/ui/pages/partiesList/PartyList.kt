@@ -32,12 +32,13 @@ import com.example.partyplanner.ui.theme.OnPrimaryContainer
 
 
 @Composable
-fun PartyListAndCreate(viewModel: NewPartyViewModel, onAddButton: () -> Unit, onEdit: (Party, Boolean) -> Unit) {
+fun PartyListAndCreate(viewModel: NewPartyViewModel, modifier : Modifier = Modifier,
+                       onAddButton: () -> Unit, onEdit: (Party, Boolean) -> Unit) {
     val hostParties by viewModel.parties.collectAsState(initial = listOf())
     val guestParties by viewModel.guestParties.collectAsState(initial = listOf())
     var tabIndex by remember { mutableStateOf(0) }
     val parties = if(tabIndex == 0) hostParties else guestParties
-    Box {
+    Box(modifier = modifier) {
         Column {
             StatusTab(tabIndex = tabIndex, { tabIndex = it })
             LazyColumn(
@@ -50,6 +51,7 @@ fun PartyListAndCreate(viewModel: NewPartyViewModel, onAddButton: () -> Unit, on
                     val partyIndex = parties.indexOf(party)
                     val alpha : Double = (partyIndex+6)*(1.0/(parties.size+5))
                     PartyCard(partyInfo = party,
+                        showDelete = tabIndex == 0,
                         onClick = {onEdit(party, tabIndex == 0)},
                         backgroundColor = Color(30/256f, 0f, 93/256f, alpha.toFloat()),
                         onDelete = {viewModel.toggleDelete(it)}
@@ -145,7 +147,7 @@ fun DefaultFAB(modifier: Modifier = Modifier, onClick: () -> Unit) {
 }
 
 @Composable
-fun PartyCard(partyInfo: Party, backgroundColor : Color = Color.White, onClick: () -> Unit, onDelete: (Party) -> Unit) {
+fun PartyCard(partyInfo: Party, showDelete : Boolean, backgroundColor : Color = Color.White, onClick: () -> Unit, onDelete: (Party) -> Unit) {
     Spacer(modifier = Modifier.height(20.dp))
     Card(
         modifier = Modifier
@@ -162,14 +164,16 @@ fun PartyCard(partyInfo: Party, backgroundColor : Color = Color.White, onClick: 
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(partyInfo.name, fontSize = 25.sp, fontWeight = FontWeight.Bold, color = OnPrimary)
-                Icon(
-                    modifier = Modifier
-                        .clickable { onDelete(partyInfo) }
-                        .padding(top = 7.dp, end = 7.dp),
-                    tint = Color.Red,
-                    imageVector = Icons.Default.Close,
-                    contentDescription = stringResource(id = R.string.deleteIconDescription)
-                )
+                if(showDelete){
+                    Icon(
+                        modifier = Modifier
+                            .clickable { onDelete(partyInfo) }
+                            .padding(top = 7.dp, end = 7.dp),
+                        tint = Color.Red,
+                        imageVector = Icons.Default.Close,
+                        contentDescription = stringResource(id = R.string.deleteIconDescription)
+                    )
+                }
             }
             Row(
                 modifier = Modifier.fillMaxWidth(),

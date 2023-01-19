@@ -7,11 +7,17 @@ import android.util.Size
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -59,6 +65,7 @@ class MainActivity : ComponentActivity() {
 
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PartyPlannerApp(){
     PartyPlannerTheme {
@@ -115,20 +122,37 @@ fun PartyPlannerApp(){
             guestGraph(navigationController)
 
             composable(route = PartiesOverviewPage.route) {
-                PartyListAndCreate(
-                    NewPartyViewModel(PartyServiceImpl()),
-                    onAddButton = {
-                        navigationController.navigateSingleTopTo(NewPartyPage.route)
-                    },
-                    onEdit = { party, hostTab ->
-                         if(hostTab) {
-                             navigationController.navigateSingleTopTo("${Guestlist.route}/${party.id}")
-                         } else{
-                             navigationController.navigateSingleTopTo("${GuestMenuInvitePage.route}/${party.id}")
-                         }
-
+                Scaffold(
+                    topBar = {
+                        CenterAlignedTopAppBar (
+                            title = { Text(text = stringResource(R.string.parties)) },
+                            navigationIcon = {
+                                Icon(imageVector = Icons.Default.ArrowBack,
+                                    modifier = Modifier.clickable {
+                                          navigationController.navigate(LoginPage.route)
+                                    },
+                                    contentDescription = stringResource(R.string.navigateBack))
+                            }
+                        )
                     }
-                )
+                ) {
+                    PartyListAndCreate(
+                        NewPartyViewModel(PartyServiceImpl()),
+                        modifier = Modifier.padding(it),
+                        onAddButton = {
+                            navigationController.navigateSingleTopTo(NewPartyPage.route)
+                        },
+                        onEdit = { party, hostTab ->
+                            if(hostTab) {
+                                navigationController.navigateSingleTopTo("${Guestlist.route}/${party.id}")
+                            } else{
+                                navigationController.navigateSingleTopTo("${GuestMenuInvitePage.route}/${party.id}")
+                            }
+
+                        }
+                    )
+                }
+
             }
 
             val partyViewModel = NewPartyViewModel(PartyServiceImpl())

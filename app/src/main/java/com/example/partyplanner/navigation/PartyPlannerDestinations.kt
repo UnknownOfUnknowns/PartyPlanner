@@ -12,27 +12,20 @@ interface PartyPlannerDestination {
 
 object StartPage : PartyPlannerDestination {
     override val route = "start"
-    override val name: String
-        get() = TODO("Not yet implemented")
-    override val icon: ImageVector
-        get() = TODO("Not yet implemented")
+    override val name: String = ""
+    override val icon: ImageVector = Icons.Default.Add
 }
-
 object NewPartyPage : PartyPlannerDestination {
     override val route = "createParty"
-    override val name: String
-        get() = TODO("Not yet implemented")
-    override val icon: ImageVector
-        get() = TODO("Not yet implemented")
+    override val name: String = "Ny fest"
+    override val icon: ImageVector = Icons.Default.PartyMode
 
 }
 
 object AdditionalPartyDataPage : PartyPlannerDestination {
     override val route = "additionalPartyData"
-    override val name: String
-        get() = TODO("Not yet implemented")
-    override val icon: ImageVector
-        get() = TODO("Not yet implemented")
+    override val name: String ="Ny fest"
+    override val icon: ImageVector = Icons.Default.PartyMode
 }
 
 object PartiesOverviewPage : PartyPlannerDestination {
@@ -43,10 +36,8 @@ object PartiesOverviewPage : PartyPlannerDestination {
 
 object ConfirmationPage : PartyPlannerDestination {
     override val route = "confirmationPage"
-    override val name: String
-        get() = TODO("Not yet implemented")
-    override val icon: ImageVector
-        get() = TODO("Not yet implemented")
+    override val name: String = "Begivenhed oprettet"
+    override val icon: ImageVector = Icons.Default.Done
 }
 object WishListGuestPage : PartyPlannerDestination {
     override val route: String = "wishListGuest"
@@ -77,10 +68,8 @@ object Guestlist : PartyPlannerDestination {
 
 object LoginPage : PartyPlannerDestination {
     override val route = "login"
-    override val name: String
-        get() = TODO("Not yet implemented")
-    override val icon: ImageVector
-        get() = TODO("Not yet implemented")
+    override val name: String ="Login"
+    override val icon: ImageVector = Icons.Default.Login
 }
 object WishPage : PartyPlannerDestination {
     override val route = "wish"

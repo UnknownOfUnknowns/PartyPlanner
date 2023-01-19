@@ -326,12 +326,6 @@ fun DeleteGuestAlert(
 }
 
 
-@Preview
-@Composable
-fun SendInviteDialogPreview() {
-    SendInviteDialog(onDismiss = { /*TODO*/ }, onSend = {}, onAddressChange = {}, onMethodChange = {},
-        sendInvitationUiState = SendInvitationUiState("", SendingMethod.EMAIL, "123"), onGuestChange = {})
-}
 
 @Preview(showBackground = true)
 @Composable

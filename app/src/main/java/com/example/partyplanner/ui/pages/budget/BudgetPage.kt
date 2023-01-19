@@ -224,7 +224,7 @@ fun SetMaxBudgetDialog(
                         Text(text = stringResource(R.string.interrupt))
                     }
                     TextButton(onClick = onAddNewBudgetMax) {
-                        Text(text = stringResource(R.string.create), fontWeight = FontWeight.ExtraBold)
+                        Text(text = stringResource(R.string.change), fontWeight = FontWeight.ExtraBold)
                     }
                 }
             }

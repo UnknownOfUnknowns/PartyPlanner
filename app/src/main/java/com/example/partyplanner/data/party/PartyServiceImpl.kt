@@ -35,9 +35,6 @@ class PartyServiceImpl : PartyService {
 
 
 
-    override suspend fun update(party: Party) {
-        TODO("Not yet implemented")
-    }
 
 
     override suspend fun get() {

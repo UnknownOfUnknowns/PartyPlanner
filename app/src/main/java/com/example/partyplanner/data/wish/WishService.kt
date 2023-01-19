@@ -7,7 +7,6 @@ import kotlinx.coroutines.flow.Flow
 interface WishService {
     val wishes: Flow<List<Wish>>
 
-    suspend fun update(wish: Wish)
     suspend fun getWishes() : List<Wish>
     suspend fun addWish(wish: Wish, image : Bitmap?, onResult: (Throwable?) -> Unit)
 

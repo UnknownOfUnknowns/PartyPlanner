@@ -26,10 +26,6 @@ class WishServiceImpl(private val firestore: FirebaseFirestore,
             }
 
 
-    override suspend fun update(wish: Wish) {
-        TODO("Not Yet Implemented")
-    }
-
     override suspend fun getWishes() : List<Wish> {
         return listOf(Wish())
     }
