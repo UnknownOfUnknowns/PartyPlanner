@@ -86,6 +86,7 @@ class GuestListViewModel(private val repository: GuestService) : ViewModel() {
                 sendingMethod = state.sendingMethod
             )) {
                 if(it == null) {
+                    changeSendingAddress("")
                     changeGuestName("")
                     changeInviteOn(false)
                 }

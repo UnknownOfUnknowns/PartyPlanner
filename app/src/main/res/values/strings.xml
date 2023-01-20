@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PartyPlanner PP3</string>
+    <string name="app_name">PP3 PartyPlanner</string>
     <string name="whoHostsTheParty">Hvem afholder festen?</string>
     <string name="hide_password">Hide password</string>
     <string name="show_password">Show password</string>
