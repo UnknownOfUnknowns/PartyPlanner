@@ -149,7 +149,7 @@ fun SetNoteDialog(
                     modifier = Modifier
                         .align(CenterHorizontally)
                         .padding(vertical = 10.dp),
-                    label = { Text(text = stringResource(id = R.string.wishPrice))},
+                    label = { Text(text = stringResource(R.string.priceofbudgetelement))},
                     colors = TextFieldDefaults.outlinedTextFieldColors(containerColor = Color.White),
                     shape = RoundedCornerShape(10)
                 )
@@ -167,7 +167,7 @@ fun SetNoteDialog(
                         Text(text = stringResource(R.string.interrupt))
                     }
                     TextButton(onClick = onSubmit) {
-                        Text(text = stringResource(R.string.create), fontWeight = FontWeight.ExtraBold)
+                        Text(text = stringResource(R.string.okay), fontWeight = FontWeight.ExtraBold)
                     }
                 }
             }
@@ -281,7 +281,7 @@ fun AddBudgetDialog(
                             onPriceChange(it.toInt())
                         }
                     },
-                    labelText = stringResource(id = R.string.wishPrice))
+                    labelText = stringResource(id = R.string.priceofbudgetelement))
 
                 Row() {
                     TextButton(onClick = onDismiss) {

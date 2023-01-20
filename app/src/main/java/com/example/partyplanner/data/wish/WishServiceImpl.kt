@@ -22,7 +22,11 @@ class WishServiceImpl(private val firestore: FirebaseFirestore,
         get() = wishCollection()
             .snapshots().
             map { snapshot ->
-                snapshot.toObjects()
+                try {
+                    snapshot.toObjects()
+                } catch (e : Exception) {
+                    listOf()
+                }
             }
 
 

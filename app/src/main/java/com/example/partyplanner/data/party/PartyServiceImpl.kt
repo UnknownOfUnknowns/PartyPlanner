@@ -21,16 +21,22 @@ class PartyServiceImpl : PartyService {
             .whereEqualTo(HOST_VARIABLE, Firebase.auth.uid)
             .snapshots()
             .map { snapshot ->
-                println(snapshot)
-                snapshot.toObjects()
+                try {
+                    snapshot.toObjects()
+                } catch (e : Exception) {
+                    listOf()
+                }
             }
     override val guestParties: Flow<List<Party>>
         get() = partiesCollection()
             .whereArrayContains("guests", Firebase.auth.uid ?: "")
             .snapshots()
             .map { snapshot ->
-                println(snapshot)
-                snapshot.toObjects()
+                try {
+                    snapshot.toObjects()
+                } catch (e : Exception) {
+                    listOf()
+                }
             }
 
 

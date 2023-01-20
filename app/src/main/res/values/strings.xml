@@ -97,4 +97,6 @@
     <string name="change">Ændr</string>
     <string name="parties">Fester</string>
  <string name="navigateBack">Navigate back</string>
+    <string name="priceofbudgetelement">Pris på post</string>
+ <string name="okay">Ok</string>
 </resources>
