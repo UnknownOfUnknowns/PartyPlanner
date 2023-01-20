@@ -22,8 +22,7 @@ class InvitationSender {
         val jsonObject = MailRequestFactory.createMailRequest(guest)
 
         CoroutineScope(Dispatchers.IO).launch {
-            val t = service.sendNewMail(jsonObject.toRequestBody("application/json".toMediaTypeOrNull()), "Bearer $API_KEY")
-            println("d")
+            service.sendNewMail(jsonObject.toRequestBody("application/json".toMediaTypeOrNull()), "Bearer $API_KEY")
         }
     }
 }
